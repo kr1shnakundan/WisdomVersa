@@ -4,6 +4,7 @@ import { AiOutlineEye ,AiOutlineEyeInvisible ,AiTwotoneInfoCircle } from 'react-
 
 import CTAButton from '../HomePage/Button'
 import { useNavigate } from 'react-router-dom'
+import { setSignupData } from '../../../slices/authSlice'
 import { useDispatch } from 'react-redux'
 
 import { ACCOUNT_TYPE } from '../../../utils/constant'
@@ -53,7 +54,7 @@ const SignupForm = () => {
 
     // Setting signup data to state
     // To be used after otp verification
-    // dispatch(setSignupData(signupData))<-----------------
+    dispatch(setSignupData(signupData))
     // Send OTP to user for verification
     // dispatch(sendOtp(formData.email, navigate))<------------------
 
@@ -69,7 +70,7 @@ const SignupForm = () => {
 
   }
 
-  // data to pass to Tab component
+  // data to pass to Tab component    <--------------
   const tabData = [
     {
       id: 1,

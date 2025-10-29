@@ -21,7 +21,7 @@ exports.capturePayment = async(req,res) =>{
 
     //find total amount & validation for each courses the user have selected
     for(const course_id of courses){
-        let courseDetails
+        let courseDetails;
         try{
             //find the course by its id
             courseDetails = await Course.findById(course_id);
@@ -36,10 +36,11 @@ exports.capturePayment = async(req,res) =>{
 
             //check if user is already enrolled in the course
             // const uid = new mongoose.Types.ObjectId(userId)
+            let uid;
             if (typeof userId === 'string' && mongoose.Types.ObjectId.isValid(userId)) {
                 const uid = new mongoose.Types.ObjectId(userId);
             } else{
-                const uid = userId
+                uid = userId
             }
 
             if(courseDetails.studentEnrolled.includes(uid)){
@@ -55,7 +56,7 @@ exports.capturePayment = async(req,res) =>{
         } catch(error){
             return res.status(500).json({
                 success:false,
-                message:message.error
+                message:error.message
             })
         }
     }
@@ -78,7 +79,7 @@ exports.capturePayment = async(req,res) =>{
             data: paymentResponse,
             courseName: courseDetails.courseName,
             courseDescription:courseDetails.courseDescription,
-            thumbnail:courseDescription.thumbnail
+            thumbnail:courseDetails.thumbnail
         })
     } catch(error){
         console.log("capturePayment error : " ,error)
@@ -189,7 +190,7 @@ const enrollStudents = async(courses ,userId,res) =>{
             if(!enrolledCourse){
                 return res.status(400).json({
                     success:false,
-                    message:message.error,
+                    message:error.message,
                 });
             }
 
