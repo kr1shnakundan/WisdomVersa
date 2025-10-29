@@ -1,0 +1,35 @@
+# Environment variables (ALL LOCATIONS)
+.env
+**/.env
+.env.*
+**/.env.*
+
+# Dependencies (ALL LOCATIONS)
+node_modules/
+**/node_modules/
+
+# Lock files (ALL LOCATIONS)
+package-lock.json
+**/package-lock.json
+
+# Build outputs
+dist/
+build/
+**/dist/
+**/build/
+
+# OS files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+**/*.log
