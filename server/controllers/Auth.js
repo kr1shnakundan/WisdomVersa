@@ -214,8 +214,8 @@ exports.sendotp = async(req,res) =>{
         const {email} = req.body;
 
         //check if user is already present
-        const existingUser = await User.findOne({email});
-        if(existingUser){
+        const checkUserPresent = await User.findOne({email});
+        if(checkUserPresent){
             return res.status(400).json({
                 success:false,
                 message:`user already exists`

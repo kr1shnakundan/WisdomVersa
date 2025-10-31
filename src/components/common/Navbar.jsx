@@ -28,10 +28,10 @@ const Navbar = () => {
     setLoading(true);
     try{
       const result = await apiConnector("GET" , category.CATEGORY_URL);
-      console.log("Printing Sublink result : ",result);
-      console.log("subLink is : ",subLinks);
+      // console.log("Printing Sublink result : ",result);
+      // console.log("subLink is : ",subLinks);  
       setSubLinks(result.data.data);
-      console.log("subLink after update is : ",subLinks);
+      // console.log("subLink after update is : ",subLinks);
     } catch(error){
       console.log("could not fetch category detail : ",error)
     }
@@ -40,7 +40,7 @@ const Navbar = () => {
 
   useEffect (() =>{
     fetchSublinks();
-     console.log("subLink in useEffect is : ",subLinks);
+    //  console.log("subLink in useEffect is : ",subLinks);
   },[])
 
   console.log("sublink after useEffect is :",subLinks);

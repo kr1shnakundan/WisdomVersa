@@ -110,7 +110,7 @@ exports.categoryPageDetails = async(req,res) =>{
                 $match:{status:"Published"},
                 populate:"instructors"
             }).exec();
-        const allCourses = allCategories.flatMap((category)=>category.course)
+        const allCourses = allCategories.flatMap((category)=>category.courses)
         const mostSellingCourse = allCourses.sort((a,b)=>(b.sold - a.sold)).slice(0,10)
  
         return res.status(200).json({
