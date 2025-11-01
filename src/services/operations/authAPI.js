@@ -1,9 +1,10 @@
-import { use } from "react";
+
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { setLoading, setToken } from "../../slices/authSlice";
 import { apiConnector } from "../apiconnector";
 import { endpoints} from "../apis";
+import { setUser } from "../../slices/profileSlice";
+import { resetCart } from "../../slices/cartSlice";
 
 
 const {
@@ -15,10 +16,10 @@ const {
 } = endpoints
 
 
-const dispatch = useDispatch();
 
 
-export function sendOTP (email ,navigate){
+
+export function sendOtp (email ,navigate){
     return async(dispatch)=>{
         const toastId = toast.loading("Loading...")
         dispatch(setLoading(true))
@@ -30,15 +31,29 @@ export function sendOTP (email ,navigate){
             console.log("SENDOTP API RESPONSE............", response)
 
             console.log(response.data.success)
+            console.log("response.data.message for sendOtp is : ",response.data.message)
 
             if (!response.data.success) {
                 throw new Error(response.data.message)
             }
-            toast.success("OTP send successfully")
+            toast.success(response.data.message)
             navigate("/verify-email")
         } catch(error){
             console.log("Error in sendOTP fuction in authAPI.JS : ",error);
-            toast.error("error in sending OTP , please try again")
+
+
+            //---------------------------- SEND THE ERROR TOAST
+            // toast.error("error in sending OTP , please try again")
+            if(error.response){
+                toast.error(error.response.data.message || "Server error occured")
+            } else if(error.request){
+                toast.error("no request from server")
+            } else {
+                toast.error(error.message || "Error in sending OTP ")
+            }
+            console.log("Error in sendOTP function:", error);
+            console.log("Response data:", error.response?.data); // This shows backend error
+            console.log("Request payload:", error.config?.data); // This shows what you sent
         }
         dispatch(setLoading(false));
         toast.dismiss(toastId)
@@ -75,12 +90,12 @@ export function signUp (
                 throw new Error(response.data.message)
             }
 
-            toast.success("SignUp Successful")
+            toast.success(response.data.message)
             navigate("/login")
 
         } catch(error){
             console.log("Error in signUp in authAPI.js : ",error)
-            toast.error("signUp failed")
+            toast.error("singup failed")
             navigate("/signup")
         }
         dispatch(setLoading(false))
@@ -136,7 +151,7 @@ export function logout (navigate) {
        
         dispatch(setToken(null))
         dispatch(setUser(null))
-        dispatch(resetCard())
+        dispatch(resetCart())
 
         localStorage.removeItem("token")
         localStorage.removeItem("user")

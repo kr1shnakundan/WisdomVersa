@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineEye , AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
+import { login } from '../../../services/operations/authAPI';
+
 
 const LoginForm = () => {
 
@@ -24,7 +26,7 @@ const LoginForm = () => {
 
   const handleOnSubmit = (e) =>{
     e.preventDefault();
-    // dispatch(login(email , password , navigate));
+    dispatch(login(email,password , navigate))
   }
   return (
     <div className=''>
@@ -38,6 +40,8 @@ const LoginForm = () => {
           <input
           required
           type="text"
+          name='email'
+          onChange={handleOnChange}
           placeholder='Enter email address'
           style={{
             boxShadow:"inset 0px -1px 0px rgba(255 , 255 , 255 , 0.18)"
@@ -52,7 +56,9 @@ const LoginForm = () => {
           </p>
           <input 
           required
-          type="text"
+          type= {showPassword ? "text" : "password"}
+          name='password'
+          onChange={handleOnChange}
           placeholder='Enter Password'
           style={{
             boxShadow: "inset 0px -1px 0px rgba(255 , 255 , 255 , 0.18)"
