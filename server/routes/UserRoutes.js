@@ -16,7 +16,7 @@ router.post("/sendotp", sendotp)
 ///////////////////////////////////////////////////////////////////////////////////////////
 //                                   Reset Password                                     //
 //////////////////////////////////////////////////////////////////////////////////////////
-router.post("/reset-password-token",auth , resetPasswordToken)
-router.post("/reset-password",auth ,resetPassword)
+router.post("/reset-password-token",resetPasswordToken)
+router.post("/reset-password",resetPassword)
 
 module.exports = router

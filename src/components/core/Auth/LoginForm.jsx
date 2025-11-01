@@ -41,6 +41,7 @@ const LoginForm = () => {
           required
           type="text"
           name='email'
+          value={email}
           onChange={handleOnChange}
           placeholder='Enter email address'
           style={{
@@ -58,6 +59,7 @@ const LoginForm = () => {
           required
           type= {showPassword ? "text" : "password"}
           name='password'
+          value={password}
           onChange={handleOnChange}
           placeholder='Enter Password'
           style={{
@@ -70,7 +72,10 @@ const LoginForm = () => {
             {showPassword ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
           </span>
           
-          <Link className='mt-1 ml-auto max-w-max text-xs text-blue-100'>Forgot Password</Link>
+          <Link to={"/forgot-password"}
+          className='mt-1 ml-auto max-w-max text-xs text-blue-100'>
+            Forgot Password
+          </Link>
         </label>
         <button className='shadow-[inset_0_-1px_0_rgba(255,255,255,0.18)] p-3 bg-yellow-50 rounded-lg w-full text-richblack-900
                             hover:scale-95 hover:bg-yellow-25 transition-all duration-200 '>

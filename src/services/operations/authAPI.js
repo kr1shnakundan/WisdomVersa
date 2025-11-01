@@ -160,3 +160,53 @@ export function logout (navigate) {
         navigate("/")
     }
 }
+
+export function getPasswordResetToken(email , setEmailSent){
+    return async (dispatch) =>{
+        const toastId = toast.loading("Loading....")
+        dispatch(setLoading(true))
+        try{
+            const response = await apiConnector("POST",RESETPASSTOKEN_API,{
+                email
+            })
+
+            if(!response.data.success){
+                console.log("Error while fetching the reset token from server : ",response.message)
+                throw new Error(response.data.message)
+            }
+
+            toast.success("Reset Email Sent")
+            setEmailSent(true)
+        } catch(error){
+            console.log("Error in getPasswordResetToken in authAPI.js : ",error)
+            toast.error("Error occured while getting PasswordResetToken")
+        }
+        dispatch(setLoading(false))
+        toast.dismiss(toastId)
+    }
+}
+
+
+export function resetPassword ( password , confirmPassword , token,navigate){
+    return async (dispatch) =>{
+        const toastId = toast.loading("Loading...")
+        dispatch(setLoading(true))
+
+        try{
+            const response = await apiConnector("POST" , RESETPASSWORD_API , {password,confirmPassword,token})
+
+            console.log("Response of resetPassword : " , response)
+
+            if(!response.data.success){
+                throw new Error(response.data.message)
+            }
+
+            toast.success("Password Reset successfully")
+            navigate("/login")
+
+        } catch(error){
+            console.log("Reset Password error in authAPI : ",error)
+            toast.error("Error in reseting password")
+        }
+    }
+}

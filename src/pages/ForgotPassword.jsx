@@ -1,13 +1,20 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import CTAButton from '../components/core/HomePage/Button'
 import { BiArrowBack } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
+import { getPasswordResetToken } from '../services/operations/authAPI';
 
 function ForgotPassword  ()  {
     const [email , setEmail] = useState("");
     const [emailSent , setEmailSent] = useState(false);
-    const [loading , setLoading] = useState(false);
+    const {loading} = useSelector((state) =>state.auth)
     const dispatch = useDispatch();
+
+    const handleOnSubmit = (e) =>{
+       e.preventDefault();
+       dispatch(getPasswordResetToken(email , setEmailSent))
+    }
   return (
     <div className='grid min-h-[calc(100vh - 3.5rem)] place-items-center'>
         {
@@ -27,9 +34,9 @@ function ForgotPassword  ()  {
                             : `We have sent the reset email to ${email}`
                         }
                     </p>
-                    {
-                        !emailSent ? 
-                        (
+                    
+                    <form onSubmit={handleOnSubmit}>
+                        {!emailSent &&  
                             <label htmlFor="" className='w-full'>
                                 <p className='relative mb-1 text-richblack-5 text-[0.875rem] leading-[1.375rem]'>
                                     Email Address 
@@ -41,7 +48,7 @@ function ForgotPassword  ()  {
                                 name='email'
                                 value={email}
                                 placeholder='Enter your email'
-                                onChange={()=>setEmail(e.target.value)}
+                                onChange={(e)=>setEmail(e.target.value)}
                                 style={{
                                     boxShadow : "inset 0px -1px 0px rgba(255,255,255,0.18)"
                                 }}
@@ -49,18 +56,22 @@ function ForgotPassword  ()  {
                                 />
 
                             </label>
-                        ) :""
-                    }
-                    {/* <CTAButton linkTo={handleOnSubmit}  action={true} /></CTAButton>*/}
-                    <button 
-                    type='submit'
-                    className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900">
-                        {
-                            emailSent ? "Resend email" : "Reset Password"
                         }
-                    </button>
+                        <button 
+                        type='submit'
+                        className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900">
+                            {
+                                emailSent ? "Resend email" : "Reset Password"
+                            }
+                        </button>
+                    </form>
+                           
+                       
+                    
+                    {/* <CTAButton linkTo={handleOnSubmit}  action={true} /></CTAButton>*/}
+                   
 
-                    <div>
+                    <div className='mt-6 flex items-center justify-between'>
                          <Link to={"/login"}>
                             <p className="flex items-center gap-x-2 text-richblack-5">
                                 <BiArrowBack/> Back to Login

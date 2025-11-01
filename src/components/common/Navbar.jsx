@@ -43,8 +43,6 @@ const Navbar = () => {
     //  console.log("subLink in useEffect is : ",subLinks);
   },[])
 
-  console.log("sublink after useEffect is :",subLinks);
-
   const matchRoute =(route) =>{
     return matchPath({path:route} ,location.pathname)
   }
