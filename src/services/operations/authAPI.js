@@ -12,7 +12,7 @@ const {
   SIGNUP_API,
   LOGIN_API,
   RESETPASSTOKEN_API,
-  RESETPASSWORD_API,
+  RESETPASS_API,
 } = endpoints
 
 
@@ -193,7 +193,7 @@ export function resetPassword ( password , confirmPassword , token,navigate){
         dispatch(setLoading(true))
 
         try{
-            const response = await apiConnector("POST" , RESETPASSWORD_API , {password,confirmPassword,token})
+            const response = await apiConnector("POST" , RESETPASS_API , {password,confirmPassword,token})
 
             console.log("Response of resetPassword : " , response)
 
@@ -206,7 +206,9 @@ export function resetPassword ( password , confirmPassword , token,navigate){
 
         } catch(error){
             console.log("Reset Password error in authAPI : ",error)
-            toast.error("Error in reseting password")
+            toast.error("Unable to reset password")
         }
+        dispatch(setLoading(false))
+        toast.dismiss(toastId)
     }
 }

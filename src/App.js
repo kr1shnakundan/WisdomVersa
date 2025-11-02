@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import Navbar from './components/common/Navbar';
 import OpenRoute from './components/core/Auth/OpenRoute';
 import ForgotPassword from './pages/ForgotPassword';
+import UpdatePassword from './pages/UpdatePassword';
+
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
                 </OpenRoute>
               }
         />
+        <Route path='update-password/:id' element ={<UpdatePassword/>} />
       </Routes>
       
     </div>
