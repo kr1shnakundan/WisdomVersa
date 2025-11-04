@@ -10,6 +10,7 @@ import { ACCOUNT_TYPE } from '../../utils/constant'
 import { AiOutlineShoppingCart ,AiOutlineMenu } from 'react-icons/ai'
 import { apiConnector } from '../../services/apiconnector'
 import { category } from '../../services/apis'
+import ProfileDropdown from '../core/Auth/ProfileDropdown'
 
 // ---------------------------------NAVBAR IS COMPLEX, STUDY AGAIN---------------------------------
 const Navbar = () => {
@@ -28,10 +29,10 @@ const Navbar = () => {
     setLoading(true);
     try{
       const result = await apiConnector("GET" , category.CATEGORY_URL);
-      // console.log("Printing Sublink result : ",result);
-      // console.log("subLink is : ",subLinks);  
+      
+     
       setSubLinks(result.data.data);
-      // console.log("subLink after update is : ",subLinks);
+      
     } catch(error){
       console.log("could not fetch category detail : ",error)
     }
@@ -47,7 +48,7 @@ const Navbar = () => {
     return matchPath({path:route} ,location.pathname)
   }
 
-
+  console.log("Token value:", token, "Type:", typeof token);
   return (
     <div className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
         location.pathname !== "/" ? "bg-richblack-800" : ""
@@ -64,7 +65,7 @@ const Navbar = () => {
             {
               NavbarLinks.map((links , index) =>{
                 return(
-                  //-----------------------------------the subLink.filter is not working properly...check it...
+                  
                   <li key={index}>
                     {links.title === "Catalog" ? (
                       <div>
@@ -139,15 +140,15 @@ const Navbar = () => {
               // ---------------------------------------cart needed to be check----------------------
               user && user.account_type !== ACCOUNT_TYPE.INSTRUCTOR && (
                 <Link to = "/dashboard/cart" className="relative" >
-                  <AiOutlineShoppingCart className='relative '/>
+                  <AiOutlineShoppingCart className='relative text-2xl text-richblack-100'/>
                   {totalItems > 0 && (
-                    <span>
+                    <span className='absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100'>
                       {totalItems}
                     </span>
                   )}
                 </Link>
               )
-            },
+            }
 
            { token === null && (
             <Link to="/login">
@@ -155,7 +156,7 @@ const Navbar = () => {
                 Log in
               </button>
             </Link>
-          )},
+          )}
           {
             token === null && (
               <Link to = "/signup" >
@@ -163,6 +164,11 @@ const Navbar = () => {
                   Sign up
                 </button>
               </Link>
+            )
+          }
+          {
+            token !== null && (
+              <ProfileDropdown />
             )
           }
         </div>

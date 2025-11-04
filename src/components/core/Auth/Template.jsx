@@ -5,7 +5,7 @@ import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
 import Frame from '../../../assets/Images/frame.png'
 
-const Template = ({heading ,desc1 , desc2 ,image , formType , setIsLoggedIn}) => {
+const Template = ({heading ,desc1 , desc2 ,image , formType }) => {
   return (
     // add "loading" here.....Spinner
     <div className='w-11/12 max-w-[1160px] mx-auto flex flex-col lg:flex-row text-richblack-5 lg:gap-y-0 gap-y-7 py-12  gap-x-12'>

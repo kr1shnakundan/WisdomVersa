@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RxCountdownTimer } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 
 function VerifyEmail (){
@@ -18,7 +19,7 @@ function VerifyEmail (){
     if(!signupData) {
         navigate("/signup");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps   <------- what is this?
+   
    },[]);
 
    const handleVerifyAndSignup = (e) =>{
@@ -56,7 +57,7 @@ function VerifyEmail (){
                         <p className="text-richblack-100 text-[1.125rem] leading-[24px] ">
                             A verification code has been sent to you. Enter the code below
                         </p>
-                        <form action="">
+                        <form action="" onSubmit={handleVerifyAndSignup}>
 
                             <OTPInput
                             value={otp}

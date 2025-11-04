@@ -168,14 +168,14 @@ exports.login  = async(req,res) =>{
                 accountType:user.accountType
             }
 
-            const token = jwt.sign(payload , process.env.JWT_SECRET,{expiresIn:"24h"})
+            const token = jwt.sign(payload , process.env.JWT_SECRET,{expiresIn:"10h"})
 
             user.token = token,
             user.password = undefined;
 
             //crete cache
             const option ={
-                expires: new Date(Date.now() + 3*24*60*60*1000),
+                expires: new Date(Date.now() + 10*60*60*1000),
                 httpOnly:true
             }
 

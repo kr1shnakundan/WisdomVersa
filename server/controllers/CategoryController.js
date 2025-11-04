@@ -40,7 +40,7 @@ exports.showAllCategories = async(req,res) =>{
         const allCategories = await Category.find({},{name:true, description:true})
         .populate("courses")
         .exec();
-        console.log("Fetched Categories : ",allCategories);
+        // console.log("Fetched Categories : ",allCategories);
         res.status(200).json({
             success:true,
             data: allCategories,

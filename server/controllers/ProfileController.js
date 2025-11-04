@@ -252,7 +252,7 @@ exports.deleteAccount = async(req,res) =>{
 }
 
 //get all user
-exports.getAllUserDetails = async (req, res) => {
+exports.getUserDetails = async (req, res) => {
   try {
     const id = req.user.id
     const userDetails = await User.findById(id)

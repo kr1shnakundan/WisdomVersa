@@ -79,7 +79,7 @@ const cartSlice = createSlice({
             state.totalItems = 0
             localStorage.removeItem("cart")
             localStorage.removeItem("total")
-            localStorage.totalItems("totalItems")
+            localStorage.removeItem("totalItems")
         }
         
     }

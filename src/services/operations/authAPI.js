@@ -13,6 +13,7 @@ const {
   LOGIN_API,
   RESETPASSTOKEN_API,
   RESETPASS_API,
+  GETME_API
 } = endpoints
 
 
@@ -107,7 +108,12 @@ export function signUp (
 export function login (email , password , navigate){
     
     return async(dispatch) =>{
-        const toastId = toast.loading("Loading...")
+        const toastId = toast.loading(
+                               <div className="flex gap-1 items-center justify-center">
+                                 <div className="spinner"></div>
+                                 <div>Loading...</div>
+                               </div>
+        )
         dispatch(setLoading(true))
         try{
             const response = await apiConnector("POST",LOGIN_API , {
@@ -146,19 +152,31 @@ export function login (email , password , navigate){
     
 }
 
-export function logout (navigate) {
-    return (dispatch)=>{
+// export function logout (navigate) {
+//     return (dispatch)=>{
        
-        dispatch(setToken(null))
-        dispatch(setUser(null))
-        dispatch(resetCart())
+//         dispatch(setToken(null))
+//         dispatch(setUser(null))
+//         dispatch(resetCart())
 
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
+//         localStorage.removeItem("token")
+//         localStorage.removeItem("user")
 
-        toast.success("Logged Out")
-        navigate("/")
-    }
+//         toast.success("Logged Out")
+//         navigate("/")
+//     }
+// }
+
+export function logout(navigate) {
+  return (dispatch) => {
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+    dispatch(resetCart());
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logged Out");
+    navigate("/");
+  };
 }
 
 export function getPasswordResetToken(email , setEmailSent){
@@ -187,13 +205,13 @@ export function getPasswordResetToken(email , setEmailSent){
 }
 
 
-export function resetPassword ( password , confirmPassword , token,navigate){
+export function resetPassword ( password , confirmPassword,token ,navigate){
     return async (dispatch) =>{
         const toastId = toast.loading("Loading...")
         dispatch(setLoading(true))
 
         try{
-            const response = await apiConnector("POST" , RESETPASS_API , {password,confirmPassword,token})
+            const response = await apiConnector("POST" , RESETPASS_API , {password,confirmPassword , token})
 
             console.log("Response of resetPassword : " , response)
 
@@ -212,3 +230,57 @@ export function resetPassword ( password , confirmPassword , token,navigate){
         toast.dismiss(toastId)
     }
 }
+
+
+//------------------------------------- getMe is incomplete
+// export function getMe(navigate) {
+//     return async (dispatch) => {
+//         const toastId = toast.loading("Loading...")
+//         dispatch(setLoading(true))
+//         try {
+//             // Debug: Check localStorage
+//             console.log("Raw token from localStorage:", localStorage.getItem("token"));
+            
+//             // Get token from localStorage
+//             let token = localStorage.getItem("token");
+            
+//             // If token is stored as JSON string, parse it
+//             if (token && token.startsWith('"')) {
+//                 token = JSON.parse(token);
+//             }
+            
+//             console.log("Processed token:", token);
+//             console.log("Authorization header:", `Bearer ${token}`);
+            
+//             if (!token) {
+//                 toast.error("No token found. Please login again.");
+//                 navigate("/login");
+//                 return;
+//             }
+            
+//             const response = await apiConnector(
+//                 "GET", 
+//                 GETME_API, 
+//                 null,
+//                 {
+//                     Authorization: `Bearer ${token}`
+//                 }
+//             )
+            
+//             console.log("Response of getMe: ", response)
+            
+//             if (!response.data.success) {
+//                 throw new Error(response.data.message)
+//             }
+            
+//             toast.success("User detail fetched successfully")
+//             navigate("/abcd")
+//         } catch (error) {
+//             console.log("getMe error in authAPI: ", error)
+//             console.log("Error response:", error.response?.data)
+//             toast.error("Unable to find user")
+//         }
+//         dispatch(setLoading(false))
+//         toast.dismiss(toastId)
+//     }
+// }

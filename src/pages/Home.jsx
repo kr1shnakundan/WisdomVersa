@@ -16,10 +16,10 @@ import ExploreMore from '../components/core/HomePage/ExploreMore'
 
 const Home = () => {
   return (
-    <div>
+    <div >
         {/* section-1 */}
         <div className="relative mx-auto flex flex-col w-11/12 max-w-maxContent
-        items-center text-white justify-between">
+        items-center text-white  justify-between">
             {/* become a instructor */}
             <Link to={"/signup"}>
                 <div  className='mt-16 p-1 group mx-auto rounded-full bg-richblack-800
