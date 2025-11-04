@@ -29,7 +29,8 @@ exports.resetPasswordToken = async(req,res)=>{
            {new:true});
 
         //create URL
-        const url = `https://localhost:3000/update-password/${token}`
+        // const url = `https://localhost:3000/update-password/${token}`<-------- this gives ssl error
+        const url = `http://localhost:3000/update-password/${token}`
 
         //send mail containing the url
         await mailSender(email,`Password reset link`,`the link for the password reset link is ${url}`);
