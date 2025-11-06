@@ -5,7 +5,7 @@ import { contactusEndpoints } from '../../services/apis'
 import CountryCode from '../../data/countrycode.json'
 import toast from 'react-hot-toast'
 
-// ------------------------------- NEED TO COMPLETE THIS ABOUT PAGE-------------------------------
+// ------------------------------- NEED TO CHECK TIME LOADING THIS ABOUT PAGE-------------------------------
 
 
 const ContactUsForm = () => {
@@ -21,10 +21,39 @@ const ContactUsForm = () => {
         setLoading(true)
         try{
 
-            const res = await apiConnector("POST",contactusEndpoints.CONTACT_US_URL,data);
-            toast.success("form submitted successfully")
+            const response = await apiConnector("POST",contactusEndpoints.CONTACT_US_URL,data);
+
+            console.log("response for contact us form is ---- > ",response);
+
+            if (response.data.success) {
+                toast.success(response.data.message);
+                reset(); // Clear form
+            } 
+
             setLoading(false);
         } catch(error){
+            if (error.response) {
+            // ⚠️ Server responded with error status (400, 500, etc.)
+            const { status, data } = error.response;
+            
+            if (status === 400) {
+                // Expected validation error - show user-friendly message
+                toast.error(data.message, {
+                    duration: 5000
+                });
+            } else if (status === 500) {
+                toast.error('Server error. Please try again later.');
+            } else {
+                toast.error(data.message || 'Something went wrong');
+            }
+        } else if (error.request) {
+            // ❌ Network error - no response received
+            toast.error('Failed to connect to server. Please check your connection.');
+        } else {
+            // ❌ Other errors
+            console.error('Error:', error);
+            toast.error('An unexpected error occurred.');
+        }
             console.log("Error while fetching submitContactUsForm :",error.message);
             toast.error("form submition failed")
             setLoading(false);
