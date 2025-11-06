@@ -63,22 +63,25 @@ function VerifyEmail (){
                             value={otp}
                             numInputs={6}
                             onChange={setOtp}
-                            renderInput={(props)=>{
+                            inputType="number"
+                            renderSeparator = {<span>-</span>}
+                            renderInput={(props)=>(
                                 <input
                                 {...props}
                                  style={{
                                     boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                                 }}
-                                className="w-[48px] lg:w-[60px] border-0 bg-richblack-800 rounded-[0.5rem] text-richblack-5 aspect-square text-center focus:border-0 focus:outline-2 focus:outline-yellow-50"
+                                className="w-[48px] lg:w-[60px] mb-5 border-0 bg-richblack-800 rounded-[0.5rem] text-richblack-5
+                                        focus:text-richblack-5 aspect-square text-center focus:border-0 focus:outline-2 focus:outline-yellow-50"
                                 />
-                            }}
+                            )}
                             containerStyle={{
                                 justifyContent: "space-between",
                                 gap: "0 6px",
                             }}
                             />
                             <button type="submit" 
-                            className="w-full shadow-[inset_0_-1px_0_rgba(255,255,255,0.18)] p-3 bg-yellow-25 rounded-full text-richblack-900 hover:bg-yellow-50 hover:scale-95 transition-all duration-200">
+                            className="w-full shadow-[inset_0_-1px_0_rgba(255,255,255,0.18)] mb-2 p-3 bg-yellow-25 rounded-full text-richblack-900 hover:bg-yellow-50 hover:scale-95 transition-all duration-200">
                                 Verify email
                             </button>
                         </form>
@@ -88,7 +91,7 @@ function VerifyEmail (){
                             >
                                 <BiArrowBack/> Back to Login
                             </Link>
-                            <button onClick={() => dispatch(sendOtp(signupData.email))}
+                            <button onClick={() => dispatch(sendOtp(signupData.email,navigate))}
                             className="text-blue-100 text-sm  "
                             >
                                <RxCountdownTimer/> Resend it

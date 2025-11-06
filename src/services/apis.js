@@ -17,3 +17,8 @@ export const endpoints = {
 export const category = {
     CATEGORY_URL: BASE_URL +  "/course/showAllCategories",
 }
+
+//contactUs api
+export const contactusEndpoints = {
+    CONTACT_US_URL : BASE_URL + "/reach/contact"
+}

@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import UpdatePassword from './pages/UpdatePassword';
 import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
+import About from './pages/About';
 
 
 function App() {
@@ -46,6 +47,8 @@ function App() {
                 </OpenRoute>
               }
          />
+
+         <Route path='about' element = {<About/>} />
 
          {/* THIS ROUTE IS CURRENTLY FOR CHECKING OF LOCALSTORAGE */}
          <Route path='/dashboard/my-profile' element= {<Dashboard/>} />
