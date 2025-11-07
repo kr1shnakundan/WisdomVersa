@@ -14,7 +14,7 @@ const ContactUsForm = () => {
         register,
         handleSubmit,
         reset,
-        formState: {errors,isSubmitSuccessful}
+        formState: {errors}
     } = useForm();
 
     const submitContactUsForm = async(data) =>{
@@ -70,27 +70,7 @@ const ContactUsForm = () => {
   return (
         <div>
             <form onSubmit={handleSubmit(submitContactUsForm)} className='flex flex-col gap-5 p-8 '>
-                <div className='flex gap-5'>
-                    {/* <label htmlFor="">
-                        <p className='mb-1 text-richblack-5 text-[0.875rem] leading-[1.375rem] '>First Name</p>
-                        <input
-                        required
-                        type="text" 
-                        name='firstName'
-                        id='firstName'
-                        placeholder='Enter first name'
-                        style={{
-                            boxShadow:"inset 0px -1px 0px rgba(255,255,255,0.18)"
-                        }}
-                        className='bg-richblack-800 py-2 w-full mb-4 p-3 rounded-lg'
-                        {...register("firstName",{required:true})}
-                        />
-                        {errors.firstName && (
-                            <span>
-                                Please enter your name.
-                            </span>
-                        )}
-                    </label> */}
+                <div className='flex flex-col lg:flex-row gap-5'>
 
                     <div className="flex flex-col gap-2 lg:w-[48%]">
                         <label htmlFor="firstname" className="lable-style mb-1">

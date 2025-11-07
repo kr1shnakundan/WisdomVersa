@@ -7,6 +7,7 @@ import Quote from '../components/core/AboutPage/Quote'
 import foundingStory from '../assets/Images/FoundingStory.png'
 import StatsComponents from '../components/core/AboutPage/Stats'
 import ContactFormSection from '../components/core/AboutPage/ContactFormSection'
+import Footer from '../components/common/Footer'
 
 
 const About = () => {
@@ -49,7 +50,7 @@ const About = () => {
         <section>
             <div className='flex flex-col w-11/12 max-w-maxContent text-richblack-500 mx-auto '>
                 <div className='flex mx-auto flex-col lg:flex-row px-32 py-24 max-w-maxContent text-richblack-5 gap-24 items-center justify-between '>
-                    <div className='flex flex-col gap-6 text-richblack-300 lg:w-[48%] mx-auto '>
+                    <div className='flex flex-col gap-6 text-richblack-300 lg:w-[50%] mx-auto '>
                         <h2 className='bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCB045] text-transparent bg-clip-text text-4xl font-semibold lg:w-[75%]'>Our Founding Story</h2>
                         <p className='text-base font-medium text-richblack-300 lg:w-[95%]'>
                             Our e-learning platform was born out of a shared vision and passion for transforming education. 
@@ -106,6 +107,10 @@ const About = () => {
 
         <section className='mx-auto w-11/12 max-w-maxContent flex flex-col items-center'>
             <ContactFormSection/>
+        </section>
+
+        <section>
+            <Footer/>
         </section>
            
         

@@ -3,7 +3,7 @@ import ContactUsForm from '../../ContactPage/ContactUsForm'
 
 const ContactFormSection = () => {
   return (
-    <div className='py-10 px-4 w-[41%] text-richblack-200 '>
+    <div className='py-10 px-4 lg:w-[41%] text-richblack-200 '>
         <h2 className='text-center text-[2.25rem] leading-[2.75rem] mb-4 font-semibold text-richblack-5'>
             Get In Touch
         </h2>
