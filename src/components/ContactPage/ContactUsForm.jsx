@@ -19,6 +19,12 @@ const ContactUsForm = () => {
 
     const submitContactUsForm = async(data) =>{
         setLoading(true)
+       const toastId = toast.loading(
+                            <div className='flex gap-1'>
+                                <div className='spinner'></div>
+                                Loading
+                            </div>
+                        )
         try{
 
             const response = await apiConnector("POST",contactusEndpoints.CONTACT_US_URL,data);
@@ -55,25 +61,12 @@ const ContactUsForm = () => {
             toast.error('An unexpected error occurred.');
         }
             console.log("Error while fetching submitContactUsForm :",error.message);
-            toast.error("form submition failed")
             setLoading(false);
         }
+        toast.dismiss(toastId);
         
     }
 
-    useEffect (()=>{
-        if(isSubmitSuccessful){
-            reset({
-                firstName: "",
-                lastName:"",
-                email:"",
-                countrycode:"",
-                phoneNo:"",
-                message:""
-        
-            })
-        }
-    },[reset,isSubmitSuccessful])
   return (
         <div>
             <form onSubmit={handleSubmit(submitContactUsForm)} className='flex flex-col gap-5 p-8 '>
