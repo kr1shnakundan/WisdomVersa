@@ -110,7 +110,10 @@ const About = () => {
             <LearningGrid />
             <ContactFormSection/>
         </section>
-
+         
+         {/* <section>
+                    ----------------- ReviewSection remaining
+         </section> */}
         <section>
             <Footer/>
         </section>

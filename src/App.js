@@ -11,6 +11,7 @@ import UpdatePassword from './pages/UpdatePassword';
 import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
+import Contact from './pages/Contact';
 
 
 function App() {
@@ -52,6 +53,8 @@ function App() {
 
          {/* THIS ROUTE IS CURRENTLY FOR CHECKING OF LOCALSTORAGE */}
          <Route path='/dashboard/my-profile' element= {<Dashboard/>} />
+
+         <Route path='/contact' element = {<Contact/>} />
       </Routes>
       
     </div>
