@@ -8,6 +8,7 @@ import foundingStory from '../assets/Images/FoundingStory.png'
 import StatsComponents from '../components/core/AboutPage/Stats'
 import ContactFormSection from '../components/core/AboutPage/ContactFormSection'
 import Footer from '../components/common/Footer'
+import LearningGrid from '../components/core/AboutPage/LearningGrid'
 
 
 const About = () => {
@@ -105,7 +106,8 @@ const About = () => {
         
         <StatsComponents/>
 
-        <section className='mx-auto w-11/12 max-w-maxContent flex flex-col items-center'>
+        <section className='mx-auto w-11/12 max-w-maxContent flex flex-col mt-20 gap-10 items-center'>
+            <LearningGrid />
             <ContactFormSection/>
         </section>
 
