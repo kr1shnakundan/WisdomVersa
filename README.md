@@ -1,13 +1,13 @@
 # WisdomVersa
 
-A learning platform for [brief description - one sentence].
+A learning platform for tech.
 
 ## Status
 🚧 Under Development
 
 ## Tech Stack
-- Frontend: [e.g., React, HTML/CSS, etc.]
-- Backend: [e.g., Node.js, Express, etc.]
+- Frontend: React, HTML, TAILWIND CSS.
+- Backend:Node.js, Express
 
 ---
 *Detailed documentation coming soon*
