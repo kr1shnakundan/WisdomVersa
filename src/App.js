@@ -12,6 +12,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import MyProfile from './components/core/Dashboard/MyProfile';
 
 
 function App() {
@@ -52,7 +53,7 @@ function App() {
          <Route path='about' element = {<About/>} />
 
          {/* THIS ROUTE IS CURRENTLY FOR CHECKING OF LOCALSTORAGE */}
-         <Route path='/dashboard/my-profile' element= {<Dashboard/>} />
+         <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
 
          <Route path='/contact' element = {<Contact/>} />
       </Routes>
