@@ -41,7 +41,7 @@ export default function Iconbtn ({
                 </>
             ) : 
             (
-                {text}
+                text
             )
         }
         </button>

@@ -16,6 +16,8 @@ import MyProfile from './components/core/Dashboard/MyProfile';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from './services/operations/authAPI';
+import Error from './pages/Error';
+import PrivateRoute from './components/core/Auth/PrivateRoute';
 
 
 function App() {
@@ -65,10 +67,25 @@ function App() {
 
          <Route path='about' element = {<About/>} />
 
-         {/* THIS ROUTE IS CURRENTLY FOR CHECKING OF LOCALSTORAGE */}
-         <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
 
          <Route path='/contact' element = {<Contact/>} />
+
+          <Route element={
+            < PrivateRoute>
+                <Dashboard/>
+            </PrivateRoute>
+          } >
+
+            <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
+
+            
+          </Route>
+         
+
+         
+
+
+         <Route path='*' element = {<Error/>} />
       </Routes>
       
     </div>
