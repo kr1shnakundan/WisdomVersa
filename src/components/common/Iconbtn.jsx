@@ -31,6 +31,7 @@ export default function Iconbtn ({
             outline ? "border border-yellow-50 bg-transparent" : "bg-yellow-50"}
              rounded-md cursor-pointer  gap-2 px-5 py-2 font-semibold text-richblack-900 ${customClasses}
         `}
+        type={type}
         >
         {
             children ? (

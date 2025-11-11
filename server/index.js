@@ -34,6 +34,16 @@ app.use(
         credentials:true
     })
 )
+
+app.get("/test-cookie", (req, res) => {
+    console.log("Setting test cookie...");
+    res.cookie("test", "hello", {
+        httpOnly: true,
+        sameSite: 'lax'
+    }).json({ message: "Cookie set" });
+});
+
+
 app.use(
     fileUpload({
         useTempFiles:true,

@@ -13,7 +13,8 @@ const {
   LOGIN_API,
   RESETPASSTOKEN_API,
   RESETPASS_API,
-  GETME_API
+  GETME_API,
+  GETUSERDETAILS_API
 } = endpoints
 
 
@@ -42,9 +43,6 @@ export function sendOtp (email ,navigate){
         } catch(error){
             console.log("Error in sendOTP fuction in authAPI.JS : ",error);
 
-
-            //---------------------------- SEND THE ERROR TOAST
-            // toast.error("error in sending OTP , please try again")
             if(error.response){
                 toast.error(error.response.data.message || "Server error occured")
             } else if(error.request){
@@ -134,7 +132,8 @@ export function login (email , password , navigate){
             dispatch(setToken(response.data.token))
             const userImage = response.data?.user?.image
             ? response.data.user.image 
-            : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
+             : //`https://api.dicebear.com/9.x/notionists/svg?seed=Sophia`
+             `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
             
             dispatch(setUser({...response.data.user , image:userImage}))
             
@@ -284,3 +283,26 @@ export function resetPassword ( password , confirmPassword,token ,navigate){
 //         toast.dismiss(toastId)
 //     }
 // }
+
+export function getUserDetails() {
+  return async (dispatch) => {
+    try {
+      const response = await apiConnector(
+        "GET", 
+        GETUSERDETAILS_API
+        // No headers needed - cookie sent automatically!
+      );
+
+      console.log("GETUSERDETAILS_API RESPONSE:", response);
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      dispatch(setUser(response.data.data));
+      
+    } catch (error) {
+      console.log("GETUSERDETAILS_API ERROR:", error);
+    }
+  };
+}

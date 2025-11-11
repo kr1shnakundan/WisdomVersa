@@ -174,18 +174,25 @@ exports.login  = async(req,res) =>{
             user.password = undefined;
 
             //crete cache
-            const option ={
+            const options ={
                 expires: new Date(Date.now() + 10*60*60*1000),
-                httpOnly:true
+                httpOnly:true,
+                sameSite: 'lax'
             }
 
-            return res.cookie("token",token,option).status(200).json({
+            console.log("===== LOGIN DEBUG =====");
+            console.log("Token generated:", token.substring(0, 20) + "...");
+            console.log("Cookie options:", options);
+            console.log("Request origin:", req.headers.origin);
+            console.log("Request headers:", req.headers);
+            console.log("=======================");
+
+            return res.cookie("token",token,options).status(200).json({
                 success:true,
                 token,
                 user,
                 message:`user login successfully`
             })
-
         }
         else{
             return res.status(401).json({

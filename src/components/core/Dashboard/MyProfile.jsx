@@ -2,17 +2,26 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Iconbtn from '../../common/Iconbtn'
 import { FaRegEdit } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 const MyProfile = () => {
     const {user} = useSelector((state) =>state.profile)
+
+    const navigate = useNavigate();
+
+     // Generate fallback image if user.image is empty or invalid
+    const userImage = user?.image && user.image.trim() !== ""
+        ? user.image
+        : `https://api.dicebear.com/9.x/notionists/svg?seed=Sophia`;
+
   return (
     <div className='bg-richblack-900'>
         <div className='text-richblack-5 w-11/12 mx-auto min-h-[calc(100vh - 3.5rem)] flex flex-col gap-14 px-10 py-10'>
             <h2 className='text-4xl font-semibold mt-5  '>My Profile</h2>
             <div className='bg-richblack-800 rounded-md border border-richblack-700 px-10 py-7 flex items-center justify-between'>
                 <div className='bg-richblack-800  flex gap-4 items-center'>
-                    <img src={user?.image} alt={`${user?.firstName}`}
-                    className='w-[80px] rounded-full' 
+                    <img src={userImage} alt={`${user?.firstName}`}
+                    className='w-[80px] aspect-square object-cover rounded-full' 
                     />
                     <div className=''>
                         <p className='text-lg font-semibold'>{user?.firstName} {" "} {user?.lastName}</p>
@@ -21,7 +30,9 @@ const MyProfile = () => {
                     
                 </div>
                 
-                    <Iconbtn>
+                    <Iconbtn onclick={()=>{
+                        navigate("/dashboard/settings")
+                    }}>
                         Edit
                         <FaRegEdit/>
                     </Iconbtn>
@@ -30,7 +41,10 @@ const MyProfile = () => {
             <div className='bg-richblack-800 rounded-md border border-richblack-700 px-10 py-7 h-[180px] flex flex-col gap-16'>
                 <div className='flex items-center justify-between'>
                     <h3 className='text-lg font-semibold'>About</h3>
-                     <Iconbtn>
+                     <Iconbtn
+                     onclick={()=>{
+                        navigate("/dashboard/settings")
+                     }}>
                         Edit
                         <FaRegEdit/>
                     </Iconbtn>
@@ -46,7 +60,10 @@ const MyProfile = () => {
             <div className='bg-richblack-800 rounded-md border border-richblack-700 px-10 py-7 flex flex-col gap-5'>
                 <div className='flex items-center justify-between'>
                     <h3 className='text-lg font-semibold'>Personal Details</h3>
-                     <Iconbtn>
+                     <Iconbtn
+                     onclick={()=>{
+                        navigate("/dashboard/settings")
+                     }}>
                         Edit
                         <FaRegEdit/>
                     </Iconbtn>

@@ -138,7 +138,7 @@ const Navbar = () => {
         <div className='hidden lg:flex flex-row gap-2 items-center'>
             {
               // ---------------------------------------cart needed to be check----------------------
-              user && user.account_type !== ACCOUNT_TYPE.INSTRUCTOR && (
+              user && user.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
                 <Link to = "/dashboard/cart" className="relative" >
                   <AiOutlineShoppingCart className='relative text-2xl text-richblack-100'/>
                   {totalItems > 0 && (

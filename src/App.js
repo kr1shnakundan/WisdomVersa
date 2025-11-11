@@ -13,9 +13,22 @@ import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import MyProfile from './components/core/Dashboard/MyProfile';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDetails } from './services/operations/authAPI';
 
 
 function App() {
+  
+  const dispatch = useDispatch();
+  const {token} = useSelector((state)=>state.auth)
+  const {user} = useSelector((state)=> state.profile)
+
+  useEffect(()=>{
+    if(token && !user){
+      dispatch(getUserDetails())
+    }
+  },[token , user, dispatch]);
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />

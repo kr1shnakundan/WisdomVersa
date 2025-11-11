@@ -1,6 +1,8 @@
 import axios from "axios"
 
-export const axiosInstance = axios.create({});
+export const axiosInstance = axios.create({
+    withCredentials: true, // ← ADD THIS to send cookies automatically
+});
 // Interceptor to add token to every request
 // axiosInstance.interceptors.request.use(
 //   (config) => {

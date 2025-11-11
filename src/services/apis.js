@@ -9,7 +9,7 @@ export const endpoints = {
     RESETPASSTOKEN_API : BASE_URL + "/auth/reset-password-token",
     RESETPASS_API : BASE_URL + "/auth/reset-password",
 
-    GETME_API : BASE_URL + "/profile/getUserDetails"
+    GETUSERDETAILS_API : BASE_URL + "/profile/getUserDetails"
 }
 
 
