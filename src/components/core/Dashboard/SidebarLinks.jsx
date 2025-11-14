@@ -14,30 +14,26 @@ const SidebarLinks = ({link , iconName}) => {
         return matchPath({ path: route }, location.pathname)
     }
   return (
-    // <NavLink
-    // to={link.path}
-    // // onClick={()=>dispatch(resetCourseState())}<------------------------------
-    // className={`${matchRoute ?
-    //     "bg-yellow-800 text-yellow-50": "bg-opacity-0 text-richblack-300"
-    // }`}>
 
     <NavLink
       to={link.path}
-    //   onClick={() => dispatch(resetCourseState())}
-      className={`relative px-8 py-2 text-sm font-medium ${
+    //   onClick={() => dispatch(resetCourseState())}<------------------------------
+      className={`relative px-8 text-sm font-medium ${
         matchRoute(link.path)
           ? "bg-yellow-800 text-yellow-50"
           : "bg-opacity-0 text-richblack-300"
       } transition-all duration-200`}
     >
         <span
-        className={`${matchRoute(link.path) ? "opacity-100" : "opacity-0"}`}
+        className={`absolute left-0 top-0 h-full w-[0.15rem] bg-yellow-50
+          ${matchRoute(link.path) ? "opacity-100" : "opacity-0"}
+          `}
         >
 
         </span>
-        <div>
-            <Icon />
-            {link.name}
+        <div className={`flex  gap-2 items-center font-semibold  ${matchRoute(link.path) ? "text-lg" : "text-medium"}`}>
+            <Icon className="text-lg" />
+            <span>{link.name}</span>
         </div>
     </NavLink>
   )

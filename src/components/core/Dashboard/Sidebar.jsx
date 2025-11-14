@@ -32,8 +32,8 @@ const Sidebar = () => {
   return (
     <>
 
-        <div className='text-richblack-5'>
-            <div>
+        <div className='flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col  border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10'>
+            <div className='flex flex-col gap-3'>
                 {
                     sidebarLinks.map((link)=>{
                         if(link.type && user?.accountType !== link.type) return null
@@ -46,7 +46,7 @@ const Sidebar = () => {
                 }
             </div> 
             <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
-            <div>
+            <div className='flex flex-col'>
                 <SidebarLinks 
                 link={{name:"Settings" ,path:"/dashboard/settings"}}
                 iconName={"VscSettingsGear"}
@@ -62,13 +62,12 @@ const Sidebar = () => {
                     btn2Text:"Cancel",
                     btn1Handler : () => dispatch(logout(navigate)),
                     btn2Handler : () => setConfirmationModal(null)
-
-
                 })
             }
+            className='px-8 py-2 text-sm font-medium text-richblack-300'
             >
-                <div>
-                    <AiOutlineLogout />
+                <div className='flex items-center gap-x-2'>
+                    <AiOutlineLogout className="text-lg" />
                     <span>Logout</span>
                 </div>
             </button>

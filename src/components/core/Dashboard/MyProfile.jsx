@@ -17,7 +17,7 @@ const MyProfile = () => {
   return (
     <div className='bg-richblack-900'>
         <div className='text-richblack-5 w-11/12 mx-auto min-h-[calc(100vh - 3.5rem)] flex flex-col gap-14 px-10 py-10'>
-            <h2 className='text-4xl font-semibold mt-5  '>My Profile</h2>
+            <h2 className='text-4xl font-semibold  '>My Profile</h2>
             <div className='bg-richblack-800 rounded-md border border-richblack-700 px-10 py-7 flex items-center justify-between'>
                 <div className='bg-richblack-800  flex gap-4 items-center'>
                     <img src={userImage} alt={`${user?.firstName}`}
