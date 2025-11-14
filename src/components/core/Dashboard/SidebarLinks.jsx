@@ -10,16 +10,26 @@ const SidebarLinks = ({link , iconName}) => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const matchRoute =(route) =>{
-        matchPath({path:route},location.pathname)
+    const matchRoute = (route) => {
+        return matchPath({ path: route }, location.pathname)
     }
   return (
+    // <NavLink
+    // to={link.path}
+    // // onClick={()=>dispatch(resetCourseState())}<------------------------------
+    // className={`${matchRoute ?
+    //     "bg-yellow-800 text-yellow-50": "bg-opacity-0 text-richblack-300"
+    // }`}>
+
     <NavLink
-    to={link.path}
-    // onClick={()=>dispatch(resetCourseState())}<------------------------------
-    className={`${matchRoute ?
-        "bg-yellow-800 text-yellow-50": "bg-opacity-0 text-richblack-300"
-    }`}>
+      to={link.path}
+    //   onClick={() => dispatch(resetCourseState())}
+      className={`relative px-8 py-2 text-sm font-medium ${
+        matchRoute(link.path)
+          ? "bg-yellow-800 text-yellow-50"
+          : "bg-opacity-0 text-richblack-300"
+      } transition-all duration-200`}
+    >
         <span
         className={`${matchRoute(link.path) ? "opacity-100" : "opacity-0"}`}
         >
