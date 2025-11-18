@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from './services/operations/authAPI';
 import Error from './pages/Error';
 import PrivateRoute from './components/core/Auth/PrivateRoute';
+import { getValidToken } from './utils/authUtils';
+import { setToken } from './slices/authSlice';
 
 
 function App() {
@@ -26,11 +28,27 @@ function App() {
   const {token} = useSelector((state)=>state.auth)
   const {user} = useSelector((state)=> state.profile)
 
-  useEffect(()=>{
+   useEffect(() => {
+
+    // used to fetch user after token is still there
     if(token && !user){
       dispatch(getUserDetails())
     }
-  },[token , user, dispatch]);
+
+    // token expire problem solution-------
+    const validToken = getValidToken();
+    
+    // If token in Redux but it's expired/invalid
+    if (token && !validToken) {
+      console.log("Token expired, clearing auth state");
+      dispatch(setToken(null));
+    }
+    // If valid token exists but not in Redux
+    else if (!token && validToken) {
+      dispatch(setToken(validToken));
+    }
+  }, [token , user,dispatch]);  // 5 * 60 * 1000); // Check every 5 minutes
+
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />

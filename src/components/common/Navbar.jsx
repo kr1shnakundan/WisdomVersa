@@ -42,13 +42,14 @@ const Navbar = () => {
   useEffect (() =>{
     fetchSublinks();
     //  console.log("subLink in useEffect is : ",subLinks);
+    console.log("Token value:", token, "Type:", typeof token);
   },[])
 
   const matchRoute =(route) =>{
     return matchPath({path:route} ,location.pathname)
   }
 
-  console.log("Token value:", token, "Type:", typeof token);
+  
   return (
     <div className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
         location.pathname !== "/" ? "bg-richblack-800" : ""

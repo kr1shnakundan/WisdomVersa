@@ -205,6 +205,17 @@ exports.login  = async(req,res) =>{
 
     } catch(error){
         console.error("login error:",error)
+
+        //this is to check if the token is expired
+
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: "Token expired",
+                expired: true
+            });
+        }
+
         // Return 500 Internal Server Error status code with error message
         return res.status(500).json({
         success: false,

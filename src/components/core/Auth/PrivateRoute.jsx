@@ -1,42 +1,27 @@
-// import React from 'react'
-// import { useSelector } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
 
-// const PrivateRoute = ({children}) => {
-//     const Navigate = useNavigate();
-//     const {token} = useSelector((state)=>state.auth);
-//     if(token !== null){
-//         return children
-//     } else{
-//         return < Navigate to={"/login"} />
-//     }
-// }
+import { useSelector, useDispatch } from "react-redux"
+import { Navigate } from "react-router-dom"
+import { setToken } from "../../../slices/authSlice"
+import { getValidToken } from "../../../utils/authUtils" 
 
-// export default PrivateRoute
+function PrivateRoute({ children }) {
+  const dispatch = useDispatch()
+  const { token } = useSelector((state) => state.auth)
 
-
-
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-
-const PrivateRoute = ({children}) => {
-  const navigate = useNavigate();
-  const {token} = useSelector((state) => state.auth);
+  // Double-check token validity
+  const validToken = getValidToken()
   
-  useEffect(() => {
-    if (token === null) {
-      navigate("/login");
-    }
-  }, [token, navigate]);
-  
-  // If no token, return null while redirecting
-  if (token === null) {
-    return null;
+  if (token && !validToken) {
+    // Token expired, clear it
+    dispatch(setToken(null))
+    return <Navigate to="/login" />
   }
-  
-  // If token exists, render the protected content
-  return children;
+
+  if (validToken) {
+    return children
+  } else {
+    return <Navigate to="/login" />
+  }
 }
 
 export default PrivateRoute
