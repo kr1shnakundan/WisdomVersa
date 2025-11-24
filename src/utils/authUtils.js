@@ -19,6 +19,7 @@ export const getValidToken = () => {
   if (!token || isTokenExpired(token)) {
     // Clean up expired token
     localStorage.removeItem('token');
+    localStorage.removeItem('user'); 
     return null;
   }
   

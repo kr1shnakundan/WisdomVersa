@@ -12,10 +12,10 @@ const ProfileDropdown = () => {
     const navigate = useNavigate();
     const ref = useRef(null)
     
-    console.log("user in profileDropdown is : ",user);
+    // console.log("user in profileDropdown is : ",user);
 
     const [open , setOpen] = useState(false);
-    console.log("open is : ",open);
+    // console.log("open is : ",open);
 
     // Generate fallback image if user.image is empty or invalid
     const userImage = user?.image && user.image.trim() !== ""

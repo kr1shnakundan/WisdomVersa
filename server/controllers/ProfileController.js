@@ -1,8 +1,9 @@
 const User = require("../models/User");
 const Profile = require("../models/Profile");
 const Course = require("../models/Course");
-const courseProgress = require("../models/CourseProgress");
+const CourseProgress = require("../models/CourseProgress");
 const { uploadImageToCloudinary } = require("../utils/ImageUploader");
+const { convertSecondsToDuration } = require("../utils/secToDuration")
 
 // exports.updateProfile = async(req,res) =>{
 //     try{
@@ -310,6 +311,16 @@ exports.updateDisplayPicture = async(req,res)=>{
 exports.getEnrolledCourses = async(req,res) =>{
     try{
         const userId = req.user.id
+
+        // Add validation
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "User not authenticated"
+            })
+        }
+
+
         let userDetails = await User.findOne({
         _id: userId,
         })
@@ -318,25 +329,51 @@ exports.getEnrolledCourses = async(req,res) =>{
             populate: {
             path: "courseContent",
             populate: {
-                path: "subSection",
+                path: "subSections",
             },
             },
         })
         .exec()
+
+        // Check if user exists BEFORE using it
+        if (!userDetails) {
+            return res.status(404).json({
+                success: false,
+                message: `Could not find user with id: ${userId}`,
+            })
+        }
+
+         // Check if user has any courses
+        if (!userDetails.courses || userDetails.courses.length === 0) {
+            return res.status(200).json({
+                success: true,
+                data: [],
+                message: "No enrolled courses found"
+            })
+        }
+
+        
         userDetails = userDetails.toObject()
         var SubsectionLength = 0
         for (var i = 0; i < userDetails.courses.length; i++) {
         let totalDurationInSeconds = 0
         SubsectionLength = 0
+
+        // ✅ Check if courseContent exists
+        if (!userDetails.courses[i].courseContent || 
+            !Array.isArray(userDetails.courses[i].courseContent)) {
+            userDetails.courses[i].totalDuration = "0m"
+            userDetails.courses[i].progressPercentage = 0
+            continue
+        }
+
+
         for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
-            totalDurationInSeconds += userDetails.courses[i].courseContent[
-            j
-            ].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
-            userDetails.courses[i].totalDuration = convertSecondsToDuration(
-            totalDurationInSeconds
-            )
-            SubsectionLength +=
-            userDetails.courses[i].courseContent[j].subSection.length
+            totalDurationInSeconds += userDetails.courses[i].courseContent[j]
+            .subSections.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
+            userDetails.courses[i].totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+
+            SubsectionLength +=userDetails.courses[i].courseContent[j].subSections.length
         }
         let courseProgressCount = await CourseProgress.findOne({
             courseID: userDetails.courses[i]._id,

@@ -15,11 +15,12 @@ import Contact from './pages/Contact';
 import MyProfile from './components/core/Dashboard/MyProfile';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails } from './services/operations/authAPI';
 import Error from './pages/Error';
 import PrivateRoute from './components/core/Auth/PrivateRoute';
 import { getValidToken } from './utils/authUtils';
 import { setToken } from './slices/authSlice';
+import { setUser } from './slices/profileSlice';
+import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
 
 
 function App() {
@@ -31,9 +32,6 @@ function App() {
    useEffect(() => {
 
     // used to fetch user after token is still there
-    if(token && !user){
-      dispatch(getUserDetails())
-    }
 
     // token expire problem solution-------
     const validToken = getValidToken();
@@ -42,12 +40,13 @@ function App() {
     if (token && !validToken) {
       console.log("Token expired, clearing auth state");
       dispatch(setToken(null));
+      dispatch(setUser(null)); // ✅ Also clear user from Redux
     }
     // If valid token exists but not in Redux
     else if (!token && validToken) {
       dispatch(setToken(validToken));
     }
-  }, [token , user,dispatch]);  // 5 * 60 * 1000); // Check every 5 minutes
+  }, [token ,dispatch]);  // 5 * 60 * 1000); // Check every 5 minutes
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -95,6 +94,7 @@ function App() {
           } >
 
             <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
+            <Route path='/dashboard/enrolled-courses' element = { <EnrolledCourses />} />
 
             
           </Route>
