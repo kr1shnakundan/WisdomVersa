@@ -295,6 +295,13 @@ exports.changePassword = async(req,res) =>{
                 });
         }
 
+        if(oldPassword === newPassword){
+            return res.status(400).json({
+                success:false,
+                message:`oldPassword and newPassword can't be same`
+            });
+        }
+
         //check the newPassword and confirmNewPassword
         if(newPassword !== confirmNewPassword){
             return res.status(400).json({
@@ -305,7 +312,9 @@ exports.changePassword = async(req,res) =>{
 
 
         //compare password
-        if(bcrypt.compare(oldPassword , userDetails.password)){
+        const isPasswordCorrect = await bcrypt.compare(oldPassword, userDetails.password);
+        
+        if(isPasswordCorrect){
 
             //update password
             const encryptedPassword = await bcrypt.hash(newPassword,10);

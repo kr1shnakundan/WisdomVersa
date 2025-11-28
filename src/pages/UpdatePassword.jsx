@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 import { resetPassword } from "../services/operations/authAPI";
 
 
-//------------------------------------THE NEW PASSWORD IS NOT CHANGED IN DB
-
 function UpdatePassword(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
