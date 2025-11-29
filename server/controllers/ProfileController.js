@@ -241,7 +241,7 @@ exports.deleteAccount = async(req,res) =>{
         });
 
         //after returning response , delete courseProgress to clear the storage
-        await courseProgress.deleteMany({userId:id})
+        await CourseProgress.deleteMany({userId:id})
 
 
     } catch(error){
