@@ -176,6 +176,7 @@ export default function UpdatePassword() {
                     </button>
                     
                      <button
+                     type="button"
                       onClick={() => {
                          navigate("/dashboard/my-profile")
                         }}
