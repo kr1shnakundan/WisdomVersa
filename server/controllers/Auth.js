@@ -7,6 +7,7 @@
 // const Profile = require("../models/Profie");
 // const mailSender = require("../utils/MailSender");
 
+const mongoose = require('mongoose');
 const bcrypt = require("bcryptjs")
 const User = require("../models/User")
 const OTP = require("../models/OTP")
@@ -133,6 +134,137 @@ exports.signup = async(req,res) =>{
     }
 }
 
+//-----------------------------------------WITH TRANSACTION USED --------------------------------------
+
+// exports.signup = async (req, res) => {
+//     console.log("signUp me pahuch gya.................");
+    
+//     // Start a session for transaction
+//     const session = await mongoose.startSession();
+    
+//     try {
+//         // Start transaction
+//         session.startTransaction();
+        
+//         // Fetch the data
+//         const {
+//             firstName,
+//             lastName,
+//             accountType,
+//             email,
+//             password,
+//             confirmPassword,
+//             contactNumber,
+//             otp
+//         } = req.body;
+        
+//         // Validate
+//         if (!firstName || !lastName || !email || !password || !confirmPassword || !otp || !accountType) {
+//             await session.abortTransaction();
+//             return res.status(401).json({
+//                 success: false,
+//                 message: `Please enter all the information carefully`
+//             });
+//         }
+        
+//         // Match the password and confirm password
+//         if (password !== confirmPassword) {
+//             await session.abortTransaction();
+//             return res.status(400).json({
+//                 success: false,
+//                 message: `Password and confirmPassword not matching`
+//             });
+//         }
+        
+//         // Check if the email already exists (use session)
+//         const existingUser = await User.findOne({ email }).session(session);
+//         if (existingUser) {
+//             await session.abortTransaction();
+//             return res.status(401).json({
+//                 success: false,
+//                 message: `The user already exists`
+//             });
+//         }
+        
+//         // Find the most recent OTP from DB (use session)
+//         const response = await OTP.find({ email })
+//             .sort({ createdAt: -1 })
+//             .limit(1)
+//             .session(session);
+        
+//         // OTP not found in db/email
+//         if (response.length === 0) {
+//             await session.abortTransaction();
+//             return res.status(400).json({
+//                 success: false,
+//                 message: `OTP not found for email`
+//             });
+//         }
+        
+//         // Invalid OTP
+//         else if (otp !== response[0].otp) {
+//             await session.abortTransaction();
+//             return res.status(400).json({
+//                 success: false,
+//                 message: `Please enter valid OTP`
+//             });
+//         }
+        
+//         // Hash the password
+//         const hashPassword = await bcrypt.hash(password, 10);
+        
+//         // Determine approved status
+//         let approved = true;
+//         if (accountType === "Instructor") {
+//             approved = false;
+//         }
+        
+//         // Create the profile (within transaction)
+//         const profileDetails = await Profile.create([{
+//             gender: null,
+//             dateOfBirth: null,
+//             about: null,
+//             contactNumber: null,
+//             profession: null
+//         }], { session });
+        
+//         // Create the user (within transaction)
+//         const user = await User.create([{
+//             firstName,
+//             lastName,
+//             email,
+//             contactNumber,
+//             accountType: accountType,
+//             approved: approved,
+//             additionalDetails: profileDetails[0]._id,
+//             password: hashPassword,
+//             image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
+//         }], { session });
+        
+//         // Commit the transaction
+//         await session.commitTransaction();
+        
+//         return res.status(200).json({
+//             success: true,
+//             user: user[0],
+//             message: "User registered successfully",
+//         });
+        
+//     } catch (error) {
+//         // Rollback transaction on error
+//         await session.abortTransaction();
+//         console.log("Error in signup:", error);
+        
+//         return res.status(500).json({
+//             success: false,
+//             message: `Error occurred while signUp: ${error.message}`
+//         });
+        
+//     } finally {
+//         // End session
+//         session.endSession();
+//     }
+// };
 
 //function for login
 

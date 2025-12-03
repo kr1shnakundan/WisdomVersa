@@ -277,7 +277,7 @@ exports.getUserDetails = async (req, res) => {
 exports.updateDisplayPicture = async(req,res)=>{
     console.log("inside updateDisplayPicture........")
     try{
-        const displayPicture = req.files.displayPicture
+        const displayPicture = req.files?.displayPicture
         const userId = req.user.id
         const image = await uploadImageToCloudinary(
             displayPicture,
@@ -286,7 +286,7 @@ exports.updateDisplayPicture = async(req,res)=>{
             1000
         )
         console.log("image in updateDisplayPicture : " ,image)
-        const updatedProfile = await Profile.findByIdAndUpdate(
+        const updatedProfile = await User.findByIdAndUpdate(
             {_id:userId},
             {image:image.secure_url},
             {new:true}
