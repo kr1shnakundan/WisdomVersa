@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import {logout} from './authAPI'
 import { setUser } from "../../slices/profileSlice";
 import { setLoading } from "../../slices/authSlice";
+import {setLoading as setProfileLoading} from "../../slices/profileSlice"
 
 
 const {CHANGE_PASSWORD_API , UPDATE_DISPLAY_PICTURE_API ,DELETE_PROFILE_API , UPDATE_PROFILE_API} = settingsEndPoints
@@ -11,7 +12,7 @@ const {CHANGE_PASSWORD_API , UPDATE_DISPLAY_PICTURE_API ,DELETE_PROFILE_API , UP
 export  function updateDisplayPicture(token , formData){
     return async(dispatch) =>{
         const toastId = toast.loading("Loading...")
-        dispatch(setLoading(true))
+        dispatch(setProfileLoading(true))
         try{
 
             const response = await apiConnector(
@@ -39,10 +40,39 @@ export  function updateDisplayPicture(token , formData){
             console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error)
             toast.error("Could Not Update Display Picture")
         }
-        dispatch(setLoading(false))
+        dispatch(setProfileLoading(false))
         toast.dismiss(toastId)
     }
 }
+
+// export function updateProfile(token , data){
+//     return async(dispatch)=>{
+//         const toastId = toast.loading(<div className="flex gap-1 items-center">
+//                                             <div className="spinner"></div>
+//                                             Loading...
+//                                         </div>)
+//         dispatch(setProfileLoading(true))
+//         try{
+//             const response = await apiConnector("PUT" , UPDATE_PROFILE_API , data ,{
+//                 Authorization : `Bearer${token}`
+//             } )
+
+//             if(!response.data.success){
+//                 throw new Error (response.data.message)
+//             }
+
+//             toast.success("Profile Updated Successfully")
+//             dispatch(setUser(response.data.data))
+//         } catch(error){
+//             console.log("Error in updateProfile : ",error)
+//             toast.error(error?.response?.data?.message || error.message || "Failed to update profile")
+//         }
+//         finally {
+//             dispatch(setProfileLoading(false))
+//             toast.dismiss(toastId)
+//         }
+//     }
+// }
 
 
 export default async function ChangePassword(token , formData){

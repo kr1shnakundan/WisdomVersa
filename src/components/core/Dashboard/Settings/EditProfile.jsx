@@ -1,5 +1,12 @@
-export default function EditProfile (){
-    return(
-        <div></div>
-    )
+// 
+
+
+import React from 'react'
+
+const EditProfile = () => {
+  return (
+    <div>EditProfile</div>
+  )
 }
+
+export default EditProfile

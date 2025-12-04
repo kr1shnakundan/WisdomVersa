@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ChangePassword from "../../../../services/operations/SettingsAPI";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEyeInvisible , AiOutlineEye } from "react-icons/ai";
+import { RiLockPasswordLine, RiLockUnlockLine } from "react-icons/ri";
 import toast from "react-hot-toast";
 
 export default function UpdatePassword() {
@@ -63,7 +64,7 @@ export default function UpdatePassword() {
                             <sup className="absolute top-[-15%] pl-1 text-pink-200 text-lg">*</sup>
                         </p>
                     
-                        <div className="relative w-full lg:w-[46%]">
+                        <div className="relative w-full">
                             <input 
                                 required
                                 type={showOldPassword ? "text" : "password"} 
@@ -167,12 +168,16 @@ export default function UpdatePassword() {
                 <div className="flex justify-end gap-2">
                     <button
                     type="submit"
-                    className={`${disable ? "bg-pure-greys-200 hover:bg-pure-greys-500" : " bg-yellow-25 hover:bg-yellow-50"} text-richblack-900 px-7 py-3 rounded-full 
+                    className={`${disable ? "bg-pure-greys-200 hover:bg-pure-greys-500 opacity-50 cursor-not-allowed" : " bg-yellow-25 hover:bg-yellow-50"} text-richblack-900 px-7 py-3 rounded-full 
                     cursor-pointer my-4 font-semibold text-lg transition-all duration-200 hover:scale-95
                     border border-richblack-50 hover:shadow-[0_0_0_1px_#F472B6,0_0_0_2px_#538fbd]`}
                     
                     >
-                        Update
+                        <div className="flex gap-1 items-center">
+                            {disable ? <RiLockPasswordLine /> : <RiLockUnlockLine />}
+                            Update
+                        </div>
+                        
                     </button>
                     
                      <button
