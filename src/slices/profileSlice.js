@@ -18,7 +18,7 @@ const profileSlice = createSlice({
             state.user = value.payload;
         },
         setLoading(state,value){
-            state.user = value.payload;
+            state.loading = value.payload;
         }
     }
 });

@@ -45,34 +45,47 @@ export  function updateDisplayPicture(token , formData){
     }
 }
 
-// export function updateProfile(token , data){
-//     return async(dispatch)=>{
-//         const toastId = toast.loading(<div className="flex gap-1 items-center">
-//                                             <div className="spinner"></div>
-//                                             Loading...
-//                                         </div>)
-//         dispatch(setProfileLoading(true))
-//         try{
-//             const response = await apiConnector("PUT" , UPDATE_PROFILE_API , data ,{
-//                 Authorization : `Bearer${token}`
-//             } )
 
-//             if(!response.data.success){
-//                 throw new Error (response.data.message)
-//             }
+export function updateProfile(token, formData) {
+  return async (dispatch) => {
+    const toastId = toast.loading(<div className="flex gap-1 items-center">
+                                        <div className="spinner"></div>
+                                        Loading...
+                                    </div>)
+    try {
+        
+      const response = await apiConnector("PUT", UPDATE_PROFILE_API, formData, {
+        Authorization: `Bearer${token}`,
+      })
 
-//             toast.success("Profile Updated Successfully")
-//             dispatch(setUser(response.data.data))
-//         } catch(error){
-//             console.log("Error in updateProfile : ",error)
-//             toast.error(error?.response?.data?.message || error.message || "Failed to update profile")
-//         }
-//         finally {
-//             dispatch(setProfileLoading(false))
-//             toast.dismiss(toastId)
-//         }
-//     }
-// }
+      if (!response.data.success) {
+        throw new Error(response.data.message)
+      }
+      
+      const userImage = response?.data?.data?.image
+        ? response?.data?.data?.image
+        : `https://api.dicebear.com/5.x/initials/svg?seed=${response?.data?.data?.firstName} ${response?.data?.data?.lastName}`
+      
+        const finalResponse = {...response?.data?.data , image:userImage}
+      dispatch(
+        setUser(finalResponse)
+      )
+      
+      toast.success("Profile Updated Successfully")
+
+      //Now , remove old user from the localstorage and add new user to database.
+      //This is temporarly doing the work of redux-persist
+      //Because earlier , the updated data get's removed once refresh
+      localStorage.removeItem("user")
+      localStorage.setItem("user",JSON.stringify(finalResponse))
+    } catch (error) {
+      console.log("UPDATE_PROFILE_API API ERROR............", error)
+      console.log("Error details:", error.message)
+      toast.error("Could Not Update Profile")
+    }
+    toast.dismiss(toastId)
+  }
+}
 
 
 export default async function ChangePassword(token , formData){

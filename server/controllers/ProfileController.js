@@ -161,17 +161,7 @@ exports.updateProfile = async (req, res) => {
         .json({ success: false, message: "Profile not found" });
     }
 
-    // 4️⃣ Update profile fields (only provided ones)
-    if (dateOfBirth !== undefined && dateOfBirth.trim () != " "){
-        const parsedDate = new Date(dateOfBirth)
-        if(isNaN(parsedDate.getTime())){
-            return res.status(400).json({
-                success:false,
-                message:`Invalid date format for dateOfBirth`
-            })
-        }
-        profile.dateOfBirth = parsedDate;
-    };
+    if(dateOfBirth !== undefined)profile.dateOfBirth = dateOfBirth;
     if (about !== undefined) profile.about = about;
     if (contactNumber !== undefined) profile.contactNumber = contactNumber;
     if (gender !== undefined) profile.gender = gender;
