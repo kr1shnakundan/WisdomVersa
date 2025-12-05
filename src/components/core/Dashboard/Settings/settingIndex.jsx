@@ -1,5 +1,6 @@
 import ChangeProfilePicture from "./ChangeProfilePicture";
 import DeleteAccount from "./DeleteAccount";
+import EditAbout from "./EditAbout";
 import EditProfile from "./EditProfile";
 import UpdatePassword from "./UpdatePassword";
 
@@ -11,6 +12,7 @@ export default function Settings() {
             className="flex flex-col gap-11"
             >
                 <ChangeProfilePicture />
+                <EditAbout />
                 <EditProfile />
                 <UpdatePassword/>
                 <DeleteAccount/>

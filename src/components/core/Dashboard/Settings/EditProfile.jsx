@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
-import { RiLockPasswordLine, RiLockUnlockLine } from "react-icons/ri";
+import { LuSave ,LuSaveOff } from "react-icons/lu";
 import { updateProfile } from "../../../../services/operations/SettingsAPI";
 
 export default function EditProfile (){
@@ -110,8 +110,8 @@ export default function EditProfile (){
                             message: "Date of Birth cannot be in the future.",
                         },
                         })}
-                        
-                        defaultValue={user?.additionaDetails?.dateOfBirth}
+
+                        defaultValue={user?.additionalDetails?.dateOfBirth}
                         />
                         {errors.dateOfBirth && (
                             <span className="-mt-1 text-[12px] text-yellow-100">
@@ -145,7 +145,7 @@ export default function EditProfile (){
                         </select>
                         {errors.gender && (
                             <span className="-mt-1 text-[12px] text-yellow-100">
-                            Please enter your Date of Birth.
+                            Please enter your gender.
                             </span>
                         )}
                     </label>
@@ -219,7 +219,7 @@ export default function EditProfile (){
                     
                     >
                         <div className="flex gap-1 items-center">
-                            {disable ? <RiLockPasswordLine /> : <RiLockUnlockLine />}
+                            {disable ? <LuSaveOff /> : <LuSave />}
                             Update
                         </div>
                         

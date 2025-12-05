@@ -56,6 +56,17 @@ export default function ChangeProfilePicture (){
 
    const isDisable = !imageFile || loading
 
+   // Add this handler function
+    const handleCancel = () => {
+        setImageFile(null)
+        setPreviewSource(null)
+        setError(null)
+        // Reset the file input
+        if(fileInputref.current){
+            fileInputref.current.value = ""
+        }
+    }
+
    const handleFileUpload = async() =>{
     // Step 1: Check karo file selected hai ya nahi
     if(!imageFile){
@@ -99,13 +110,26 @@ export default function ChangeProfilePicture (){
     return(
         <div className="text-richblack-5 mt-16 bg-richblack-800 px-12 py-8 rounded-md border-[1px] border-richblack-700">
            <div className=" flex gap-5 ">
-                {/* profile image preview */}
-                <img 
-                src={previewSource || user?.image}
-                alt={`profile-${user?.firstName}`}
-                className="w-24 h-24 aspect-square rounded-full"
-                />
-
+                <div className="relative">
+                    <img 
+                        src={previewSource || user?.image}
+                        alt={`profile-${user?.firstName}`}
+                        className="w-24 h-24 aspect-square rounded-full"
+                    />
+                    {/* Show X button only when preview is different from original */}
+                    {previewSource && previewSource !== user?.image && (
+                        <button
+                            onClick={handleCancel}
+                            disabled={loading}
+                            className="absolute top-[4rem] right-[0rem] bg-richblack-700 hover:bg-richblack-600 
+                            text-white rounded-full w-8 h-8 flex items-center justify-center 
+                            border-2 border-richblack-50 transition-all duration-200"
+                            title="Cancel selection"
+                        >
+                            ✕
+                        </button>
+                    )}
+                </div>
                 <div className="">
                     <p className="text-xl font-semibold">Change Profile Picture</p>
                     {error && (
