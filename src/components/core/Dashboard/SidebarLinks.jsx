@@ -5,7 +5,7 @@ import { matchPath, NavLink, useLocation } from 'react-router-dom'
 
 // NEED TO ADD RESETCOURSESTATE<---------------------
 
-const SidebarLinks = ({link , iconName}) => {
+const SidebarLinks = ({link , iconName , onLinkClick}) => {
     const Icon =  Icons[iconName]
     const dispatch = useDispatch();
     const location = useLocation();
@@ -13,12 +13,19 @@ const SidebarLinks = ({link , iconName}) => {
     const matchRoute = (route) => {
         return matchPath({ path: route }, location.pathname)
     }
+
+    const handleClick = () => {
+      // dispatch(resetCourseState()) // Uncomment when needed<------------------------------
+      if (onLinkClick) {
+        onLinkClick(); // Close mobile menu
+      }
+    }
   return (
 
     <NavLink
       to={link.path}
-    //   onClick={() => dispatch(resetCourseState())}<------------------------------
-      className={`relative px-8 text-sm font-medium ${
+      onClick={handleClick}
+      className={`relative px-8 py-2 text-sm font-medium ${
         matchRoute(link.path)
           ? "bg-yellow-800 text-yellow-50"
           : "bg-opacity-0 text-richblack-300"
