@@ -165,19 +165,17 @@ export default function UpdatePassword() {
                         </label>
                     </div>
                 </div>
-                <div className="flex justify-end gap-2">
+                <div className="flex flex-col sm:flex-row justify-end gap-2">
                     <button
                     type="submit"
                     className={`${disable ? "bg-pure-greys-200 hover:bg-pure-greys-500 opacity-50 cursor-not-allowed" : " bg-yellow-25 hover:bg-yellow-50"} text-richblack-900 px-7 py-3 rounded-full 
                     cursor-pointer my-4 font-semibold text-lg transition-all duration-200 hover:scale-95
-                    border border-richblack-50 hover:shadow-[0_0_0_1px_#F472B6,0_0_0_2px_#538fbd]`}
+                    border border-richblack-50 hover:shadow-[0_0_0_1px_#F472B6,0_0_0_2px_#538fbd]
+                    flex gap-1 items-center justify-center`}
                     
                     >
-                        <div className="flex gap-1 items-center">
-                            {disable ? <RiLockPasswordLine /> : <RiLockUnlockLine />}
-                            Update
-                        </div>
-                        
+                    {disable ? <RiLockPasswordLine /> : <RiLockUnlockLine />}
+                    Update
                     </button>
                     
                      <button

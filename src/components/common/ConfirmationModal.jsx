@@ -11,7 +11,7 @@ function ConfirmationModal ({modalData}) {
             <p className='mt-3 mb-5 leading-6 text-richblack-200 '>
               {modalData?.text2}
             </p>
-            <div className='flex flex-col sm:flex-row gap-4'>
+            <div className='flex flex-col sm:flex-row  gap-4'>
                 <Iconbtn
                 customClasses={`mx-auto sm:mx-0`}
                 onclick={modalData?.btn1Handler}

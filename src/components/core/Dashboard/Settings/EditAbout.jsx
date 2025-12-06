@@ -37,7 +37,7 @@ export default function EditAbout () {
 
     return (
       <div className="flex flex-col gap-6 rounded-md border border-richblack-700 bg-richblack-800 p-6 text-richblack-5">
-        <h2 className="text-xl font-semibold text-richblack-25">About</h2>
+        <h2 className="text-xl font-semibold text-richblack-25 mx-auto sm:mx-0">About</h2>
         
         <form onSubmit={submitAbout} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
@@ -59,20 +59,18 @@ export default function EditAbout () {
             </p>
           </div>
 
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-col sm:flex-row justify-end  gap-2">
               <button
               type="submit"
               className={`${disable ? "bg-pure-greys-200 hover:bg-pure-greys-500 opacity-50 " 
                 : " bg-yellow-25 hover:bg-yellow-50"} text-richblack-900 px-7 py-3 rounded-full 
-              cursor-pointer my-4 font-semibold text-lg transition-all duration-200 hover:scale-95
-              border border-richblack-50 hover:shadow-[0_0_0_1px_#F472B6,0_0_0_2px_#538fbd]`}
+              cursor-pointer  font-semibold text-lg transition-all duration-200 hover:scale-95
+              border border-richblack-50 hover:shadow-[0_0_0_1px_#F472B6,0_0_0_2px_#538fbd]
+              flex gap-1 items-center justify-center`}
               
               >
-                  <div className="flex gap-1 items-center">
-                      {disable ? <LuSaveOff /> : <LuSave />}
-                      {loading ? "Updating..." : "Update"}
-                  </div>
-                  
+                {disable ? <LuSaveOff /> : <LuSave />}
+                {loading ? "Updating..." : "Update"}
               </button>
               
                   <button

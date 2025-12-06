@@ -109,8 +109,8 @@ export default function ChangeProfilePicture (){
 
     return(
         <div className="text-richblack-5 mt-16 bg-richblack-800 px-12 py-8 rounded-md border-[1px] border-richblack-700">
-           <div className=" flex gap-5 ">
-                <div className="relative">
+           <div className=" flex flex-col sm:flex-row gap-5 items-center ">
+                <div className="relative ">
                     <img 
                         src={previewSource || user?.image}
                         alt={`profile-${user?.firstName}`}
@@ -131,14 +131,14 @@ export default function ChangeProfilePicture (){
                     )}
                 </div>
                 <div className="">
-                    <p className="text-xl font-semibold">Change Profile Picture</p>
+                    <p className="text-lg sm:text-xl font-semibold">Change Profile Picture</p>
                     {error && (
                         <p className="">
                             {error}
                         </p>
                     )}
 
-                    <div className="flex gap-7">
+                    <div className="flex flex-col sm:flex-row  sm:gap-7">
                         <input 
                         type="file" 
                         ref={fileInputref}

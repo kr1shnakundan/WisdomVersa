@@ -155,7 +155,7 @@ const MyProfile = () => {
                     </Iconbtn>
                 </div>
                 
-                <div className='w-full flex flex-col gap-5 p-5 mt-5'>
+                <div className='w-full flex flex-col gap-5 p-1 sm:p-5 mt-5'>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-x-20 lg:gap-x-40'>
                     <div>
                         <p className='text-richblack-600 mb-2 text-sm'>First Name</p>
@@ -170,7 +170,7 @@ const MyProfile = () => {
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-x-20 lg:gap-x-40'>
                     <div>
                         <p className='text-richblack-600 mb-2 text-sm'>Email</p>
-                        <p className='text-sm font-medium text-richblack-5'>{user?.email}</p>
+                        <p className='text-sm font-medium text-richblack-5 truncate '>{user?.email}</p>
                     </div>
                     <div>
                         <p className='text-richblack-600 mb-2 text-sm'>Phone Number</p>
