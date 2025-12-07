@@ -15,7 +15,12 @@ const courseProgress = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"SubSection"
-    }
+    },
+    // NEW FIELD
+    isCompleted: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 module.exports = mongoose.model("CourseProgress",courseProgress);

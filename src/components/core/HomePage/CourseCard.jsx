@@ -12,7 +12,7 @@ const CourseCard = ({cardData , currentCard , setCurrentCard}) => {
             <div className={`text-xl font-semibold  ${currentCard === cardData.heading ? 
               "text-richblack-800 " : "text-richblack-25"
             }`}>{cardData?.heading}</div>
-            <div>{cardData?.description}</div>
+            <div className='line-clamp-6'>{cardData?.description}</div>
         </div>
         <div className={`flex flex-row items-center justify-between  py-3 px-6 font-medium text-sm
           ${currentCard === cardData.heading ? "text-blue-300" : " text-richblack-300"}`}>

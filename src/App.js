@@ -41,7 +41,7 @@ function App() {
     if (token && !validToken) {
       console.log("Token expired, clearing auth state");
       dispatch(setToken(null));
-      dispatch(setUser(null)); // ✅ Also clear user from Redux
+      dispatch(setUser(null)); 
     }
     // If valid token exists but not in Redux
     else if (!token && validToken) {
@@ -52,61 +52,63 @@ function App() {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />
-      <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='signup' 
-              element={
-                <OpenRoute>
-                  <Signup />
-                </OpenRoute>
-                } />
-        <Route path = 'Login' 
-          element ={
-          <OpenRoute>
-            <Login />
-          </OpenRoute>
-          } />
-        <Route path='forgot-password'
-              element ={
-                <OpenRoute>
-                  <ForgotPassword />
-                </OpenRoute>
-              }
-        />
-        <Route path='update-password/:id' element ={<UpdatePassword/>} />
+      <div className='pt-14'>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='signup' 
+                element={
+                  <OpenRoute>
+                    <Signup />
+                  </OpenRoute>
+                  } />
+          <Route path = 'Login' 
+            element ={
+            <OpenRoute>
+              <Login />
+            </OpenRoute>
+            } />
+          <Route path='forgot-password'
+                element ={
+                  <OpenRoute>
+                    <ForgotPassword />
+                  </OpenRoute>
+                }
+          />
+          <Route path='update-password/:id' element ={<UpdatePassword/>} />
 
-        <Route path='verify-email' 
-              element = {
-                <OpenRoute>
-                    <VerifyEmail/>
-                </OpenRoute>
-              }
-         />
+          <Route path='verify-email' 
+                element = {
+                  <OpenRoute>
+                      <VerifyEmail/>
+                  </OpenRoute>
+                }
+          />
 
-         <Route path='about' element = {<About/>} />
-
-
-         <Route path='/contact' element = {<Contact/>} />
-
-          <Route element={
-            < PrivateRoute>
-                <Dashboard/>
-            </PrivateRoute>
-          } >
-
-            <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
-            <Route path='/dashboard/enrolled-courses' element = { <EnrolledCourses />} />
-            <Route path='/dashboard/settings' element={<Settings />} />
-
-            
-          </Route>
-         
-
-         
+          <Route path='about' element = {<About/>} />
 
 
-         <Route path='*' element = {<Error/>} />
-      </Routes>
+          <Route path='/contact' element = {<Contact/>} />
+
+            <Route element={
+              < PrivateRoute>
+                  <Dashboard/>
+              </PrivateRoute>
+            } >
+
+              <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
+              <Route path='/dashboard/enrolled-courses' element = { <EnrolledCourses />} />
+              <Route path='/dashboard/settings' element={<Settings />} />
+
+              
+            </Route>
+          
+
+          
+
+
+          <Route path='*' element = {<Error/>} />
+        </Routes>
+      </div>
       
     </div>
   );

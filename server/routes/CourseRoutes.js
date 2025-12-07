@@ -42,7 +42,9 @@ const {
 
 //importing course progress
 const {
-    updateCourseProgress
+    updateCourseProgress,
+    markCourseAsComplete,
+    unenrollFromCourse
 } = require("../controllers/CourseProgressController")
 
 
@@ -71,6 +73,10 @@ router.get("/getAllCourses",getAllCourse)
 router.post("/deleteCourse",deleteCourse)
 
 router.post("/updateCourseProgress",auth , isStudent,updateCourseProgress)
+
+router.post("/markCourseComplete",auth , isStudent , markCourseAsComplete)
+
+router.post("/unenrollCourse",auth ,isStudent , unenrollFromCourse)
 
 
 // ********************************************************************************************************

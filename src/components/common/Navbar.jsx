@@ -12,7 +12,6 @@ import { apiConnector } from '../../services/apiconnector'
 import { category } from '../../services/apis'
 import ProfileDropdown from '../core/Auth/ProfileDropdown'
 
-// ---------------------------------NAVBAR IS COMPLEX, STUDY AGAIN---------------------------------
 const Navbar = () => {
 
   const [subLinks, setSubLinks] = useState([])
@@ -29,10 +28,7 @@ const Navbar = () => {
     setLoading(true);
     try{
       const result = await apiConnector("GET" , category.CATEGORY_URL);
-      
-     
       setSubLinks(result.data.data);
-      
     } catch(error){
       console.log("could not fetch category detail : ",error)
     }
@@ -41,7 +37,6 @@ const Navbar = () => {
 
   useEffect (() =>{
     fetchSublinks();
-    //  console.log("subLink in useEffect is : ",subLinks);
     console.log("Token value:", token, "Type:", typeof token);
   },[])
 
@@ -51,9 +46,9 @@ const Navbar = () => {
 
   
   return (
-    <div className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
-        location.pathname !== "/" ? "bg-richblack-800" : ""
-        } transition-all duration-200`}>
+    <div className={`fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
+        location.pathname !== "/" ? "bg-richblack-800" : "bg-richblack-900"
+        } transition-all duration-200 shadow-md`}>
       <div className='flex flex-row w-11/12 max-w-maxContent items-center justify-between '>
         <Link to={"/"}>
             <img src={wisdomverse} alt="" className='w-[160px] h-[55px] ' loading='lazy' />
@@ -69,7 +64,7 @@ const Navbar = () => {
                   
                   <li key={index}>
                     {links.title === "Catalog" ? (
-                      <div>
+                      <div className='relative'>
                         <div className={` ${matchRoute("/catalog/:catalogName")
                           ? "text-yellow-25"
                           : "text-richblack-25"
@@ -77,7 +72,7 @@ const Navbar = () => {
                           text-richblack-5 flex flex-row items-center cursor-pointer gap-1 group`}>
                           <p>{links?.title}</p>
                           <BsChevronDown />
-                          <div  className="invisible absolute  top-[5%] z-[1000] flex w-[200px] translate-x-[-50%] translate-y-[3em] flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[300px]">
+                          <div className="invisible absolute left-[50%] top-full z-[1000] flex w-[200px] translate-x-[-50%] translate-y-[3em] flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[300px]">
                             <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
                             { loading ? (
                               <p className='text-center'>Loading...</p>
@@ -93,7 +88,6 @@ const Navbar = () => {
                                         to={`/Catalog/${subLink.name.split(" ").join("-").toLowerCase()}`} 
                                         className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
                                         >
-                                        
                                           <p>{subLink.name}</p>
                                         </Link>
                                       )
@@ -138,7 +132,6 @@ const Navbar = () => {
         {/* Login / Logout / profile / cart / dashboard */}
         <div className='hidden lg:flex flex-row gap-2 items-center'>
             {
-              // ---------------------------------------cart needed to be check----------------------
               user && user.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
                 <Link to = "/dashboard/cart" className="relative" >
                   <AiOutlineShoppingCart className='relative text-2xl text-richblack-100'/>

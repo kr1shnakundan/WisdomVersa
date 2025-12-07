@@ -27,6 +27,10 @@ export const profileEndPoints = {
     GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
     GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourses",
     GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructorDashboard",
+
+    //DIFFERENT FROM REST ABOVE
+    MARK_COURSE_COMPLETE_API : BASE_URL + "/course/markCourseComplete",
+    UNENROLL_COURSE_API : BASE_URL + "/course/unenrollCourse"
 }
 
 export const settingsEndPoints = {
