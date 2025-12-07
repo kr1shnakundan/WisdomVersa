@@ -213,7 +213,8 @@ export default function EditProfile (){
                 <div className="flex flex-col sm:flex-row justify-end gap-2">
                     <button
                     type="submit"
-                    className={`${disable ? "bg-pure-greys-200 hover:bg-pure-greys-500 opacity-50 cursor-not-allowed " : " bg-yellow-25 hover:bg-yellow-50"} text-richblack-900 px-7 py-3 rounded-full 
+                    className={`${disable ? "bg-pure-greys-200 hover:bg-pure-greys-500 opacity-50 " 
+                        : " bg-yellow-25 hover:bg-yellow-50"} text-richblack-900 px-6 py-3 rounded-full 
                     cursor-pointer my-4 font-semibold text-lg transition-all duration-200 hover:scale-95
                     border border-richblack-50 hover:shadow-[0_0_0_1px_#F472B6,0_0_0_2px_#538fbd] flex items-center gap-1 justify-center `}
                     

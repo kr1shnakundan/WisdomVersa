@@ -64,12 +64,13 @@ export default function EditAbout () {
               type="submit"
               className={`${disable ? "bg-pure-greys-200 hover:bg-pure-greys-500 opacity-50 " 
                 : " bg-yellow-25 hover:bg-yellow-50"} text-richblack-900 px-7 py-3 rounded-full 
-              cursor-pointer  font-semibold text-lg transition-all duration-200 hover:scale-95
+              cursor-pointer my-4 font-semibold text-lg transition-all duration-200 hover:scale-95
               border border-richblack-50 hover:shadow-[0_0_0_1px_#F472B6,0_0_0_2px_#538fbd]
               flex gap-1 items-center justify-center`}
+
               
               >
-                {disable ? <LuSaveOff /> : <LuSave />}
+                {disable ? <LuSaveOff  /> : <LuSave className="w-2 h-2" />}
                 {loading ? "Updating..." : "Update"}
               </button>
               
