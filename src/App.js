@@ -22,6 +22,7 @@ import { setToken } from './slices/authSlice';
 import { setUser } from './slices/profileSlice';
 import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
 import Settings from './components/core/Dashboard/Settings/settingIndex';
+import Cart from './components/core/Dashboard/Cart/CartIndex';
 
 
 function App() {
@@ -98,6 +99,7 @@ function App() {
               <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
               <Route path='/dashboard/enrolled-courses' element = { <EnrolledCourses />} />
               <Route path='/dashboard/settings' element={<Settings />} />
+              <Route path='/dashboard/cart' element={<Cart/>} />
 
               
             </Route>

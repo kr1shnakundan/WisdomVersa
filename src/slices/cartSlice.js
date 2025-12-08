@@ -4,7 +4,13 @@ import toast from "react-hot-toast";
 const initialState = {
     totalItems: localStorage.getItem("totalItems") ? 
     JSON.parse(localStorage.getItem("totalItems"))
-    :null
+    :null,
+    total: localStorage.getItem("total")
+    ? JSON.parse(localStorage.getItem("total"))
+    : 0,
+    cart: localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [],
 }
 
 const cartSlice = createSlice({
