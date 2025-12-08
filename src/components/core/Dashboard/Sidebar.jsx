@@ -49,6 +49,11 @@ const Sidebar = () => {
     });
   };
 
+  // Separate instructor-specific links
+  const instructorLinks = sidebarLinks.filter(link => link.type === "Instructor");
+  const generalLinks = sidebarLinks.filter(link => !link.type || link.type !== "Instructor");
+
+
   return (
     <>
       {/* Mobile Menu Toggle Button */}
@@ -77,7 +82,7 @@ const Sidebar = () => {
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         <div className='flex flex-col mt-7 md:mt-0'>
-          {sidebarLinks.map((link) => {
+          {generalLinks.map((link) => {
             if(link.type && user?.accountType !== link.type) return null
             return(
               <SidebarLinks 
@@ -89,6 +94,27 @@ const Sidebar = () => {
             )
           })}
         </div> 
+
+        {/* Instructor Section - Only visible for instructors */}
+        {user?.accountType === "Instructor" && instructorLinks.length > 0 && (
+          <>
+            <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
+            
+            <div className='flex flex-col'>
+              <div className='px-8 py-2 text-xs font-semibold text-richblack-400 uppercase tracking-wider'>
+                Instructor
+              </div>
+              {instructorLinks.map((link) => (
+                <SidebarLinks 
+                  key={link.id} 
+                  link={link} 
+                  iconName={link.icon}
+                  onLinkClick={closeMobileMenu}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         
         <div className="flex-1" />
