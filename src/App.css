@@ -139,3 +139,6 @@ html , body{
    @apply text-[0.875rem] leading-[1.375rem] text-richblack-5;
 }
 
+.course-table-wrapper .responsiveTable td:before {
+  display: none !important;
+}

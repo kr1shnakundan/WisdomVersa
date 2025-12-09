@@ -367,22 +367,43 @@ exports.getInstructorCourses = async(req,res) =>{
         const courseDetails = await Course.find({instructors:instructorId})
         .sort({createdAt:-1})        
 
-        if(!courseDetails) {
+        if(!courseDetails|| courseDetails.length === 0) {
             return res.status(400).json({
                 success:false,
                 message:`no course find for the instuctor`
             });
         }
 
+        const coursesWithDuration = courseDetails.map((course) => {
+            let totalDurationInSeconds = 0;
+            
+            course.courseContent.forEach((section) => {
+                if (section.subSection && section.subSection.length > 0) {
+                    section.subSection.forEach((sub) => {
+                        const timeDurationInSeconds = parseInt(sub.timeDuration) || 0;
+                        totalDurationInSeconds += timeDurationInSeconds;
+                    });
+                }
+            });
+
+            const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+            
+            // Return course with its duration
+            return {
+                ...course.toObject(), // Convert Mongoose document to plain object
+                totalDuration
+            };
+        });
+
         return res.status(200).json({
             success:true,
             message:`instructor's detail successfully fetched`,
-            data:courseDetails
+            data: coursesWithDuration
         })
 
     } catch(error){
         console.log("getInstructorCourse error : " ,error)
-        return res.status(400).json({
+        return res.status(500).json({
             success:false,
             message:`error in finding th Instructor's course details`
         })
