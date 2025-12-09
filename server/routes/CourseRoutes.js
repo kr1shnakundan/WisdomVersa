@@ -70,7 +70,7 @@ router.get("/getCourseDetails",getCourseDetails)
 
 router.get("/getAllCourses",getAllCourse)
 
-router.post("/deleteCourse",deleteCourse)
+router.delete("/deleteCourse",deleteCourse)
 
 router.post("/updateCourseProgress",auth , isStudent,updateCourseProgress)
 

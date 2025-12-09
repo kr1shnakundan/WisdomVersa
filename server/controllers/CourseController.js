@@ -10,6 +10,7 @@ require("dotenv").config();
 const CourseProgress = require("../models/CourseProgress")
 
 
+//for authorized user , who has buyed this course
 exports.getFullCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body
@@ -293,6 +294,8 @@ exports.getAllCourse = async(req,res)=>{
     
 // }
 
+
+//get course detail for general user which excludes video url
 exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
@@ -306,10 +309,10 @@ exports.getCourseDetails = async (req, res) => {
       })
       .populate({
         path: "courseContent",       // populate Sections first
-        // populate: {
-        //   path: "subSection",        // then populate SubSections inside each Section
-        //   select: "-videoUrl",
-        // },
+        populate: {
+          path: "subSection",        // then populate SubSections inside each Section
+          select: "-videoUrl",
+        },
       })
       .populate("category")
       .populate("ratingAndReview")
@@ -373,7 +376,8 @@ exports.getInstructorCourses = async(req,res) =>{
 
         return res.status(200).json({
             success:true,
-            message:`instructor's detail successfully fetched`
+            message:`instructor's detail successfully fetched`,
+            data:courseDetails
         })
 
     } catch(error){
@@ -409,9 +413,9 @@ exports.deleteCourse = async(req,res) =>{
         //delete section of this course
         const courseSection = courseDetails.courseContent
         for(const sectionId of courseSection){
-            const sectionDetails = await Section.findbyId(sectionId)
+            const sectionDetails = await Section.findById(sectionId)
             if(sectionDetails){
-                const courseSubSection = sectionDetails.subSections
+                const courseSubSection = sectionDetails.subSections || []
                 for(const subSectionId of courseSubSection){
                     await subSection.findByIdAndDelete(subSectionId);
                 } 
@@ -421,6 +425,24 @@ exports.deleteCourse = async(req,res) =>{
             
         }
 
+        // Remove course from instructor
+        await User.findByIdAndUpdate(
+            courseDetails.instructors,
+            { $pull: { courses: courseId } },
+            { new: true }
+        )
+
+        // Remove course from category
+        await Category.findByIdAndUpdate(
+            courseDetails.category,
+            { $pull: { course: courseId } },
+            { new: true }
+        )
+
+
+        // Delete the course
+        await Course.findByIdAndDelete(courseId)
+
         //why not delete the rating and review for this course
         res.status(200).json({
             success:true,
@@ -428,6 +450,7 @@ exports.deleteCourse = async(req,res) =>{
         })
 
     } catch(error){
+      console.log("Errrror in delete course in course controller : ",error)
         return res.status(500).json({
             success:false,
             message:`error in deleting the course`
