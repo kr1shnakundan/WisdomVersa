@@ -17,15 +17,14 @@ exports.getFullCourseDetails = async (req, res) => {
     const userId = req.user.id
     const courseDetails = await Course.findOne({
       _id: courseId,
-    })
-      .populate({
-        path: "instructor",
+    }).populate({
+        path: "instructors",
         populate: {
           path: "additionalDetails",
         },
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      .populate("ratingAndReview")
       .populate({
         path: "courseContent",
         populate: {
@@ -92,7 +91,7 @@ exports.createCourse = async(req,res) =>{
         let{
             courseName,
             courseDescription,
-            whatWillYouLearn,
+            whatYouWillLearn,
             price,
             tag:_tag,
             category,
@@ -110,12 +109,12 @@ exports.createCourse = async(req,res) =>{
         console.log("tag:", tag)
         console.log("instructions:", instructions)
 
-        // console.log("createCourse: " , courseName , courseDescription , price , whatWillYouLearn ,
-        //     category , tag.length , instructions.length
+        // console.log("createCourse: " , courseName , courseDescription , price , whatYouWillLearn ,
+        //     category , tag.length , instructions.length ,thumbnail
         // )
 
         //validates
-        if(!courseName || !courseDescription || !price || !whatWillYouLearn || !category
+        if(!courseName || !courseDescription || !price || !whatYouWillLearn || !category
             || !tag.length || !instructions.length  
         ){
             return res.status(400).json({
@@ -128,8 +127,6 @@ exports.createCourse = async(req,res) =>{
 
         //check for instructor
         const instructorDetail = await User.findById(userId)
-        console.log("userId " ,userId)
-        console.log("instructorDetails : " , instructorDetail)
         if(!instructorDetail){
             return res.status(401).json({
                 success:false,
@@ -148,19 +145,19 @@ exports.createCourse = async(req,res) =>{
 
         //upload image to cloudinary
         const thumbnailImage = await uploadImageToCloudinary(thumbnail , process.env.FOLDER_NAME);
-        console.log("thumbnail inside createCourse:",thumbnail);
 
         //create new course
         const newCourse = await Course.create({
             courseName,
             courseDescription,
             instructors:instructorDetail._id,
-            whatYouWillLearn:whatWillYouLearn,
+            whatYouWillLearn:whatYouWillLearn,
             price,
             tag,
             category:categoryDetail._id,
             status:status,
             thumbnail:thumbnailImage.secure_url,
+            instructions:instructions
         })
         
         //add the new course to user shcema
@@ -178,7 +175,7 @@ exports.createCourse = async(req,res) =>{
         await Category.findByIdAndUpdate(
             category,{ 
                 $push:{
-                    course:newCourse._id,
+                    courses:newCourse._id,
                 }
             },
             {new:true}
@@ -187,7 +184,8 @@ exports.createCourse = async(req,res) =>{
         //return response
         res.status(200).json({
             success:true,
-            message:`course created successfully`
+            message:`course created successfully`,
+            data:newCourse
         })
 
     } catch(error){
@@ -237,7 +235,7 @@ exports.getAllCourse = async(req,res)=>{
 //         .populate({
 //             path: "courseContent",       // populate Sections first
 //         populate: {
-//           path: "subSection",        // then populate SubSections inside each Section
+//           path: "subSection",        // then populate SubSection inside each Section
 //           select: "-videoUrl",
 //         }
 //         })
@@ -310,7 +308,7 @@ exports.getCourseDetails = async (req, res) => {
       .populate({
         path: "courseContent",       // populate Sections first
         populate: {
-          path: "subSection",        // then populate SubSections inside each Section
+          path: "subSection",        // then populate SubSection inside each Section
           select: "-videoUrl",
         },
       })
@@ -436,7 +434,7 @@ exports.deleteCourse = async(req,res) =>{
         for(const sectionId of courseSection){
             const sectionDetails = await Section.findById(sectionId)
             if(sectionDetails){
-                const courseSubSection = sectionDetails.subSections || []
+                const courseSubSection = sectionDetails.subSection || []
                 for(const subSectionId of courseSubSection){
                     await subSection.findByIdAndDelete(subSectionId);
                 } 
@@ -486,10 +484,12 @@ exports.editCourse = async(req,res) =>{
         //fetch the data
         const{courseId } = req.body
         const updates = {...req.body}
+        console.log("updates : " , updates)
+        console.log("req.body : " , req.body)
 
         const courseDetails = await Course.findById(courseId)
         if(!courseDetails) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success:false,
                 message:`course not found while editing course`
             })
@@ -502,7 +502,7 @@ exports.editCourse = async(req,res) =>{
                 thumbnail,
                 process.env.FOLDER_NAME
             )
-            courseDetails.thumbNail = thumbnailImage.secure_url
+            courseDetails.thumbnail = thumbnailImage.secure_url
         }
 
         for(const key in updates){
@@ -534,7 +534,8 @@ exports.editCourse = async(req,res) =>{
 
             res.status(200).json({
                 success:true ,
-                message:`course edited successfully`
+                message:`course edited successfully`,
+                data:updatedCourse
             })
 
     } catch(error){

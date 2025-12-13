@@ -319,7 +319,7 @@ exports.getEnrolledCourses = async(req,res) =>{
             populate: {
             path: "courseContent",
             populate: {
-                path: "subSections",
+                path: "subSection",
             },
             },
         })
@@ -360,10 +360,10 @@ exports.getEnrolledCourses = async(req,res) =>{
 
         for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
             totalDurationInSeconds += userDetails.courses[i].courseContent[j]
-            .subSections.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
+            .subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
             userDetails.courses[i].totalDuration = convertSecondsToDuration(totalDurationInSeconds)
 
-            SubsectionLength +=userDetails.courses[i].courseContent[j].subSections.length
+            SubsectionLength +=userDetails.courses[i].courseContent[j].subSection.length
         }
         let courseProgressCount = await CourseProgress.findOne({
             courseID: userDetails.courses[i]._id,

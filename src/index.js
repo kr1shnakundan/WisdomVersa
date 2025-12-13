@@ -6,21 +6,25 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
-import {configureStore} from "@reduxjs/toolkit"
-import rootReducer from './reducer/indexReducer';
+// import {configureStore} from "@reduxjs/toolkit"
+// import rootReducer from './reducer/indexReducer';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './config/store';
 
-const store = configureStore({
-  reducer:rootReducer,
-});
+// const store = configureStore({
+//   reducer:rootReducer,
+// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-        <BrowserRouter>
-          <App />
-          <Toaster/>
-        </BrowserRouter>
+        <PersistGate  loading={<div>Loading...</div>} persistor={persistor}>
+            <BrowserRouter>
+              <App />
+              <Toaster/>
+            </BrowserRouter>
+        </PersistGate>
     </Provider>
    
   

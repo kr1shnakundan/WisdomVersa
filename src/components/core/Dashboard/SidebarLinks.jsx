@@ -2,6 +2,7 @@ import React from 'react'
 import * as Icons from 'react-icons/vsc'
 import { useDispatch } from 'react-redux'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
+import { resetCourseState } from '../../../slices/courseSlice'
 
 // NEED TO ADD RESETCOURSESTATE<---------------------
 
@@ -15,7 +16,7 @@ const SidebarLinks = ({link , iconName , onLinkClick}) => {
     }
 
     const handleClick = () => {
-      // dispatch(resetCourseState()) // Uncomment when needed<------------------------------
+      dispatch(resetCourseState()) // Uncomment when needed<------------------------------
       if (onLinkClick) {
         onLinkClick(); // Close mobile menu
       }

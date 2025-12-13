@@ -21,7 +21,7 @@ exports.auth = async(req,res,next) =>{
         try{
             //verify the jwt
             const decode = jwt.verify(token , process.env.JWT_SECRET)
-            console.log("decode:",decode);
+            // console.log("decode:",decode);
 
             // Storing the decoded JWT payload in the request object for further use
             req.user = decode;
@@ -91,9 +91,6 @@ exports.isAdmin = async(req,res,next) =>{
 exports.isInstructor = async (req, res, next) => {
 	try {
 		const userDetails = await User.findOne({ email: req.user.email });
-		console.log("userDetails in isInstructor : " ,userDetails);
-
-		// console.log("account type: " ,userDetails.accountType);
 
 		if (userDetails.accountType !== "Instructor") {
 			return res.status(400).json({

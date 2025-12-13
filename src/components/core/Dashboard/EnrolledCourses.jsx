@@ -236,7 +236,7 @@ export default function EnrolledCourses () {
                       {/* Course Info Section */}
                       <div className='flex gap-3 md:gap-4 w-full md:w-[45%] p-4 md:px-5 md:py-3 items-start md:items-center'>
                         <img 
-                          src={course.thumbNail} 
+                          src={course.thumbnail} 
                           alt="CourseImg" 
                           className='w-16 h-16 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 cursor-pointer'
                           onClick={() => {

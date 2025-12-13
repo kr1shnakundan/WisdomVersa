@@ -13,7 +13,7 @@ export default function RenderCartCourses () {
                         <div key={course._id}>
                             <div>
                                 <img 
-                                src={course?.thumbNail} 
+                                src={course?.thumbnail} 
                                 alt={course?.courseName}
                                 />
                                 <div>
