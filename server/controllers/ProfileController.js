@@ -400,3 +400,50 @@ exports.getEnrolledCourses = async(req,res) =>{
         });
     }
 }
+
+
+exports.instructorDashboard = async(req,res)=>{
+  try{
+    const instructorId = req.user.id
+    const courseDetails = await Course.find({instructors:instructorId})
+
+    if (!courseDetails || courseDetails.length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: "No courses found for this instructor",
+        data: []
+      });
+    }
+
+    const courseData = courseDetails.map((course)=>{
+      const totalStudentsEnrolled = course.studentEnrolled.length
+      const totalAmountGenerated = totalStudentsEnrolled * course.price
+
+      //generate the new object with additional field
+      const courseDataWithStats = {
+        _id:course._id,
+        courseName: course.courseName,
+        courseDescription: course.courseDescription,
+        // Include other course properties as needed
+        totalStudentsEnrolled,
+        totalAmountGenerated,
+      }
+      // console.log("courseDataWithSTats for one course in instrucotrdashboard:...",courseDataWithStats)
+      return courseDataWithStats
+    })
+
+    res.status(200).json({
+      success:true,
+      message:"data fetched successfully for instructor dashboard",
+      data:courseData
+    })
+
+  } catch(error){
+    console.error("Error in instructorDashboard:", error);
+    res.status(500).json({
+      success:false,
+      message:"error occured in  instructorDashboard controller",
+      error:error.message
+    })
+  }
+}

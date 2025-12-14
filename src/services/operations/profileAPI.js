@@ -100,3 +100,32 @@ export async function unenrollFromCourse (courseId , token) {
     }
     
 }
+
+
+export async function getInstructorData (token){
+    let result = []
+    const toastId = toast.loading(
+        <div className='flex items-center justify-center gap-1'>
+            <div className='spinner'></div>
+            <p>Loading...</p>
+        </div>
+    )
+    try{
+        const response = await apiConnector("GET",GET_INSTRUCTOR_DATA_API,null , {
+            Authorization : `Bearer${token}`
+        })
+
+        if(!response?.data?.success){
+            throw new Error (response?.data?.message)
+        }
+
+        console.log("REsponse in getInstructorDAta : ....",response)
+        result = response?.data?.data
+
+    } catch(error){
+        console.log("ERROR IN GETINSTRUCTORDATA API : ...",error)
+        toast.error("Unable to fetch instructor data")
+    }
+    toast.dismiss(toastId)
+    return result
+}
