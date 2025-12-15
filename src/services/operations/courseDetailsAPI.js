@@ -41,12 +41,6 @@ export const getAllCourses = async () => {
 // fetching all courses under a specific instructor
 export const fetchInstructorCourses = async(token) =>{
     let result = []
-    const toastId = toast.loading(
-        <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
-            <p>Loading...</p>
-        </div>
-    )
     try{
         const response = await apiConnector("GET",GET_ALL_INSTRUCTOR_COURSES_API,null , {
             Authorization : `Bearer${token}`
@@ -60,9 +54,7 @@ export const fetchInstructorCourses = async(token) =>{
         result = response?.data?.data
     } catch(error){
         console.log("INSTRUCTOR COURSES API ERROR............", error)
-        toast.error(error.message)
     }
-    toast.dismiss(toastId)
     return result
 }
 

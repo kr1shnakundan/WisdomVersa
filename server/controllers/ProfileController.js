@@ -4,6 +4,7 @@ const Course = require("../models/Course");
 const CourseProgress = require("../models/CourseProgress");
 const { uploadImageToCloudinary } = require("../utils/ImageUploader");
 const { convertSecondsToDuration } = require("../utils/secToDuration")
+const bcrypt = require("bcrypt");
 
 // exports.updateProfile = async(req,res) =>{
 //     try{
@@ -197,9 +198,19 @@ exports.updateProfile = async (req, res) => {
 
 exports.deleteAccount = async(req,res) =>{
     try{
+
+        const {password} = req.body
+
         //find id of user
         const id = req.user.id;
-        console.log("id for deleteAccount : " ,id);
+
+        // Validate password is provided
+        if (!password) {
+            return res.status(400).json({
+                success: false,
+                message: "Password is required to delete account"
+            });
+        }
 
         //find user detail with this user
         const user = await User.findById({_id:id});
@@ -210,11 +221,20 @@ exports.deleteAccount = async(req,res) =>{
             });
         }
 
+
+         // Verify password before deleting
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                success: false,
+                message: "Incorrect password"
+            });
+        }
+
         //remove details from profile 
-        await Profile.findByIdAndDelete(user.additionalDetails);
-        // await Profile.findByIdAndDelete({
-        //     _id: new mongoose.Types.ObjectId(user.additionalDetails),
-        // })
+       if (user.additionalDetails) {
+            await Profile.findByIdAndDelete(user.additionalDetails);
+        }
 
         //remove the studentId from course
         for(const courseId of user.courses){
@@ -235,6 +255,7 @@ exports.deleteAccount = async(req,res) =>{
 
 
     } catch(error){
+      console.log("Errorr in delete account controller : ",error)
         return res.status(500).json({
             success:false,
             message:`error occured while deleting Account`

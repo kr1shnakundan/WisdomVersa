@@ -116,25 +116,25 @@ export default async function ChangePassword(token , formData){
 
 }
 
-export function deleteProfile (token , navigate){
+export function deleteProfile (password,token , navigate){
     return async (dispatch)=>{
         const toastId = toast.loading(<div className="flex items-center justify-center gap-2">
                                     <div className="spinner"></div>
                                     <p>Loading...</p>
                                 </div>)
     try{
-        const response = await apiConnector("DELETE",DELETE_PROFILE_API , null ,{
+        const response = await apiConnector("DELETE",DELETE_PROFILE_API ,{password},{
             Authorization : `Bearer${token}`
         })
 
-        if(!response.data.success){
-            throw new Error (response.data.message)
+        if(!response?.data?.success){
+            throw new Error (response?.data?.message)
         }
 
         dispatch(logout(navigate))
     } catch(error){
         console.log("Error while deleting Profile : ",error)
-        toast.error(error.response.data.messge || "unable to delete Account")
+        toast.error(error.response.data.message || "unable to delete Account")
     }
     toast.dismiss(toastId)
     }

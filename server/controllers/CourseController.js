@@ -365,7 +365,7 @@ exports.getInstructorCourses = async(req,res) =>{
         const courseDetails = await Course.find({instructors:instructorId})
         .sort({createdAt:-1})        
 
-        if(!courseDetails|| courseDetails.length === 0) {
+        if(!courseDetails) {
             return res.status(400).json({
                 success:false,
                 message:`no course find for the instuctor`
