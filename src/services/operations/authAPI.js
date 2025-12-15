@@ -210,7 +210,7 @@ export function getPasswordResetToken(email , setEmailSent){
 
 
 export function resetPassword ( password , confirmPassword,token ,navigate){
-    return async (dispatch) =>{
+    return async (dispatch,getState) =>{
         const toastId = toast.loading("Loading...")
         dispatch(setLoading(true))
 
@@ -224,7 +224,17 @@ export function resetPassword ( password , confirmPassword,token ,navigate){
             }
 
             toast.success("Password Reset successfully")
-            navigate("/login")
+            // navigate("/login")
+
+             // Check if user is logged in
+            const { auth } = getState() //auth redux call
+            const isLoggedIn = auth?.token || auth?.user 
+            
+            if (isLoggedIn) {
+                navigate("/dashboard/settings/#update-password")
+            } else {
+                navigate("/login")
+            }
 
         } catch(error){
             console.log("Reset Password error in authAPI : ",error)

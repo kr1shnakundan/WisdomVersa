@@ -1,5 +1,4 @@
 
-import { retry } from "@reduxjs/toolkit/query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineEyeInvisible , AiOutlineEye } from "react-icons/ai";
 import { RiLockPasswordLine, RiLockUnlockLine } from "react-icons/ri";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 export default function UpdatePassword() {
     const navigate = useNavigate()
@@ -88,8 +88,12 @@ export default function UpdatePassword() {
                                 <span className="-mt-1 text-[12px] text-yellow-100">
                                     Please Enter Your Old Password.
                                 </span>
-                            )}
+                            )} 
                         </div>
+                        <Link to={"/forgot-password"}
+                            className='mt-1 ml-auto max-w-max text-xs text-blue-100'>
+                            Forgot Password ?
+                        </Link>
                     </label>
 
                     {/* New Password and Confirm Password Fields */}

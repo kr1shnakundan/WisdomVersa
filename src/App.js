@@ -75,9 +75,7 @@ function App() {
             } />
           <Route path='forgot-password'
                 element ={
-                  <OpenRoute>
-                    <ForgotPassword />
-                  </OpenRoute>
+                    <ForgotPassword /> 
                 }
           />
           <Route path='update-password/:id' element ={<UpdatePassword/>} />
