@@ -59,7 +59,7 @@ const Sidebar = () => {
       {/* Mobile Menu Toggle Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className='md:hidden fixed top-[4.5rem] left-4 z-50 p-2 rounded-md bg-richblack-800 text-richblack-25 border border-richblack-700'
+        className='md:hidden fixed top-[4.5rem] left-4 z-10 p-2 rounded-md bg-richblack-800 text-richblack-25 border border-richblack-700'
         aria-label="Toggle menu"
       >
         {isMobileMenuOpen ? <AiOutlineClose className="text-2xl" /> : <AiOutlineMenu className="text-2xl" />}
