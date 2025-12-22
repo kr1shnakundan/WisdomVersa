@@ -1,13 +1,15 @@
+const mongoose = require("mongoose")
 const Course = require("../models/Course");
 const User = require("../models/User");
 // const Tags = require("../models/Tags");
 const Section = require("../models/Section")
-const subSection = require("../models/SubSection")
+const SubSection = require("../models/SubSection")
 const {uploadImageToCloudinary} = require("../utils/ImageUploader");
 const Category = require("../models/Category");
 const { convertSecondsToDuration } = require("../utils/secToDuration")
 require("dotenv").config();
 const CourseProgress = require("../models/CourseProgress")
+const RatingAndReview = require("../models/RatingAndReview")
 
 
 //for authorized user , who has buyed this course
@@ -408,74 +410,174 @@ exports.getInstructorCourses = async(req,res) =>{
     }
 }
 
-//delete course
-exports.deleteCourse = async(req,res) =>{
-    try{
-        const {courseId} = req.body
+// //delete course
+// exports.deleteCourse = async(req,res) =>{
+//     try{
+//         const {courseId} = req.body
 
-        const courseDetails = await Course.findById(courseId)
+//         const courseDetails = await Course.findById(courseId)
+//         if(!courseDetails){
+//             return res.status(400).json({
+//                 success:false,
+//                 message:`unable to find course for courseId : ${courseId}`
+//             })
+//         }
+
+//         //delete course from students enrolled for this course
+//         const studentEnrolled = courseDetails.studentEnrolled;
+//         for(const studentId of studentEnrolled){
+//             await User.findByIdAndUpdate(studentId , {
+//                 $pull:{courses:courseId}
+//             },{new:true});
+//         }
+
+//         //delete section of this course
+//         const courseSection = courseDetails.courseContent
+//         for(const sectionId of courseSection){
+//             const sectionDetails = await Section.findById(sectionId)
+//             if(sectionDetails){
+//                 const courseSubSection = sectionDetails.subSection || []
+//                 for(const subSectionId of courseSubSection){
+//                     await subSection.findByIdAndDelete(subSectionId);
+//                 } 
+//             }
+
+//             await Section.findByIdAndDelete(sectionId);
+            
+//         }
+
+
+//           // Delete all ratings and reviews for this course (if they exist)
+//         const ratingsExist = await RatingAndReview.findOne({ course: courseId }).session(session);
+//         if(ratingsExist) {
+//             const deleteResult = await RatingAndReview.deleteMany({ course: courseId }, { session });
+//             if(!deleteResult.acknowledged) {
+//                 throw new Error("Failed to delete ratings and reviews");
+//             }
+//         }
+
+//         // Remove course from instructor
+//         await User.findByIdAndUpdate(
+//             courseDetails.instructors,
+//             { $pull: { courses: courseId } },
+//             { new: true }
+//         )
+
+//         // Remove course from category
+//         await Category.findByIdAndUpdate(
+//             courseDetails.category,
+//             { $pull: { course: courseId } },
+//             { new: true }
+//         )
+
+
+//         // Delete the course
+//         await Course.findByIdAndDelete(courseId)
+
+//         //why not delete the rating and review for this course
+//         res.status(200).json({
+//             success:true,
+//             message:`course successfully deleted for courseId: ${courseId}`
+//         })
+
+//     } catch(error){
+//       console.log("Errrror in delete course in course controller : ",error)
+//         return res.status(500).json({
+//             success:false,
+//             message:`error in deleting the course`
+//         })
+//     }
+    
+// }
+
+
+exports.deleteCourse = async(req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    
+    try {
+        const {courseId} = req.body
+        const courseDetails = await Course.findById(courseId).session(session)
+        
         if(!courseDetails){
+            await session.abortTransaction();
+            session.endSession();
             return res.status(400).json({
-                success:false,
-                message:`unable to find course for courseId : ${courseId}`
+                success: false,
+                message: `unable to find course for courseId : ${courseId}`
             })
         }
-
-        //delete course from students enrolled for this course
+        
+        // Delete course from students enrolled for this course
         const studentEnrolled = courseDetails.studentEnrolled;
         for(const studentId of studentEnrolled){
-            await User.findByIdAndUpdate(studentId , {
-                $pull:{courses:courseId}
-            },{new:true});
+            await User.findByIdAndUpdate(
+                studentId,
+                { $pull: {courses: courseId} },
+                { new: true, session }
+            );
         }
-
-        //delete section of this course
+        
+        // Delete sections and subsections of this course
         const courseSection = courseDetails.courseContent
         for(const sectionId of courseSection){
-            const sectionDetails = await Section.findById(sectionId)
+            const sectionDetails = await Section.findById(sectionId).session(session)
             if(sectionDetails){
                 const courseSubSection = sectionDetails.subSection || []
                 for(const subSectionId of courseSubSection){
-                    await subSection.findByIdAndDelete(subSectionId);
+                    await SubSection.findByIdAndDelete(subSectionId, { session });
                 } 
             }
-
-            await Section.findByIdAndDelete(sectionId);
-            
+            await Section.findByIdAndDelete(sectionId, { session });
         }
-
+        
+        // Delete all ratings and reviews for this course (if they exist)
+        const ratingsExist = await RatingAndReview.findOne({ course: courseId }).session(session);
+        if(ratingsExist) {
+            const deleteResult = await RatingAndReview.deleteMany({ course: courseId }, { session });
+            if(!deleteResult.acknowledged) {
+                throw new Error("Failed to delete ratings and reviews");
+            }
+        }
+        
         // Remove course from instructor
         await User.findByIdAndUpdate(
             courseDetails.instructors,
             { $pull: { courses: courseId } },
-            { new: true }
+            { new: true, session }
         )
-
+        
         // Remove course from category
         await Category.findByIdAndUpdate(
             courseDetails.category,
             { $pull: { course: courseId } },
-            { new: true }
+            { new: true, session }
         )
-
-
+        
         // Delete the course
-        await Course.findByIdAndDelete(courseId)
-
-        //why not delete the rating and review for this course
+        await Course.findByIdAndDelete(courseId, { session })
+        
+        // Commit the transaction
+        await session.commitTransaction();
+        session.endSession();
+        
         res.status(200).json({
-            success:true,
-            message:`course successfully deleted for courseId: ${courseId}`
+            success: true,
+            message: `course successfully deleted for courseId: ${courseId}`
         })
-
-    } catch(error){
-      console.log("Errrror in delete course in course controller : ",error)
+        
+    } catch(error) {
+        // Rollback the transaction on error
+        await session.abortTransaction();
+        session.endSession();
+        
+        console.log("Error in delete course in course controller : ", error)
         return res.status(500).json({
-            success:false,
-            message:`error in deleting the course`
+            success: false,
+            message: `error in deleting the course`,
+            error: error.message
         })
     }
-    
 }
 
 //edit course

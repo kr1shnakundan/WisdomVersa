@@ -61,7 +61,7 @@ exports.categoryPageDetails = async(req,res) =>{
         const {categoryId } = req.body
 
         //fetch category for this categoryId
-        const selectedCategory = await Category.find({_id:categoryId})
+        const selectedCategory = await Category.findById(categoryId)
         .populate({
             path:"courses" , 
             $match:{status:"Published"},
@@ -79,7 +79,7 @@ exports.categoryPageDetails = async(req,res) =>{
         }
 
         //case when course Not found for the category
-        if(selectedCategory.length === 0){
+        if(selectedCategory.courses.length === 0){
             console.log("no course for this category")
             return res.status(400).json({
                 success:false,
@@ -87,7 +87,7 @@ exports.categoryPageDetails = async(req,res) =>{
             });
         }
 
-         // ✅ define getRandomInt here
+         // define getRandomInt here
             function getRandomInt(max) {
             return Math.floor(Math.random() * max);
             }
@@ -96,12 +96,22 @@ exports.categoryPageDetails = async(req,res) =>{
         const categoriesExceptSelected = await Category.find({
             _id:{$ne:categoryId}
         })
-        let differentCategory = await Category.findOne(
-            categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]._id
-        ).populate({
-            path:"courses",
-            $match:{status:"Published"}
-        })
+        let differentCategory = null
+        let attempt = 0
+        let maxAttempt = categoriesExceptSelected.length;
+        while(!differentCategory && attempt < maxAttempt){
+            const randomCategory = await Category.findOne(
+                categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]._id
+            ).populate({
+                path:"courses",
+                $match:{status:"Published"}
+            })
+
+            if(randomCategory && randomCategory.courses && randomCategory.courses.length > 0){
+                differentCategory = randomCategory;
+            }
+            attempt++;
+        }
 
         //get top selling course of all categories
         const allCategories = await Category.find({})

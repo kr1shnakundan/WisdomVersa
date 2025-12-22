@@ -48,3 +48,45 @@ const SidebarLinks = ({link , iconName , onLinkClick}) => {
 }
 
 export default SidebarLinks
+
+
+
+// import React, { forwardRef } from "react"
+// import * as Icons from "react-icons/vsc"
+// import { NavLink, matchPath, useLocation } from "react-router-dom"
+// import { useDispatch } from "react-redux"
+// import { resetCourseState } from "../../../slices/courseSlice"
+
+// const SidebarLinks = forwardRef(({ link, iconName, onLinkClick }, ref) => {
+//   const Icon = Icons[iconName]
+//   const location = useLocation()
+//   const dispatch = useDispatch()
+
+//   const isActive = matchPath({ path: link.path }, location.pathname)
+
+//   const handleClick = () => {
+//     dispatch(resetCourseState())
+//     onLinkClick?.()
+//   }
+
+//   return (
+//     <NavLink
+//       ref={ref}
+//       to={link.path}
+//       onClick={handleClick}
+//       data-active={isActive ? "true" : "false"}
+//       className={`px-8 py-2 text-sm font-medium transition-all duration-200
+//         ${isActive
+//           ? "text-yellow-50 bg-yellow-800/20"
+//           : "text-richblack-300 hover:bg-richblack-700"}
+//       `}
+//     >
+//       <div className="flex items-center gap-2 font-semibold">
+//         <Icon className="text-lg" />
+//         <span>{link.name}</span>
+//       </div>
+//     </NavLink>
+//   )
+// })
+
+// export default SidebarLinks

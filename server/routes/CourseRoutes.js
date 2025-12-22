@@ -86,7 +86,7 @@ router.post("/unenrollCourse",auth ,isStudent , unenrollFromCourse)
 //category can only be created by admin
 router.post("/createCategory",auth , isAdmin,createCategory)
 router.get("/showAllCategories",showAllCategories)
-router.post("/categoryPageDetails",categoryPageDetails)
+router.post("/getCategoryPageDetails",categoryPageDetails)
 
 // ********************************************************************************************************
 //                                      Rating and Review

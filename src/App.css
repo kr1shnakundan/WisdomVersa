@@ -138,3 +138,23 @@ html , body{
 .lable-style {
    @apply text-[0.875rem] leading-[1.375rem] text-richblack-5;
 }
+
+
+
+.swiper {
+   overflow: visible !important;
+}
+.swiper-wrapper {
+   overflow: visible !important;
+}
+.swiper-slide {
+   overflow: visible !important;
+}
+.swiper-pagination-bullet {
+   background: #6b7280;
+   opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+   background: #ffd60a;
+   opacity: 1;
+}

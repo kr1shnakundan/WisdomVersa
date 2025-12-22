@@ -28,6 +28,7 @@ import MyCourses from './components/core/Dashboard/MyCourses';
 import AddCourse from './components/core/Dashboard/AddCourses/addCourseIndex';
 import EditCourse from './components/core/Dashboard/EditCourse/editCourseIndex';
 import Instructor from './components/core/Dashboard/InstructorDashboard/Instructor';
+import Catalog from './pages/Catalog';
 
 
 function App() {
@@ -92,6 +93,9 @@ function App() {
 
 
           <Route path='/contact' element = {<Contact/>} />
+
+
+          <Route path="catalog/:catalogName" element={<Catalog/>} />
 
             <Route element={
               < PrivateRoute>

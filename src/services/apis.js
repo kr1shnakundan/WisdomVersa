@@ -60,3 +60,8 @@ export const settingsEndPoints = {
     UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
     DELETE_PROFILE_API: BASE_URL + "/profile/deleteAccount",
 }
+
+// CATALOG PAGE DATA
+export const catalogData = {
+  CATALOGPAGEDATA_API: BASE_URL + "/course/getCategoryPageDetails",
+}
