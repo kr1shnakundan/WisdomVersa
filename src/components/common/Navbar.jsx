@@ -300,9 +300,64 @@ const Navbar = () => {
 
           {/* -------- LOGGED OUT -------- */}
           {!token && (
-            <div className="flex flex-col gap-3">
-              <Link to="/login" onClick={closeMenu}>Log in</Link>
-              <Link to="/signup" onClick={closeMenu}>Sign up</Link>
+            <div className="flex  flex-col gap-3">
+              {/* Navigation Links for Logged Out Users */}
+              <ul className="flex flex-col md:hidden gap-4 mb-4">
+                <Link to="/" onClick={closeMenu}>Home</Link>
+
+                <button
+                  onClick={() => setIsCatalogOpen((p) => !p)}
+                  className="flex items-center justify-between"
+                >
+                  Catalog
+                  <BsChevronDown
+                    className={`transition-transform ${
+                      isCatalogOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                <div
+                  className={`ml-4 overflow-hidden rounded-md bg-richblack-900 transition-all duration-300 ${
+                    isCatalogOpen
+                      ? "max-h-96 opacity-100"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
+                  {subLinks
+                    ?.filter((c) => c.courses?.length > 0)
+                    .map((c, i) => (
+                      <Link
+                        key={i}
+                        to={`/Catalog/${c.name
+                          .split(" ")
+                          .join("-")
+                          .toLowerCase()}`}
+                        className="block px-4 py-2 hover:bg-richblack-700"
+                        onClick={closeMenu}
+                      >
+                        {c.name}
+                      </Link>
+                    ))}
+                </div>
+
+                <Link to="/about" onClick={closeMenu}>About Us</Link>
+                <Link to="/contact" onClick={closeMenu}>Contact Us</Link>
+              </ul>
+
+              <div className="border-t border-richblack-700 pt-4" />
+
+              {/* Auth Buttons */}
+              <Link to="/login" onClick={closeMenu}>
+                <button className="w-full rounded-md border border-richblack-700 bg-richblack-900 px-3 py-2 text-richblack-25 hover:bg-richblack-800">
+                  Log in
+                </button>
+              </Link>
+              <Link to="/signup" onClick={closeMenu}>
+                <button className="w-full rounded-md border border-richblack-700 bg-richblack-900 px-3 py-2 text-richblack-25 hover:bg-richblack-800">
+                  Sign up
+                </button>
+              </Link>
             </div>
           )}
         </div>
