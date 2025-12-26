@@ -64,7 +64,7 @@ exports.categoryPageDetails = async(req,res) =>{
         const selectedCategory = await Category.findById(categoryId)
         .populate({
             path:"courses" , 
-            $match:{status:"Published"},
+            match:{status:"Published"},
             populate:"ratingAndReview"
         }).exec();
         console.log("selectedCategory: ",selectedCategory);
@@ -78,14 +78,14 @@ exports.categoryPageDetails = async(req,res) =>{
             });
         }
 
-        //case when course Not found for the category
-        if(selectedCategory.courses.length === 0){
-            console.log("no course for this category")
-            return res.status(400).json({
-                success:false,
-                message:`no course found in the selected category`
-            });
-        }
+        // //case when course Not found for the category
+        // if(selectedCategory.courses.length === 0){
+        //     console.log("no course for this category")
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:`no course found in the selected category`
+        //     });
+        // }
 
          // define getRandomInt here
             function getRandomInt(max) {
@@ -100,11 +100,11 @@ exports.categoryPageDetails = async(req,res) =>{
         let attempt = 0
         let maxAttempt = categoriesExceptSelected.length;
         while(!differentCategory && attempt < maxAttempt){
-            const randomCategory = await Category.findOne(
+            const randomCategory = await Category.findById(
                 categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]._id
             ).populate({
                 path:"courses",
-                $match:{status:"Published"}
+                match:{status:"Published"}
             })
 
             if(randomCategory && randomCategory.courses && randomCategory.courses.length > 0){
@@ -117,7 +117,7 @@ exports.categoryPageDetails = async(req,res) =>{
         const allCategories = await Category.find({})
             .populate({
                 path:"courses",
-                $match:{status:"Published"},
+                match:{status:"Published"},
                 populate:"instructors"
             }).exec();
         const allCourses = allCategories.flatMap((category)=>category.courses)

@@ -54,9 +54,8 @@ const Navbar = () => {
     <>
       {/* ================= NAVBAR ================= */}
       <div
-        className={`fixed top-0 left-0 right-0 z-50 h-14 border-b border-b-richblack-700 ${
-          location.pathname !== "/" ? "bg-richblack-800" : "bg-richblack-900"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 h-14 border-b border-b-richblack-700
+        bg-richblack-900`}
       >
         <div className="mx-auto flex h-full w-11/12 max-w-maxContent items-center justify-between">
           {/* Logo */}

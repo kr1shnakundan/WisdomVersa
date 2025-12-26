@@ -312,12 +312,12 @@ exports.login  = async(req,res) =>{
                 sameSite: 'lax'
             }
 
-            console.log("===== LOGIN DEBUG =====");
-            console.log("Token generated:", token.substring(0, 20) + "...");
-            console.log("Cookie options:", options);
-            console.log("Request origin:", req.headers.origin);
-            console.log("Request headers:", req.headers);
-            console.log("=======================");
+            // console.log("===== LOGIN DEBUG =====");
+            // console.log("Token generated:", token.substring(0, 20) + "...");
+            // console.log("Cookie options:", options);
+            // console.log("Request origin:", req.headers.origin);
+            // console.log("Request headers:", req.headers);
+            // console.log("=======================");
 
             return res.cookie("token",token,options).status(200).json({
                 success:true,

@@ -11,11 +11,10 @@ const courseProgress = new mongoose.Schema({
         required:true,
         ref:"user"
     },
-    completedVideos:{
+    completedVideos:[{
         type:mongoose.Schema.Types.ObjectId,
-        required:true,
         ref:"SubSection"
-    },
+    }],
     // NEW FIELD
     isCompleted: {
         type: Boolean,

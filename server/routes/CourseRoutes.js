@@ -65,8 +65,8 @@ router.post("/deleteSubSection",auth , isInstructor,deleteSubSection)
 router.get("/getInstructorCourses",auth , isInstructor , getInstructorCourses)
 
 router.post("/getFullCourseDetails",auth , getFullCourseDetails)
-//...............................................why somewhere get and somewhere post?
-router.get("/getCourseDetails",getCourseDetails)
+
+router.post("/getCourseDetails",getCourseDetails)
 
 router.get("/getAllCourses",getAllCourse)
 

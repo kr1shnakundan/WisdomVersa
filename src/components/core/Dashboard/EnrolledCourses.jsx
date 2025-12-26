@@ -57,9 +57,9 @@ const CourseMenu = ({course , isMobile=false , onMarkComplete ,onUnenroll}) =>{
       setShowMenu(false)
     } catch (error) {
       console.error("Error marking complete:", error)
-    } finally {
-      setIsMarking(false)
-    }
+    } 
+    setIsMarking(false)
+    
   }
 
   const handleUnenroll = async () => {
@@ -131,6 +131,7 @@ export default function EnrolledCourses () {
   const getEnrolledCourses = async() =>{
     try{
       const res = await getUserEnrolledCourses(token);
+      console.log("response in EnrolledCourses......:",res)
       setEnrolledCourses(res)
     } catch(error){
       console.log("Unable to fetch getEnrolledCourses : " ,error);
@@ -273,7 +274,7 @@ export default function EnrolledCourses () {
                       <div className='flex flex-col md:hidden px-4 pb-4 gap-3'>
                         <div className='flex justify-between items-center'>
                           <span className='text-xs text-richblack-300'>Duration:</span>
-                          <span className='text-sm'>{course?.totalDuration ? course.duration : "0hr 0mins"}</span>
+                          <span className='text-sm'>{course?.totalDuration ? course.totalDuration : "0hr 0mins"}</span>
                         </div>
                         
                         <div className='flex flex-col gap-2'>
@@ -291,13 +292,13 @@ export default function EnrolledCourses () {
 
                       {/* Duration and Progress Section - Desktop/Tablet Layout */}
                       <div className="hidden md:block w-1/4 px-2 py-3">
-                        {course?.totalDuration ? course.duration : "0hr 0mins"}
+                        {course?.totalDuration ? course.totalDuration : "0hr 0mins"}
                       </div>
                       
                       <div className="hidden md:flex w-1/5 flex-col gap-2 px-2 py-3">
-                        <p>Progress: {course.progressPercentage || 0}%</p>
+                        <p>Progress: {course.progressPercentage }%</p>
                         <ProgressBar
-                          completed={course.progressPercentage || 0}
+                          completed={course.progressPercentage }
                           height="8px"
                           isLabelVisible={false}
                         />

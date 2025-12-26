@@ -3,7 +3,7 @@ import { apiConnector } from '../apiconnector'
 import toast from 'react-hot-toast'
 import { profileEndPoints } from '../apis'
 
-const { GET_USER_DETAILS_API, GET_USER_ENROLLED_COURSES_API, GET_INSTRUCTOR_DATA_API
+const { GET_USER_ENROLLED_COURSES_API, GET_INSTRUCTOR_DATA_API
     ,MARK_COURSE_COMPLETE_API , UNENROLL_COURSE_API } = profileEndPoints
 
 export async function getUserEnrolledCourses (token){
@@ -22,7 +22,7 @@ export async function getUserEnrolledCourses (token){
             GET_USER_ENROLLED_COURSES_API,
             null,
             {
-                Authorization: `Bearer${token}`, //<---- please note that in our bearer, their is no space
+                Authorization: `Bearer${token}`,
             }
         )
 
@@ -46,7 +46,6 @@ export async function getUserEnrolledCourses (token){
     
 }
 
-//Need to be checked <----------------------------------------------------------
 export async function markCourseAsComplete (courseId , token){
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
@@ -55,7 +54,7 @@ export async function markCourseAsComplete (courseId , token){
         </div>
     )
     try{
-        const response = await apiConnector("POST",MARK_COURSE_COMPLETE_API , courseId , {
+        const response = await apiConnector("POST",MARK_COURSE_COMPLETE_API , {courseId} , {
             Authorization:`Bearer${token}`
         } )
 
@@ -64,13 +63,14 @@ export async function markCourseAsComplete (courseId , token){
         }
 
         toast.success("Course marked as Completed Successfully")
+        toast.dismiss(toastId)
         return response.data
     } catch(error){
         console.error("MARK_COURSE_COMPLETE_API ERROR:", error)
         toast.error(error.response?.data?.message || "Failed to mark complete")
+        toast.dismiss(toastId)
         throw error
     }
-    toast.dismiss(toastId)
 }
 
 export async function unenrollFromCourse (courseId , token) {
@@ -81,7 +81,7 @@ export async function unenrollFromCourse (courseId , token) {
         </div>
     )
     try{
-        let response = await apiConnector("POST",UNENROLL_COURSE_API ,{ courseId: courseId } , {
+        let response = await apiConnector("POST",UNENROLL_COURSE_API ,{ courseId } , {
             Authorization : `Bearer${token}`
         } )
 

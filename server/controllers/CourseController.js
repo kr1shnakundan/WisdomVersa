@@ -223,78 +223,6 @@ exports.getAllCourse = async(req,res)=>{
     }
 }
 
-//get single course
-// exports.getCourseDetails = async(req,res) =>{
-//     try{
-//         const {courseId} = req.body
-//         const courseDetails = await Course.findOne({_id:courseId})
-//         .populate({
-//             path:"instructors",
-//             populate:{
-//                 path:"additionalDetails"
-//             },
-//         })
-//         .populate({
-//             path: "courseContent",       // populate Sections first
-//         populate: {
-//           path: "subSection",        // then populate SubSection inside each Section
-//           select: "-videoUrl",
-//         }
-//         })
-//         .populate("category")
-//         .populate("ratingAndReview")
-//         .exec()
-
-//         console.log("CourseDetails : " ,courseDetails )
-
-//         if(!courseDetails){
-//             return res.status(400).json({
-//                 success:false,
-//                 message:`cannot find courseDetails for courseId : ${courseId}`
-//             });
-//         }
-
-//         // if(courseDetails.status === "Draft"){
-//         //     return res.status(400).json({
-//         //         success:false,
-//         //         message:`Accessing a Draft course is forbidden`
-//         //     })
-//         // }
-
-//         let totalDurationInSeconds = 0
-
-//         courseDetails.courseContent.forEach((content) => {
-//             if (content.subSection && content.subSection.length > 0) {
-//             content.subSection.forEach((subSection) => {
-//                 const timeDurationInSeconds = parseInt(subSection.timeDuration)
-//                 totalDurationInSeconds += timeDurationInSeconds
-//             })
-//             }
-//         })
-
-//         const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
-
-//         return res.status(200).json({
-//             success:true,
-//             message:`courseDetails for couseId ${courseId} successfully fetched`,
-//             data: {
-//                 courseDetails,
-//                 totalDuration,
-//             },
-//         })
-
-//     } catch(error){
-//         console.log("error in getCourseDetails: " ,error)
-//         return res.status(500).json({
-//             success:false,
-//             message:`error while geting single courseDetails`
-//         })
-//     }
-
-    
-// }
-
-
 //get course detail for general user which excludes video url
 exports.getCourseDetails = async (req, res) => {
   try {
@@ -308,9 +236,9 @@ exports.getCourseDetails = async (req, res) => {
         },
       })
       .populate({
-        path: "courseContent",       // populate Sections first
+        path: "courseContent",       
         populate: {
-          path: "subSection",        // then populate SubSection inside each Section
+          path: "subSection",        
           select: "-videoUrl",
         },
       })

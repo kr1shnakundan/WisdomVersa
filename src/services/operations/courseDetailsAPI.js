@@ -21,6 +21,31 @@ const { COURSE_DETAILS_API,
 } = courseEndpoints
 
 
+export const fetchCourseDetails = async(courseId) =>{
+  let result = []
+  const toastId = toast.loading(
+      <div className='flex items-center justify-center gap-1'>
+          <div className='spinner'></div>
+          <p>Loading...</p>
+      </div>
+  )
+  try{
+    const response  = await apiConnector("POST",COURSE_DETAILS_API , {courseId})
+    if(!response?.data?.success){
+      throw new Error(response?.data?.message)
+    }
+
+    console.log("Response in courseDetail fetching :....", response)
+
+    result = response?.data
+  } catch(error){
+    console.log("Error while fetching the courseDetails in api : ...",error)
+    toast.error(error?.response?.data?.message || "Unable to fetch course")
+  }
+  toast.dismiss(toastId)
+  return result;
+}
+
 export const getAllCourses = async () => {
   const toastId = toast.loading("Loading...")
   let result = []

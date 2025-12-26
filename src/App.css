@@ -158,3 +158,8 @@ html , body{
    background: #ffd60a;
    opacity: 1;
 }
+
+
+.blackButton {
+  @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5;
+}
