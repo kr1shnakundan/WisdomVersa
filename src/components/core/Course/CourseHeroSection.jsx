@@ -2,14 +2,33 @@ import React from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
 import RatingStars from "../../common/RatingStars";
+import { FiShare2 } from "react-icons/fi";
 import { formatDate } from "../../../services/formatDate";
 
-function CourseHeroSection({ course, avgReviewCount, isEnrolled, handleBuyCourse, navigate }) {
+function CourseHeroSection({ course,
+   avgReviewCount, 
+   isEnrolled, 
+   handleBuyCourse, 
+   navigate , 
+   handleAddToCart,
+   handleShare
+  }) {
   return (
     <div className="relative w-full bg-richblack-800">
       <div className="mx-auto box-content px-4 lg:w-[1260px] 2xl:relative">
         <div className="mx-auto grid min-h-[450px] max-w-maxContentTab justify-items-center py-8 lg:mx-0 lg:justify-items-start lg:py-0 xl:max-w-[810px]">
           
+
+          {/* 🔗 Share Button (Mobile) */}
+          <div className="absolute right-4 top-4 z-40 lg:hidden">
+            <button
+              onClick={handleShare}
+              className="p-2 rounded-full bg-richblack-900/80 backdrop-blur hover:bg-richblack-900 transition-all"
+              title="Share course"
+            >
+              <FiShare2 className="text-richblack-5 hover:text-yellow-100 text-lg" />
+            </button>
+          </div>
           {/* Mobile Thumbnail */}
             <div className="relative block max-h-[30rem] lg:hidden overflow-hidden rounded-lg">
             <img
@@ -87,7 +106,9 @@ function CourseHeroSection({ course, avgReviewCount, isEnrolled, handleBuyCourse
                 >
                   Buy Now
                 </button>
-                <button className="bg-richblack-700 text-richblack-5 py-3 rounded-lg font-semibold hover:bg-richblack-600 transition-all border border-richblack-600">
+                <button 
+                onClick={handleAddToCart}
+                className="bg-richblack-700 text-richblack-5 py-3 rounded-lg font-semibold hover:bg-richblack-600 transition-all border border-richblack-600">
                   Add to Cart
                 </button>
               </>

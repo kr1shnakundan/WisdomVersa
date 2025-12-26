@@ -11,6 +11,8 @@ import CourseHeroSection from "../components/core/Course/CourseHeroSection";
 import WhatYouWillLearn from "../components/core/Course/WhatYouWillLearn";
 import AuthorSection from "../components/core/Course/AuthorSection";
 import GetAvgRating from "../utils/avgRating";
+import { addToCart } from "../slices/cartSlice";
+import toast from "react-hot-toast";
 
 function CourseDetails() {
   const { courseId } = useParams();
@@ -76,6 +78,37 @@ function CourseDetails() {
     );
   };
 
+  const handleAddToCart = () =>{
+    if(!token){
+      setConfirmationModal({
+        text1: "You are not logged in!",
+        text2: "Please login to access your cart.",
+        btn1Text: "Login",
+        btn2Text: "Cancel",
+        btn1Handler: () => navigate("/login"),
+        btn2Handler: () => setConfirmationModal(null),
+      });
+      return;
+    }
+
+    
+    if (user?.accountType !== "Student") {
+      setConfirmationModal({
+        text1: "Only Students Can Purchase",
+        text2: "Instructors cannot purchase courses.",
+        btn1Text: "OK",
+        btn2Text: "Correct",
+        btn1Handler: () => setConfirmationModal(null),
+        btn2Handler: () => setConfirmationModal(null),
+      });
+      return;
+    }
+
+    console.log("response.data.coursedetails in coursedetails ......",response?.data?.courseDetails)
+
+    dispatch(addToCart(response?.data?.courseDetails))
+  }
+
   // Handle course purchase
   const handleBuyCourse = () => {
     if (!token) {
@@ -131,6 +164,27 @@ function CourseDetails() {
 
   const courseDetails = response.data?.courseDetails;
 
+  const handleShare = async () => {
+        const shareData = {
+          title: courseDetails?.courseName,
+          text: courseDetails?.courseDescription,
+          url: window.location.href,
+        };
+  
+        if (navigator.share) {
+          try {
+            await navigator.share(shareData);
+            toast.success("Course link copied to clipboard!")
+          } catch (err) {
+            console.log("Share cancelled");
+          }
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+          // alert("Course link copied to clipboard!");
+          toast.success("Course link copied to clipboard!")
+        }
+      };
+
   return (
     <>
       {/* Hero Section */}
@@ -140,6 +194,8 @@ function CourseDetails() {
         isEnrolled={isEnrolled}
         handleBuyCourse={handleBuyCourse}
         navigate={navigate}
+        handleAddToCart={handleAddToCart}
+        handleShare={handleShare}
       />
 
       {/* Sticky Course Card (Desktop) */}
@@ -148,6 +204,8 @@ function CourseDetails() {
         isEnrolled={isEnrolled}
         handleBuyCourse={handleBuyCourse}
         navigate={navigate}
+        handleAddToCart={handleAddToCart}
+        handleShare={handleShare}
       />
 
       {/* Main Content */}

@@ -1,7 +1,13 @@
 import React from "react";
-import { FiClock, FiBarChart2, FiBook, FiAward } from "react-icons/fi";
+import { FiClock, FiBarChart2, FiBook, FiAward ,FiShare2  } from "react-icons/fi";
 
-function CourseDetailsCard({ course, isEnrolled, handleBuyCourse, navigate }) {
+function CourseDetailsCard({ course, 
+  isEnrolled, 
+  handleBuyCourse, 
+  navigate ,
+  handleAddToCart ,
+  handleShare
+}) {
   return (
     <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute lg:block">
       <div className="bg-richblack-700 rounded-xl p-6 border  border-richblack-600 sticky top-6">
@@ -14,11 +20,19 @@ function CourseDetailsCard({ course, isEnrolled, handleBuyCourse, navigate }) {
           />
         </div>
 
-        {/* Price */}
-        <div className="mb-6">
+        {/* Price + Share */}
+        <div className="mb-6 flex items-center justify-between">
           <p className="text-3xl font-bold text-richblack-5">
             Rs. {course?.price}
           </p>
+
+          <button
+            onClick={handleShare}
+            className="p-2 rounded-full bg-richblack-800 hover:bg-richblack-900 transition-all"
+            title="Share course"
+          >
+            <FiShare2 className="text-richblack-200 hover:text-yellow-100 text-lg" />
+          </button>
         </div>
 
         {/* Buttons */}
@@ -38,7 +52,9 @@ function CourseDetailsCard({ course, isEnrolled, handleBuyCourse, navigate }) {
               >
                 Buy Now
               </button>
-              <button className="w-full bg-richblack-800 text-richblack-5 py-3 rounded-lg font-semibold hover:bg-richblack-900 transition-all border border-richblack-600">
+              <button 
+              onClick={handleAddToCart}
+              className="w-full bg-richblack-800 text-richblack-5 py-3 rounded-lg font-semibold hover:bg-richblack-900 transition-all border border-richblack-600">
                 Add to Cart
               </button>
             </>
