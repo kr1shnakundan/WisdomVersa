@@ -151,15 +151,26 @@ html , body{
    overflow: visible !important;
 }
 .swiper-pagination-bullet {
-   background: #6b7280;
-   opacity: 0.5;
+   /* background: #6b7280;
+   opacity: 0.5; */
+
+   background: #838894 !important; /* Lighter gray for better visibility */
+   opacity: 1 !important; /* Full opacity instead of 0.5 */
+   width: 10px !important;
+   height: 10px !important;
 }
 .swiper-pagination-bullet-active {
-   background: #ffd60a;
+   /* background: #ffd60a; */
+   background: #ffd60a !important;
    opacity: 1;
 }
 
 
 .blackButton {
   @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5;
+}
+
+
+.custom-swiper .swiper-pagination {
+  bottom: -30px !important;
 }

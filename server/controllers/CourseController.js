@@ -525,6 +525,19 @@ exports.editCourse = async(req,res) =>{
             })
         }
 
+        // Check if trying to unpublish a course with enrolled students
+        if(updates.status && 
+           courseDetails.status === "Published" && 
+           updates.status === "Draft" && 
+           courseDetails.studentEnrolled && 
+           courseDetails.studentEnrolled.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot save course as draft. ${courseDetails.studentEnrolled.length} students are currently enrolled in this course.`,
+                enrolledStudents: courseDetails.studentEnrolled.length
+            })
+        }
+
         if(req.files){
             console.log("thumbnail update")
             const thumbnail = req.files.thumbnailImage
