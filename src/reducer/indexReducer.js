@@ -31,6 +31,14 @@ const cartPersistConfig = {
   whitelist: ["cart", "totalItems", "total"],
 };
 
+const viewCoursePersistConfig = {
+  key: "viewCourse",
+  version: 1,
+  storage,
+  whitelist: ["courseSectionData", "courseEntireData", "completedLectures", "totalNoOfLectures"],
+};
+
+
 
 const rootReducer  = combineReducers({
     auth: authReducer,
@@ -39,6 +47,7 @@ const rootReducer  = combineReducers({
     // course:courseReducer,
     // viewCourse:viewCourseReducer,
     course:persistReducer(coursePersistConfig,courseReducer),
+    viewCourse: persistReducer(viewCoursePersistConfig, viewCourseReducer),
  
 })
 

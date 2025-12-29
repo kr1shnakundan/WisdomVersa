@@ -26,7 +26,6 @@ function loadScript(src) {
 export async function buyCourse(token, courses, userDetails, navigate, dispatch) {
     const toastId = toast.loading(
       <div className='flex items-center justify-center gap-1'>
-          <div className='spinner'></div>
           <p>Loading...</p>
       </div>
     )
@@ -107,7 +106,6 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
 async function verifyPayment(bodyData , token ,navigate , dispatch){
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )

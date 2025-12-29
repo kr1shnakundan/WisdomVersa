@@ -2,7 +2,6 @@ import { Table, Thead, Tr, Th, Td, Tbody } from "react-super-responsive-table";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useCallback } from "react";
-import { BsGlobeCentralSouthAsia } from "react-icons/bs";
 import { CiTimer } from "react-icons/ci";
 import { MdDelete, MdEdit, MdSchool } from "react-icons/md";
 
@@ -16,10 +15,6 @@ import ConfirmationModal from "../../../common/ConfirmationModal";
 
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-/**
- * CourseTable Component
- * Professional, responsive table displaying instructor courses with full CRUD operations
- */
 export default function CourseTable({ courses, setCourses }) {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -39,10 +34,10 @@ export default function CourseTable({ courses, setCourses }) {
       }
     } catch (error) {
       console.error("Failed to delete course:", error);
-    } finally {
-      setConfirmationModal(null);
-      setLoading(false);
-    }
+    } 
+    setConfirmationModal(null);
+    setLoading(false);
+    
   }, [token, setCourses]);
 
   // Open confirmation modal with course context
@@ -135,7 +130,10 @@ export default function CourseTable({ courses, setCourses }) {
                   
                   <div className="flex flex-col justify-between py-0.5 flex-1 min-w-0">
                     <div className="space-y-1.5">
-                      <h3 className="text-base lg:text-lg font-bold text-richblack-5 line-clamp-1 hover:text-caribbeangreen-300 transition-colors cursor-pointer">
+                      <h3 
+                      onClick={()=>navigate(`/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`)}
+                      className="text-base lg:text-lg font-bold text-richblack-5 line-clamp-1 hover:text-caribbeangreen-300 transition-colors cursor-pointer"
+                      >
                         {course.courseName}
                       </h3>
                       <p className="text-xs lg:text-sm leading-relaxed text-richblack-300 line-clamp-2">
@@ -155,7 +153,7 @@ export default function CourseTable({ courses, setCourses }) {
                 {/* Duration Column */}
                 <Td className="flex items-center justify-center w-[90px] lg:w-[110px]">
                   <span className="text-xs lg:text-sm font-bold text-richblack-100 bg-richblack-700/60 px-2.5 lg:px-3 py-1.5 rounded-md border border-richblack-600 whitespace-nowrap shadow-sm">
-                    {course.totalDuration || "0s"}
+                    {course.totalDuration }
                   </span>
                 </Td>
 

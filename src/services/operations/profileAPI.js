@@ -10,7 +10,6 @@ export async function getUserEnrolledCourses (token){
     
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )
@@ -49,7 +48,6 @@ export async function getUserEnrolledCourses (token){
 export async function markCourseAsComplete (courseId , token){
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )
@@ -76,7 +74,6 @@ export async function markCourseAsComplete (courseId , token){
 export async function unenrollFromCourse (courseId , token) {
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )
@@ -106,7 +103,6 @@ export async function getInstructorData (token){
     let result = []
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )

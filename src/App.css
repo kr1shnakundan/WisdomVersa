@@ -7,29 +7,27 @@ html , body{
 }
 
 .spinner {
- 
-.dots {
-   width: 56px;
-   height: 31.4px;
-   background: radial-gradient(farthest-side,#474bff 90%,#0000) 50%  0,
-          radial-gradient(farthest-side,#474bff 90%,#0000) 100% 0;
-   background-size: 13.4px 13.4px;
-   background-repeat: no-repeat;
-   position: relative;
-   animation: dots-pr30iymd 1.5s linear infinite;
+  width: 56px;
+  height: 31.4px;
+  background: radial-gradient(farthest-side, #474bff 90%, #0000) 50% 0,
+              radial-gradient(farthest-side, #474bff 90%, #0000) 100% 0;
+  background-size: 13.4px 13.4px;
+  background-repeat: no-repeat;
+  position: relative;
+  animation: dots-pr30iymd 1.5s linear infinite;
 }
 
-.dots:before {
-   content: "";
-   position: absolute;
-   width: 13.4px;
-   height: 13.4px;
-   border-radius: 50%;
-   background: #474bff;
-   left: 0;
-   top: 0;
-   animation: dots-q6bpf4md 1.5s linear infinite,
-          dots-b39z9imd 0.5s cubic-bezier(0,200,.8,200) infinite;
+.spinner:before {
+  content: "";
+  position: absolute;
+  width: 13.4px;
+  height: 13.4px;
+  border-radius: 50%;
+  background: #474bff;
+  left: 0;
+  top: 0;
+  animation: dots-q6bpf4md 1.5s linear infinite,
+             dots-b39z9imd 0.5s cubic-bezier(0, 200, 0.8, 200) infinite;
 }
 
 @keyframes dots-pr30iymd {
@@ -69,6 +67,12 @@ html , body{
       top: -0.17px;
    }
 }
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .codeblock1 {

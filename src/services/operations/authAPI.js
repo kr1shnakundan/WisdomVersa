@@ -107,8 +107,7 @@ export function login (email , password , navigate){
     
     return async(dispatch) =>{
         const toastId = toast.loading(
-                               <div className="flex gap-1 items-center justify-center">
-                                 <div className="spinner"></div>
+                               <div className="flex flex-col gap-1 items-center justify-center">
                                  <div>Loading...</div>
                                </div>
         )

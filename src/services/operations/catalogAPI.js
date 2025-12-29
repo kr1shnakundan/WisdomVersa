@@ -4,8 +4,7 @@ import { apiConnector } from '../apiconnector'
 import { catalogData } from "../apis";
 export const getCatalogPageData = async(categoryId)=>{
     const toastId = toast.loading(
-        <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
+        <div className='flex flex-col items-center justify-center gap-1'>
             <p>Loading...</p>
         </div>
     )

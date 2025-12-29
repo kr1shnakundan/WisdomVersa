@@ -22,7 +22,6 @@ const ContactUsForm = () => {
        const toastId = toast.loading(
                             <div className='flex gap-1'>
                                 <div className='spinner'></div>
-                                Loading
                             </div>
                         )
         try{

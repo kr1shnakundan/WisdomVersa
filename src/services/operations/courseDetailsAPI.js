@@ -25,7 +25,7 @@ export const fetchCourseDetails = async(courseId) =>{
   let result = []
   const toastId = toast.loading(
       <div className='flex items-center justify-center gap-1'>
-          <div className='spinner'></div>
+          
           <p>Loading...</p>
       </div>
   )
@@ -86,7 +86,6 @@ export const fetchInstructorCourses = async(token) =>{
 export const deleteCourse = async(courseId , token) =>{
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )
@@ -129,7 +128,6 @@ export const addCourseDetails = async(data,token) =>{
     let result = null
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )
@@ -156,7 +154,6 @@ export const editCourseDetails = async(data,token)=>{
     let result = null
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )
@@ -186,7 +183,6 @@ export const createSection = async(data,token)=>{
     let result = null
     const toastId = toast.loading(
         <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
             <p>Loading...</p>
         </div>
     )
@@ -211,9 +207,8 @@ export const createSection = async(data,token)=>{
 export const updateSection = async (data, token) => {
   let result = null
   const toastId = toast.loading(
-        <div className='flex items-center justify-center gap-1'>
-            <div className='spinner'></div>
-            <p>Loading...</p>
+        <div className='flex items-center justify-center gap-1'>           
+         <p>Loading...</p>
         </div>
     )
   try {
@@ -367,7 +362,7 @@ export const markLectureAsComplete = async (data, token) => {
       response
     )
 
-    if (!response.data.message) {
+    if (!response.data.success) {
       throw new Error(response.data.error)
     }
     toast.success("Lecture Completed")

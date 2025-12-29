@@ -36,7 +36,7 @@ exports.getFullCourseDetails = async (req, res) => {
       .exec()
 
     let courseProgressCount = await CourseProgress.findOne({
-      courseID: courseId,
+      courseId: courseId,
       userId: userId,
     })
 
@@ -291,8 +291,13 @@ exports.getCourseDetails = async (req, res) => {
 exports.getInstructorCourses = async(req,res) =>{
     try{
         const instructorId = req.user.id;
-
         const courseDetails = await Course.find({instructors:instructorId})
+        .populate({
+            path:"courseContent",
+            populate:{
+                path:"subSection"
+            }
+        })
         .sort({createdAt:-1})        
 
         if(!courseDetails) {
@@ -304,7 +309,6 @@ exports.getInstructorCourses = async(req,res) =>{
 
         const coursesWithDuration = courseDetails.map((course) => {
             let totalDurationInSeconds = 0;
-            
             course.courseContent.forEach((section) => {
                 if (section.subSection && section.subSection.length > 0) {
                     section.subSection.forEach((sub) => {

@@ -8,12 +8,12 @@ const User = require("../models/User")
 
 //Need of check<-------------
 exports.updateCourseProgress = async(req, res) => {
-    const { courseId, subsectionId } = req.body;
+    const { courseId, subSectionId  } = req.body;
     const userId = req.user.id;
     
     try {
         // Validate required fields
-        if (!courseId || !subsectionId) {
+        if (!courseId || !subSectionId) {
             return res.status(400).json({
                 success: false,
                 message: "Course ID and Subsection ID are required"
@@ -21,7 +21,7 @@ exports.updateCourseProgress = async(req, res) => {
         }
 
         // Check if the subsection is valid
-        const subsection = await SubSection.findById(subsectionId);
+        const subsection = await SubSection.findById(subSectionId);
         if (!subsection) {
             return res.status(404).json({ 
                 success: false,
@@ -33,7 +33,7 @@ exports.updateCourseProgress = async(req, res) => {
         const existingProgress = await CourseProgress.findOne({
             courseId: courseId,
             userId: userId,
-            completedVideos: subsectionId
+            completedVideos: subSectionId
         });
 
         if (existingProgress) {
@@ -52,7 +52,7 @@ exports.updateCourseProgress = async(req, res) => {
                 userId: userId
             },
             {
-                $addToSet: { completedVideos: subsectionId }
+                $addToSet: { completedVideos: subSectionId }
             },
             {
                 new: true,

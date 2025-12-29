@@ -8,26 +8,18 @@ import Iconbtn from "../../common/Iconbtn";
 import CourseTable from "./InstructorCourses/CourseTable";
 import { fetchInstructorCourses } from "../../../services/operations/courseDetailsAPI";
 
-/**
- * MyCourses Component
- * Displays instructor's courses with options to add, edit, and delete courses
- */
 export default function MyCourses() {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  /**
-   * Fetches instructor courses from the API
-   */
   const fetchCourses = useCallback(async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       setError(null);
-      
       const result = await fetchInstructorCourses(token);
       
       if (result) {
@@ -72,15 +64,14 @@ export default function MyCourses() {
 
       {/* Loading State */}
       {loading && (
-        <div className="flex items-center justify-center py-10">
-          <div className="spinner-border text-richblack-100" role="status">
-            <span className="sr-only">Loading courses...</span>
-          </div>
+        <div className="flex flex-col items-center justify-center text-richblack-100 py-20">
+          <div className="spinner"></div>
+          <p>Loading...</p>
         </div>
       )}
 
       {/* Error State */}
-      {error && (
+      {error && !loading && (
         <div className="bg-red-900/20 border border-red-500 text-red-100 px-4 py-3 rounded-lg mb-4">
           <p className="font-medium">Error</p>
           <p className="text-sm">{error}</p>
@@ -96,6 +87,23 @@ export default function MyCourses() {
       {/* Course Table */}
       {!loading && !error && (
         <CourseTable courses={courses} setCourses={setCourses} />
+      )}
+
+
+      {!loading && !error && courses.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="text-richblack-300 mb-4">
+            <MdAddCircleOutline size={64} />
+          </div>
+          <h3 className="text-xl font-semibold mb-2">No courses yet</h3>
+          <p className="text-richblack-400 mb-6">
+            Start by creating your first course
+          </p>
+          <Iconbtn
+            onclick={handleAddCourse}
+            text="Create Course"
+          />
+        </div>
       )}
     </div>
   );

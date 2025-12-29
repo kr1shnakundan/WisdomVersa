@@ -49,7 +49,6 @@ export  function updateDisplayPicture(token , formData){
 export function updateProfile(token, formData) {
   return async (dispatch) => {
     const toastId = toast.loading(<div className="flex gap-1 items-center">
-                                        <div className="spinner"></div>
                                         Loading...
                                     </div>)
     try {
@@ -90,7 +89,6 @@ export function updateProfile(token, formData) {
 
 export default async function ChangePassword(token , formData){
     const toastId = toast.loading(<div className="flex gap-2 items-center justify-center">
-                                        <div  className="spinner"></div>
                                         <p>Loading</p>
                                 </div>)
     try{
@@ -119,7 +117,6 @@ export default async function ChangePassword(token , formData){
 export function deleteProfile (password,token , navigate){
     return async (dispatch)=>{
         const toastId = toast.loading(<div className="flex items-center justify-center gap-2">
-                                    <div className="spinner"></div>
                                     <p>Loading...</p>
                                 </div>)
     try{

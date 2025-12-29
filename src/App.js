@@ -30,6 +30,9 @@ import EditCourse from './components/core/Dashboard/EditCourse/editCourseIndex';
 import Instructor from './components/core/Dashboard/InstructorDashboard/Instructor';
 import Catalog from './pages/Catalog';
 import CourseDetails from './pages/CourseDetails';
+import ViewCourse from './pages/ViewCourse';
+import VideoDetails from './components/core/ViewCourse/VideoDetails';
+import RoleBasedRoute from './components/core/Auth/RoleBasedRoute';
 
 
 function App() {
@@ -55,7 +58,7 @@ function App() {
     else if (!token && validToken) {
       dispatch(setToken(validToken));
     }
-  }, [token ,dispatch]);  // 5 * 60 * 1000); // Check every 5 minutes
+  }, [token ,dispatch]);  
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -107,30 +110,71 @@ function App() {
           } >
 
             <Route path='/dashboard/my-profile' element= {<MyProfile/>} />
-            <Route path='/dashboard/enrolled-courses' element = { <EnrolledCourses />} />
+            <Route path='/dashboard/enrolled-courses' 
+              element = { 
+                <RoleBasedRoute allowedRoles={[ACCOUNT_TYPE.STUDENT]}>
+                  <EnrolledCourses />
+                </RoleBasedRoute>
+              } 
+            />
             <Route path='/dashboard/settings' element={<Settings />} />
             
-            {
-              user?.accountType === ACCOUNT_TYPE.STUDENT && (
-                <>
-                  <Route path='/dashboard/cart' element={<Cart/>} />
-                </>
-              )
-            }
-
-            {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
-              <>
-                <Route path='/dashboard/instructor' element={<Instructor/>}/>
-                <Route path='/dashboard/my-courses' element={<MyCourses />} />
-                <Route path='/dashboard/add-course' element={<AddCourse />} />
-                <Route path='/dashboard/edit-course/:courseId' element={<EditCourse/>}/>
-              </>
-            )}
+            <Route path='/dashboard/cart' 
+              element={
+                <RoleBasedRoute allowedRoles={[ACCOUNT_TYPE.STUDENT]}>
+                   <Cart/>
+                </RoleBasedRoute>
+              }
+            />
+            
+             
+            <Route path='/dashboard/instructor' element={
+              <RoleBasedRoute allowedRoles={[ACCOUNT_TYPE.INSTRUCTOR]}>
+                <Instructor/>
+              </RoleBasedRoute>
+              
+            }/>
+            <Route path='/dashboard/my-courses' element={
+              <RoleBasedRoute allowedRoles={[ACCOUNT_TYPE.INSTRUCTOR]}>
+                <MyCourses />
+              </RoleBasedRoute>} />
+            <Route path='/dashboard/add-course' 
+              element={
+                <RoleBasedRoute allowedRoles={[ACCOUNT_TYPE.INSTRUCTOR]}>
+                  <AddCourse />
+                </RoleBasedRoute>
+              
+              } 
+            />
+            <Route path='/dashboard/edit-course/:courseId' 
+              element={
+                <RoleBasedRoute allowedRoles={[ACCOUNT_TYPE.INSTRUCTOR]}>
+                  <EditCourse/>
+                </RoleBasedRoute>
+              }
+            />
+              
+            
 
             
           </Route>
           
+            <Route
+              path="view-course/:courseId"
+             element={
+              <PrivateRoute>
+                <ViewCourse/>
+              </PrivateRoute>
+            }>           
+              <>
 
+              <Route 
+                path="section/:sectionId/sub-section/:subSectionId"
+                element={<VideoDetails />}
+              />
+              
+              </>
+            </Route>
           
 
 
