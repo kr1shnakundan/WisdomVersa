@@ -54,8 +54,8 @@ function CourseDetails() {
 
   // Calculate average rating
   useEffect(() => {
-    if (response?.data?.courseDetails?.ratingAndReviews) {
-      const count = GetAvgRating(response.data.courseDetails.ratingAndReviews);
+    if (response?.data?.courseDetails?.ratingAndReview) {
+      const count = GetAvgRating(response.data.courseDetails.ratingAndReview);
       setAvgReviewCount(count);
     }
   }, [response]);

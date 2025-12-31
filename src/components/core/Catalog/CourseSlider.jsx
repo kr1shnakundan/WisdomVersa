@@ -1,14 +1,22 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode, Navigation, Pagination } from "swiper/modules";
-import Course_Card from "./Course_Card";
+import CourseCard from "./CourseCard";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useEffect } from "react";
 
 export default function CourseSlider({ Courses = [] }) {
+
+//   useEffect(() => {
+//   console.log("=== SLIDER RECEIVED ===");
+//   console.log("Courses prop:", Courses)
+//   console.log("First course:", Courses?.[0]?.courseName);
+//   console.log("========================");
+// }, [Courses]);
   if (!Courses.length) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -16,7 +24,7 @@ export default function CourseSlider({ Courses = [] }) {
       </div>
     );
   }
-
+  // console.log("course in courseSlider:......?>>>>",Courses)
   return (
     <div className="relative overflow-visible group">
       <Swiper
@@ -51,7 +59,7 @@ export default function CourseSlider({ Courses = [] }) {
       >
         {Courses.map((course) => (
           <SwiperSlide key={course._id} className="!h-auto">
-            <Course_Card course={course} />
+            <CourseCard course={course} />
           </SwiperSlide>
         ))}
       </Swiper>

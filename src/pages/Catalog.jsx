@@ -1,6 +1,6 @@
 
 import { useParams } from "react-router-dom";
-import Course_Card from "../components/core/Catalog/Course_Card";
+import CourseCard from "../components/core/Catalog/CourseCard";
 import CourseSlider from "../components/core/Catalog/CourseSlider";
 import { useSelector } from "react-redux";
 import { useEffect, useState, useMemo } from "react";
@@ -44,7 +44,7 @@ export default function Catalog() {
         }
 
         const decodedCatalogName = decodeURIComponent(catalogName);
-        console.log("Decoded catalogName:", decodedCatalogName);
+        // console.log("Decoded catalogName:", decodedCatalogName);
 
         const matchedCategory = categories.find(
           (ct) => slugify(ct.name) === slugify(decodedCatalogName)
@@ -61,6 +61,7 @@ export default function Catalog() {
         console.error("Error fetching categories:", error);
         setError(true);
       }
+      setIsLoading(false);
     };
 
     getCategories();
@@ -129,6 +130,16 @@ export default function Catalog() {
 
     return courses;
   }, [catalogPageData, active]);
+
+
+//    useEffect(() => {
+//   console.log("=== CATALOG STATE DEBUG ===");
+//   console.log("Active tab:", active);
+//   console.log("All courses:", catalogPageData?.data?.selectedCategory?.courses?.map(c => c.courseName));
+//   console.log("Filtered courses:", filteredCourses?.map(c => c.courseName));
+//   console.log("First filtered course ID:", filteredCourses?.[0]?._id);
+//   console.log("========================");
+// }, [filteredCourses, active]);
 
   // Loading State
   if (isLoading || profileLoading) {
@@ -235,7 +246,8 @@ export default function Catalog() {
         {catalogPageData?.data?.mostSellingCourse?.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {catalogPageData?.data?.mostSellingCourse?.slice(0, 4).map((course) => (
-              <Course_Card key={course._id} course={course} Height="h-[400px]" />
+
+              <CourseCard key={course._id} course={course} Height="h-[400px]" />
             ))}
           </div>
         ) : (

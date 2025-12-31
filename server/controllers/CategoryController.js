@@ -67,7 +67,9 @@ exports.categoryPageDetails = async(req,res) =>{
             match:{status:"Published"},
             populate:"ratingAndReview"
         }).exec();
-        console.log("selectedCategory: ",selectedCategory);
+        // console.log("selectedCategory: ",selectedCategory);
+        // console.log("rating and review in selectedCategory;;;>>>",JSON.)
+        // console.log("ratingAndReview:", JSON.stringify(selectedCategory.courses[0].ratingAndReview));
 
         //case when the category not found
         if(!selectedCategory){

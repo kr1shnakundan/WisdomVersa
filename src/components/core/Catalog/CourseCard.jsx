@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import RatingStars from "../../common/RatingStars";
+import StarRating from "../../common/StarRating";
 
-export default function Course_Card({ course, Height = "h-[380px]" }) {
-  //console.log("Course in course_card:....", course);
+export default function CourseCard({ course, Height = "h-[380px]" }) {
+  // console.log("Course in coursecard:", course);
 
   // Calculate average rating
   const avgRating =
@@ -12,7 +13,6 @@ export default function Course_Card({ course, Height = "h-[380px]" }) {
           course.ratingAndReview.length
         ).toFixed(1)
       : "0";
-
   return (
     <Link to={`/courses/${course._id}`}>
       <div
@@ -42,7 +42,11 @@ export default function Course_Card({ course, Height = "h-[380px]" }) {
               <span className="text-sm text-yellow-25 font-medium">
                 {avgRating}
               </span>
-              <RatingStars Review_Count={course?.ratingAndReview?.length} />
+              {/* <RatingStars Review_Count={course?.ratingAndReview?.length} /> */}
+              <StarRating
+                rating={avgRating}
+                readOnly
+              />
               <span className="text-sm text-richblack-400">
                 ({course?.ratingAndReview?.length || 0})
               </span>

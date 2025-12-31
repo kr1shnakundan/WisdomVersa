@@ -4,6 +4,7 @@ import { HiOutlineGlobeAlt } from "react-icons/hi";
 import RatingStars from "../../common/RatingStars";
 import { FiShare2 } from "react-icons/fi";
 import { formatDate } from "../../../services/formatDate";
+import StarRating from "../../common/StarRating";
 
 function CourseHeroSection({ course,
    avgReviewCount, 
@@ -13,6 +14,8 @@ function CourseHeroSection({ course,
    handleAddToCart,
    handleShare
   }) {
+
+    console.log("course in courseHeroSection...",course)
   return (
     <div className="relative w-full bg-richblack-800">
       <div className="mx-auto box-content px-4 lg:w-[1260px] 2xl:relative">
@@ -58,9 +61,13 @@ function CourseHeroSection({ course,
 
             <div className="text-md flex flex-wrap items-center gap-2">
               <span className="text-yellow-25">{avgReviewCount}</span>
-              <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
+              {/* <RatingStars Review_Count={avgReviewCount} Star_Size={24} /> */}
+              <StarRating
+              rating={avgReviewCount}
+              readOnly
+              />
               <span className="text-richblack-300">
-                ({course?.ratingAndReviews?.length || 0} reviews)
+                ({course?.ratingAndReview?.length || 0} reviews)
               </span>
               <span className="text-richblack-300">
                 {course?.studentEnrolled?.length || 0} students enrolled
