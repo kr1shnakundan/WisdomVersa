@@ -1,3 +1,4 @@
+import { setCourseSectionData, setEntireCourseData, setTotalNoOfLectures } from "../../slices/viewCourseSlice";
 import { apiConnector } from "../apiconnector";
 import { courseEndpoints } from "../apis";
 import toast from "react-hot-toast";
@@ -18,6 +19,7 @@ const { COURSE_DETAILS_API,
   GET_FULL_COURSE_DETAILS_AUTHENTICATED,
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
+  EDIT_RATING_API
 } = courseEndpoints
 
 
@@ -340,6 +342,10 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
     result = response?.data?.data
   } catch (error) {
     console.log("COURSE_FULL_DETAILS_API API ERROR............", error)
+    if (error.response?.status === 403) {
+      toast.dismiss(toastId)
+      return { success: false, forbidden: true }
+    }
     result = error.response.data
     // toast.error(error.response.data.message);
   }
@@ -382,7 +388,7 @@ export const createRating = async (data, token) => {
   let success = false
   try {
     const response = await apiConnector("POST", CREATE_RATING_API, data, {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer${token}`,
     })
     console.log("CREATE RATING API RESPONSE............", response)
     if (!response?.data?.success) {
@@ -397,4 +403,59 @@ export const createRating = async (data, token) => {
   }
   toast.dismiss(toastId)
   return success
+}
+
+export  const editRating = async(data , token)=>{
+  const toastId = toast.loading("Loading...")
+  let success = false
+  try{
+    const response = await apiConnector("PUT",EDIT_RATING_API,data,{
+      Authorization: `Bearer${token}`
+    })
+
+     if (!response?.data?.success) {
+      throw new Error("Could Not Create Rating")
+    }
+    toast.success("Rating Created")
+    success = true
+  } catch (error) {
+    success = false
+    console.log("CREATE RATING API ERROR............", error)
+    toast.error(error.message)
+  }
+  toast.dismiss(toastId)
+  return success
+}
+
+
+// courseDetailsAPI.js
+export const getFullDetailsOfCourseThunk = (courseId, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await apiConnector(
+        "POST",
+        GET_FULL_COURSE_DETAILS_AUTHENTICATED,
+        { courseId },
+        {
+          Authorization: `Bearer${token}`,
+        }
+      )
+
+      console.log("response of getFullDetailsOfCourseThunk....:",response)
+      if (!response?.data?.success) {
+        throw new Error(response?.data?.message)
+      }
+
+      dispatch(setEntireCourseData(response?.data?.data?.courseDetails))
+      dispatch(setCourseSectionData(response?.data?.data?.courseDetails?.courseContent))
+      
+      const totalLectures = response?.data?.data?.courseDetails?.courseContent.reduce(
+        (total, section) => total + section?.subSection.length,
+        0
+      )
+      dispatch(setTotalNoOfLectures(totalLectures))
+    } catch (error) {
+      console.error("GET COURSE DETAILS THUNK ERROR:", error)
+    }
+  }
 }

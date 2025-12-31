@@ -3,11 +3,6 @@ import React from 'react'
 import { apiConnector } from '../apiconnector'
 import { catalogData } from "../apis";
 export const getCatalogPageData = async(categoryId)=>{
-    const toastId = toast.loading(
-        <div className='flex flex-col items-center justify-center gap-1'>
-            <p>Loading...</p>
-        </div>
-    )
      let result = [];
   try{
     const response = await apiConnector("POST", catalogData.CATALOGPAGEDATA_API, 
@@ -26,7 +21,6 @@ export const getCatalogPageData = async(categoryId)=>{
     toast.error(error.message);
     result = error.response?.data;
   }
-  toast.dismiss(toastId);
   return result;
 
 }

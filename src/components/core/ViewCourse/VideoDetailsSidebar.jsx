@@ -28,6 +28,14 @@ const VideoDetailsSidebar = ({ setReviewModal, isOpen = true, setIsOpen }) => {
 
   const {user} = useSelector((state)=>state.profile)
   const isStudent = user.accountType === ACCOUNT_TYPE.STUDENT;
+  const isInstructor = user.accountType === ACCOUNT_TYPE.INSTRUCTOR;
+
+
+   const userReview = courseEntireData?.ratingAndReview?.find(
+    (r) => r.user === user?._id
+  )
+
+  const isEditMode = Boolean(userReview)
 
   // Helper function to check if section is completed
   const isSectionCompleted = (section) => {
@@ -53,6 +61,14 @@ const VideoDetailsSidebar = ({ setReviewModal, isOpen = true, setIsOpen }) => {
   }
 
   const handleBackClick = () => {
+    if(isInstructor){
+      navigate("/dashboard/my-courses")
+      return
+    } 
+    if(!isInstructor && !isStudent){
+      navigate("/dashboard/my-profile")
+      return
+    }
     navigate("/dashboard/enrolled-courses")
     // navigate(-1)
   }
@@ -126,7 +142,9 @@ const VideoDetailsSidebar = ({ setReviewModal, isOpen = true, setIsOpen }) => {
                 whitespace-nowrap"
               >
                 <FaStar className="text-xs sm:text-sm" />
-                <span className="hidden sm:inline">Add Review</span>
+                <span className="hidden sm:inline">
+                  {isEditMode ? "View Review" : "Add Review"}
+                </span>
                 <span className="sm:hidden">Review</span>
               </button>
             )

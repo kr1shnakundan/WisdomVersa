@@ -60,10 +60,18 @@ export default function CourseSlider({ Courses = [] }) {
       {Courses.length > 3 && (
         <>
           <button
-            className="swiper-button-prev-custom lg:opacity-0 lg:group-hover:opacity-100 absolute 
-            left-0 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center 
-            rounded-full bg-richblack-700 text-richblack-5 shadow-lg transition-all 
-            duration-300 hover:bg-yellow-25 hover:text-richblack-900 disabled:opacity-50"
+
+            className="
+              swiper-button-prev-custom
+              absolute left-0 top-1/2 z-10 -translate-y-1/2
+              flex h-10 w-10 items-center justify-center
+              rounded-full bg-richblack-700 text-richblack-5 shadow-lg
+              transition-all duration-300
+              opacity-70
+              hover:opacity-100
+              lg:opacity-40 lg:hover:opacity-100
+              hover:bg-yellow-25 hover:text-richblack-900
+            "
             aria-label="Previous slide"
           >
             <svg
@@ -83,10 +91,24 @@ export default function CourseSlider({ Courses = [] }) {
           </button>
 
           <button
-            className="swiper-button-next-custom lg:opacity-0 lg:group-hover:opacity-100 absolute 
-            right-0 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center 
-            rounded-full bg-richblack-700 text-richblack-5 shadow-lg transition-all 
-            duration-300 hover:bg-yellow-25 hover:text-richblack-900 disabled:opacity-50"
+            // className="swiper-button-next-custom opacity-70
+            // hover:opacity-100
+            // lg:opacity-40 lg:hover:opacity-100
+            // hover:bg-yellow-25 hover:text-richblack-900 absolute 
+            // right-0 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center 
+            // rounded-full bg-richblack-700 text-richblack-5 shadow-lg transition-all 
+            // duration-300 disabled:opacity-50"
+            className="
+              swiper-button-next-custom
+              absolute right-0 top-1/2 z-10 -translate-y-1/2 
+              flex h-10 w-10 items-center justify-center
+              rounded-full bg-richblack-700 text-richblack-5 shadow-lg
+              transition-all duration-300
+              opacity-70
+              hover:opacity-100
+              lg:opacity-40 lg:hover:opacity-100
+              hover:bg-yellow-25 hover:text-richblack-900
+            "
             aria-label="Next slide"
           >
             <svg

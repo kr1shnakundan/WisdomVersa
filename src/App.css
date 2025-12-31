@@ -178,3 +178,31 @@ html , body{
 .custom-swiper .swiper-pagination {
   bottom: -30px !important;
 }
+
+
+ /* Dark mode scrollbar */
+.dark-scrollbar {
+  scrollbar-width: thin;              /* Firefox */
+  scrollbar-color: #424854 #1f2933;   /* thumb track */
+}
+
+/* Chrome, Edge, Safari */
+.dark-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-track {
+  background: #1f2933;               /* track */
+  border-radius: 10px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.35);        /* thumb */
+  border-radius: 10px;
+  border: 2px solid #1f2933;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+

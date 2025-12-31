@@ -3,6 +3,8 @@ const RatingAndReview = require("../models/RatingAndReview")
 const {mongoose } = require("mongoose");
 const Course = require("../models/Course")
 
+//=====================NOT INCLUDED DELETE RATING======================
+
 exports.createRating = async(req,res)=>{
     try{
         //get userId
@@ -144,4 +146,65 @@ exports.getAllRatings = async(req,res) =>{
             message:`error in getting all the ratings`
         })
     }
+}
+
+
+exports.editRatingAndReview = async (req, res) => {
+  try {
+    
+    const userId = req.user.id
+    const { rating, review, courseId } = req.body
+
+    // validation
+    if (!rating || !review || !courseId) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      })
+    }
+
+    // check if user is enrolled in the course
+    const courseDetails = await Course.findOne({
+      _id: courseId,
+      studentEnrolled: { $elemMatch: { $eq: userId } },
+    })
+
+    if (!courseDetails) {
+      return res.status(403).json({
+        success: false,
+        message: "User is not enrolled in this course",
+      })
+    }
+
+    // check if review exists
+    const ratingReview = await RatingAndReview.findOne({
+      user: userId,
+      course: courseId,
+    })
+
+    if (!ratingReview) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      })
+    }
+
+    // update rating & review
+    ratingReview.rating = rating
+    ratingReview.review = review
+    await ratingReview.save()
+
+    return res.status(200).json({
+      success: true,
+      message: "Review updated successfully",
+      data: ratingReview,
+    })
+
+  } catch (error) {
+    console.error("Error editing rating:", error)
+    return res.status(500).json({
+      success: false,
+      message: "Error in editing rating",
+    })
+  }
 }

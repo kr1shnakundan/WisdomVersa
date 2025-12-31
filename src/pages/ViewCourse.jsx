@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import VideoDetailsSidebar from '../components/core/ViewCourse/VideoDetailsSidebar'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFullDetailsOfCourse } from '../services/operations/courseDetailsAPI'
 import { 
@@ -16,6 +16,7 @@ import ScrollToTop from '../components/common/ScrollToTop'
 const ViewCourse = () => {
   const dispatch = useDispatch()
   const courseInfo = useParams()
+  const navigate = useNavigate()
   console.log("courseInfo in videoDetails from useParams....:", courseInfo)
   
   const { loading: profileLoading } = useSelector((state) => state.profile)
@@ -24,6 +25,7 @@ const ViewCourse = () => {
   
   const [reviewModal, setReviewModal] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const[accessDenied , setAccessDenied] = useState(false)
 
   // Auto-adjust sidebar based on screen size
   useEffect(() => {
@@ -48,6 +50,10 @@ const ViewCourse = () => {
   useEffect(() => {
     const getFullCourseDetails = async () => {
       const result = await getFullDetailsOfCourse(courseInfo?.courseId, token)
+      if (result?.forbidden) {
+        setAccessDenied(true)
+        return
+      }
       
       if (result) {
         dispatch(setEntireCourseData(result?.courseDetails))
@@ -73,6 +79,23 @@ const ViewCourse = () => {
         <div className="spinner"></div>
       </div>
     )
+  }
+
+  if(accessDenied){
+    return (
+    <div className="flex h-screen flex-col items-center justify-center">
+      <h1 className="text-2xl text-richblack-50 font-bold">
+        You are not enrolled in this course
+      </h1>
+      <p className="text-richblack-300 mt-2">
+        Please purchase the course to continue learning
+      </p>
+      <button onClick={() => navigate(`/courses/${courseInfo?.courseId}`)}
+        className='text-blue-100 '>
+        Go to course page
+      </button>
+    </div>
+  )
   }
 
   return (

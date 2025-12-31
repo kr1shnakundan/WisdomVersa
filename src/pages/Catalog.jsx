@@ -147,9 +147,9 @@ export default function Catalog() {
     return <Error />;
   }
 
-  console.log("mostSellingCourses: ", catalogPageData?.data?.mostSellingCourse);
-  console.log("Selected category?>>>>>>>>>.", catalogPageData?.data?.selectedCategory);
-  console.log("Filtered Courses:", filteredCourses);
+  // console.log("mostSellingCourses: ", catalogPageData?.data?.mostSellingCourse);
+  // console.log("Selected category?>>>>>>>>>.", catalogPageData?.data?.selectedCategory);
+  // console.log("Filtered Courses:", filteredCourses);
 
   return (
     <div className="mx-auto w-11/12 max-w-maxContent text-richblack-5">

@@ -35,6 +35,22 @@ exports.getFullCourseDetails = async (req, res) => {
       })
       .exec()
 
+    const isStudentEnrolled = courseDetails.studentEnrolled
+    .map(id => id.toString())
+    .includes(userId)
+
+
+    const isInstructorOwner =
+    req.user.accountType === "Instructor" &&
+    courseDetails.instructors.toString() === userId
+
+    if (!isStudentEnrolled && !isInstructorOwner) {
+    return res.status(403).json({
+        success: false,
+        message: "You are not enrolled in this course",
+    })
+    }
+
     let courseProgressCount = await CourseProgress.findOne({
       courseId: courseId,
       userId: userId,

@@ -1,12 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import ReactStars from "react-rating-stars-component";
 import GetAvgRating from "../../../../utils/avgRating";
 import { removeFromCart } from "../../../../slices/cartSlice";
+import StarRating from "../../../common/StarRating";
+import { useNavigate } from "react-router-dom";
 
 export default function RenderCartCourses() {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log("cart in renderCartCoursellljkjflk.....",cart)
 
   return (
@@ -28,7 +30,9 @@ export default function RenderCartCourses() {
               />
 
               <div className="flex flex-col gap-2">
-                <p className="text-lg font-semibold">
+                <p className="text-lg font-semibold"
+                onClick={()=>navigate(`/`)}
+                >
                   {course?.courseName}
                 </p>
 
@@ -47,13 +51,10 @@ export default function RenderCartCourses() {
                       {avgRating.toFixed(1)}
                     </span>
 
-                    <ReactStars
-                      count={5}
-                      value={avgRating}
-                      size={18}
-                      edit={false}
-                      isHalf={true}
-                      activeColor="#ffd700"
+
+                    <StarRating
+                    rating={avgRating}
+                    readOnly
                     />
 
                     <span className="text-sm text-richblack-400">

@@ -37,7 +37,8 @@ const {createSubSection ,
 const {
     createRating ,
     getAverageRating,
-    getAllRatings
+    getAllRatings,
+    editRatingAndReview
 } = require("../controllers/RatingAndReviewController")
 
 //importing course progress
@@ -92,6 +93,7 @@ router.post("/getCategoryPageDetails",categoryPageDetails)
 //                                      Rating and Review
 // ********************************************************************************************************
 router.post("/createRating",auth , isStudent,createRating)
+router.put("/editRating",auth , isStudent ,editRatingAndReview)
 router.get("/getAverageRating",getAverageRating)
 router.get("/getAllRatings",getAllRatings)
 
