@@ -69,8 +69,8 @@ export default function Catalog() {
 
   useEffect(() => {
     const getCategoriesDetail = async () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
         const res = await getCatalogPageData(categoryId);
         console.log("Printing res: ", res);
         
@@ -95,6 +95,10 @@ export default function Catalog() {
 
   // Filter courses based on active tab
   const filteredCourses = useMemo(() => {
+
+    if (!catalogPageData) {
+      return null;
+    }
     const courses = catalogPageData?.data?.selectedCategory?.courses || [];
     
     if (!courses.length) return [];
@@ -142,7 +146,7 @@ export default function Catalog() {
 // }, [filteredCourses, active]);
 
   // Loading State
-  if (isLoading || profileLoading) {
+  if (isLoading || profileLoading || filteredCourses === null) {
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="flex flex-col items-center gap-4">
@@ -153,8 +157,8 @@ export default function Catalog() {
     );
   }
 
-  // Error State
-  if (error || !catalogPageData?.success) {
+  //Error State
+  if (error || (!isLoading && catalogPageData && !catalogPageData.success)) {
     return <Error />;
   }
 
@@ -212,8 +216,11 @@ export default function Catalog() {
           </div>
         </div>
 
-        {/* Show loading for filtered courses if switching tabs */}
-        {filteredCourses.length > 0 ? (
+        {filteredCourses === null ? (
+          <div className="py-10 text-center">
+            <p className="mt-4 text-richblack-300">Loading courses...</p>
+          </div>
+        ) : filteredCourses.length > 0 ? (
           <CourseSlider Courses={filteredCourses} />
         ) : (
           <div className="py-10 text-center text-richblack-300">
