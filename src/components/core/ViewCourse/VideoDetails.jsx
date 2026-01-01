@@ -23,12 +23,13 @@ const VideoDetails = () => {
   const [nextLecture, setNextLecture] = useState(null)
   const [prevLecture, setPrevLecture] = useState(null)
   const [showReplay, setShowReplay] = useState(false)
+  const [showBigPlay, setShowBigPlay] = useState(true)
 
   /* ================= FIND CURRENT / NEXT / PREV ================= */
   useEffect(() => {
     
     if (!courseSectionData?.length) return
-
+    setShowBigPlay(true)
     setShowReplay(false)
 
     let currentSectionIndex = -1
@@ -124,12 +125,41 @@ const VideoDetails = () => {
           ref={videoRef}
           key={videoData.videoUrl}
           controls
-          onEnded={() => setShowReplay(true)}
-          onPlay={() => setShowReplay(false)}
+          onEnded={() => {
+            setShowBigPlay(false)
+            setShowReplay(true)    
+          }}
+          onPlay={() => {
+            setShowBigPlay(false)
+            setShowReplay(false)
+          }}
+          onPause={() => {
+            // IMPORTANT: pause also fires on end, so guard it
+            if (!videoRef.current?.ended) {
+              setShowBigPlay(true)
+            }
+          }}
           className="w-full rounded-lg"
         >
           <source src={videoData.videoUrl} type="video/mp4" />
         </video>
+        {showBigPlay && !showReplay && (
+          <div
+            onClick={() => {
+              videoRef.current.play()
+              setShowBigPlay(false)
+            }}
+            className="absolute inset-0 flex items-center justify-center
+                      bg-black/40 backdrop-blur-sm cursor-pointer
+                      transition-all duration-300"
+          >
+            <div className="text-white text-6xl md:text-7xl lg:text-8xl
+                            hover:scale-110 transition-transform">
+              ▶
+            </div>
+          </div>
+        )}
+
         {showReplay && (
           <div
             onClick={()=>setShowReplay(false)}
