@@ -19,7 +19,8 @@ const { COURSE_DETAILS_API,
   GET_FULL_COURSE_DETAILS_AUTHENTICATED,
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
-  EDIT_RATING_API
+  EDIT_RATING_API,
+  GET_ALL_RATING_API
 } = courseEndpoints
 
 
@@ -459,3 +460,22 @@ export const getFullDetailsOfCourseThunk = (courseId, token) => {
     }
   }
 }
+
+
+export const getAllRatings = async() =>{
+  let result=[]
+  try{
+    const response = await apiConnector("GET",GET_ALL_RATING_API,null)
+
+    if(!response?.data?.success){
+      throw new Error (response?.data?.message)
+    }
+
+    console.log("response in getAllRatingAndReview API ......>",response)
+
+    result = response?.data?.data
+  } catch(error){
+    console.log("ERROR IN GETALLRATINGANDREVIW API...",error)
+  }
+  return result
+} 

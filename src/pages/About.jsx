@@ -9,6 +9,7 @@ import StatsComponents from '../components/core/AboutPage/Stats'
 import ContactFormSection from '../components/core/AboutPage/ContactFormSection'
 import Footer from '../components/common/Footer'
 import LearningGrid from '../components/core/AboutPage/LearningGrid'
+import ReviewSlider from '../components/common/ReviewSlider'
 
 
 const About = () => {
@@ -111,9 +112,9 @@ const About = () => {
             <ContactFormSection/>
         </section>
          
-         {/* <section>
-                    ----------------- ReviewSection remaining
-         </section> */}
+         <section className='mx-auto max-w-7xl px-6 py-10'>
+            <ReviewSlider/>
+         </section>
         <section>
             <Footer/>
         </section>

@@ -13,15 +13,22 @@ import InstructorSection from '../components/core/HomePage/InstructorSection'
 import ReviewSlider from '../components/common/ReviewSlider'
 import Footer from '../components/common/Footer'
 import ExploreMore from '../components/core/HomePage/ExploreMore'
+import { useSelector } from 'react-redux'
+import { ACCOUNT_TYPE } from '../utils/constant'
 
 const Home = () => {
+
+    const {token} = useSelector((state)=>state.auth)
   return (
     <div >
         {/* section-1 */}
         <div className="relative mx-auto flex flex-col w-11/12 max-w-maxContent
         items-center text-white  justify-between">
             {/* become a instructor */}
-            <Link to={"/signup"}>
+            <Link 
+             state={{ accountType: ACCOUNT_TYPE.INSTRUCTOR }}
+            to={token ? "/dashboard/Instructor" : "/signup"}
+            >
                 <div  className='mt-16 p-1 group mx-auto rounded-full bg-richblack-800
                  text-richblack-200 transition-all duration-200 hover:scale-95 w-fit 
                 font-bold drop-shadow-[0_1.5px_rgba(255,255,255,0.25)] hover:drop-shadow-none '>
@@ -50,10 +57,10 @@ const Home = () => {
 
             {/* learn more and try demo button */}
             <div className='flex flex-row mt-8 gap-7'>
-                <CTAButton active={true} linkTo={"/signup"}>
+                <CTAButton active={true} linkTo={"/about"}>
                     Learn More
                 </CTAButton>
-                <CTAButton active={false} linkTo={"/login"}>
+                <CTAButton active={false} linkTo={token ? "/bookDemo" : "/signup"}>
                     Book a Demo
                 </CTAButton>
             </div>
@@ -85,12 +92,12 @@ const Home = () => {
                 }
                 ctabtn1={{
                     btnText:"Try it Yourself",
-                    link : "/signup",
+                    link : token ? "/dashboard/my-courses" : "/signup",
                     active: true
                 }}
                 ctabtn2={{
                     btnText : "Learn More",
-                    link:"/signup",
+                    link:"/catalog/ai",
                     active:false
                 }}
                 codeColor={`text-yellow-25`}
@@ -120,12 +127,12 @@ const Home = () => {
                 }
                 ctabtn1={{
                     btnText:"Continue Lesson ",
-                    link:"/signup",
+                    link:token ? "/dashboard/enrolled-courses" : "/login",
                     active:true
                 }}
                 ctabtn2={{
                     btnText:"Learn More",
-                    link:"/login",
+                    link:"/catalog/c++",
                     active:false
                 }}
                 codeColor={"text-yellow-25"}
@@ -150,13 +157,13 @@ const Home = () => {
             {/* <div className='flex flex-col w-11/12 '> */}
             {/* <div className="lg:h-[150px]"></div> <----- why error in my code at this */}
                 <div className='w-11/12 mx-auto max-w-maxContent h-full flex flex-row gap-8 items-center justify-center pt-10 pb-20'>
-                    <CTAButton active={true} linkTo={"/signup"}>
+                    <CTAButton active={true} linkTo={"/catalog/ml"}>
                         <div className='flex flex-row gap-3 items-center'>
                             Explore Full Catalog
                             <FaArrowRight/>
                         </div>
                     </CTAButton>
-                    <CTAButton active={false} linkTo={"/login"}>
+                    <CTAButton active={false} linkTo={token ? "/catalog/dev" : "/signup"}>
                         <div className='text-white'>
                             Learn More
                         </div> 
@@ -178,7 +185,7 @@ const Home = () => {
                         <div className='text-richblack-700 text-[16px] '>
                             The modern WisdomVersa is the dictates its own terms. Today, to be a competitive specialist requires more than professional skills.
                         </div>
-                        <CTAButton active={true} linkTo={"/signup"}>
+                        <CTAButton active={true} linkTo={"/about"}>
                             Learn More
                         </CTAButton>
                     </div>
@@ -199,7 +206,9 @@ const Home = () => {
                 {/* instructor section */}
                 <InstructorSection/>
                 <h1 className='text-4xl font-semibold pt-20'>Reviews from other learners</h1>
-               <ReviewSlider/>
+                <div className="mx-auto max-w-7xl px-6 py-10">
+                    <ReviewSlider />
+                </div>
 
             </div>
         </div>

@@ -12,7 +12,7 @@ const TimelineFeature = ({
             
                 <div className=" relative z-0 w-14 h-14 bg-white rounded-full shadow-md"></div>
                 <div className=' absolute w-6 h-6 top-[12px] right-[16px] z-10 '>
-                    <img src={logo} />
+                    <img src={logo} alt='img' />
                 </div>
             </div>
             <div className='flex flex-col gap-[2px] '>

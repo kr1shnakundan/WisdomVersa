@@ -129,6 +129,15 @@ module.exports = {
         maxContent: "1260px",
         maxContentTab: "650px"
       },
+      animation: {
+        "review-slider": "reviewSlider 30s linear infinite",
+      },
+      keyframes: {
+        reviewSlider: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
     },
   },
   plugins: [],

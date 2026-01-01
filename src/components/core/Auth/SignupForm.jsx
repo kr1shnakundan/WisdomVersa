@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { AiOutlineEye ,AiOutlineEyeInvisible ,AiTwotoneInfoCircle } from 'react-icons/ai'
 
 import CTAButton from '../HomePage/Button'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { setSignupData } from '../../../slices/authSlice'
 import { useDispatch } from 'react-redux'
 
@@ -17,12 +17,14 @@ const SignupForm = () => {
 
   const navigate = useNavigate();
   const dispatch  = useDispatch();
+  const location = useLocation();
   const [showCreatePassword , setShowCreatePassword] = useState(false);
   const [showConfirmPassword , setShowConfirmPassword] = useState(false);
 
   // student or instructor
-  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
-
+  const [accountType, setAccountType] = useState(
+     location.state?.accountType || ACCOUNT_TYPE.STUDENT
+  )
     // const setIsLoggedIn = props.setIsLoggedIn
   const [formData, setFormData] = useState({
     firstName: "",
