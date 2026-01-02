@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 // import rootReducer from './reducer/indexReducer';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './config/store';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // const store = configureStore({
 //   reducer:rootReducer,
@@ -18,15 +19,16 @@ import { store, persistor } from './config/store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-        <PersistGate  loading={<div>Loading...</div>} persistor={persistor}>
-            <BrowserRouter>
-              <App />
-              <Toaster/>
-            </BrowserRouter>
-        </PersistGate>
-    </Provider>
-   
+    <GoogleOAuthProvider clientId="<your_client_id>">
+      <Provider store={store}>
+          <PersistGate  loading={<div>Loading...</div>} persistor={persistor}>
+              <BrowserRouter>
+                <App />
+                <Toaster/>
+              </BrowserRouter>
+          </PersistGate>
+      </Provider>
+    </GoogleOAuthProvider>
   
   </React.StrictMode>
 );

@@ -1,8 +1,14 @@
 # Environment variables (ALL LOCATIONS)
 .env
 **/.env
-.env.*
-**/.env.*
+.env.local
+.env.*.local
+**/.env.local
+**/.env.*.local
+
+# BUT allow .env.example files
+!.env.example
+!**/.env.example
 
 # Dependencies (ALL LOCATIONS)
 node_modules/

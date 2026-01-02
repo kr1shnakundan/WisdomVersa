@@ -60,7 +60,7 @@ const Home = () => {
                 <CTAButton active={true} linkTo={"/about"}>
                     Learn More
                 </CTAButton>
-                <CTAButton active={false} linkTo={token ? "/bookDemo" : "/signup"}>
+                <CTAButton active={false} linkTo={"/contact"}>
                     Book a Demo
                 </CTAButton>
             </div>
