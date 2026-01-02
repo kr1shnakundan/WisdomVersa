@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt")
 const mailSender = require("../utils/MailSender");
+const resetPasswordEmail = require("../mail/templates/resetPasswordEmail");
 
 
 
@@ -12,7 +13,7 @@ exports.resetPasswordToken = async(req,res)=>{
         //const {email} = req.body--------------SAME
 
         //check user for this email/email validation
-        const user = User.findOne({email:email})
+        const user = await User.findOne({email:email})
         if(!user){
             return res.status(400).json({
                 success:false,
@@ -24,16 +25,16 @@ exports.resetPasswordToken = async(req,res)=>{
         const token = crypto.randomUUID();
 
         //update user by adding token and expiration time
-        const userDetails = await User.findOneAndUpdate({email:email} , 
-            {token:token , resetPasswordExpires:Date.now() + 5*60*1000},
-           {new:true});
+        await User.findOneAndUpdate({email:email} , 
+        {token:token , resetPasswordExpires:Date.now() + 5*60*1000},
+        {new:true});
 
         //create URL
         // const url = `https://localhost:3000/update-password/${token}`<-------- this gives ssl error
         const url = `http://localhost:3000/update-password/${token}`
 
         //send mail containing the url
-        await mailSender(email,`Password reset link`,`the link for the password reset link is ${url}`);
+        await mailSender(email,`Password reset link`,resetPasswordEmail(user?.firstName ,url));
 
         //return response
         res.status(200).json({

@@ -5,6 +5,7 @@ import { AiOutlineShoppingCart, AiOutlineMenu } from "react-icons/ai"
 import { useDispatch, useSelector } from "react-redux"
 
 import wisdomverse from "../../assets/Images/WisdomVerse2.png"
+import wisdomversav2 from "../../assets/Images/wisdomversav2.png"
 import { NavbarLinks } from "../../data/navbar-links"
 import { ACCOUNT_TYPE } from "../../utils/constant"
 import { apiConnector } from "../../services/apiconnector"

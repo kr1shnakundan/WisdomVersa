@@ -60,6 +60,13 @@ const otpTemplate = (otp) => {
 			.highlight {
 				font-weight: bold;
 			}
+			
+			.footer {
+				margin-top: 30px;
+				font-size: 13px;
+				color: #94a3b8;
+				text-align: center;
+			}
 		</style>
 	
 	</head>
@@ -67,18 +74,22 @@ const otpTemplate = (otp) => {
 	<body>
 		<div class="container">
 			<a href="https://studynotion-edtech-project.vercel.app"><img class="logo"
-					src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo"></a>
+					src="https://i.ibb.co/7Xyj3PC/logo.png" alt="WisdomVersa Logo"></a>
 			<div class="message">OTP Verification Email</div>
 			<div class="body">
 				<p>Dear User,</p>
-				<p>Thank you for registering with StudyNotion. To complete your registration, please use the following OTP
+				<p>Thank you for registering with WisdomVersa. To complete your registration, please use the following OTP
 					(One-Time Password) to verify your account:</p>
 				<h2 class="highlight">${otp}</h2>
 				<p>This OTP is valid for 5 minutes. If you did not request this verification, please disregard this email.
 				Once your account is verified, you will have access to our platform and its features.</p>
 			</div>
 			<div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-					href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!</div>
+					href="mailto:wisdomversa4u@gmail.com">wisdomversa4u@gmail.com</a>. We are here to help!
+			</div>
+			<div class="footer ">
+				© ${new Date().getFullYear()} WisdomVersa. All rights reserved.
+			</div>
 		</div>
 	</body>
 	
