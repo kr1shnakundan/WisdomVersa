@@ -13,8 +13,8 @@ const {
   LOGIN_API,
   RESETPASSTOKEN_API,
   RESETPASS_API,
-  GETME_API,
-  GETUSERDETAILS_API
+  GETUSERDETAILS_API,
+  GOOGLE_AUTH_API
 } = endpoints
 
 
@@ -196,11 +196,24 @@ export function getPasswordResetToken(email , setEmailSent){
                 throw new Error(response.data.message)
             }
 
+            console.log("Response for getPassword reset token....<>",response)
+
             toast.success("Reset Email Sent")
             setEmailSent(true)
         } catch(error){
             console.log("Error in getPasswordResetToken in authAPI.js : ",error)
-            toast.error("Error occured while getting PasswordResetToken")
+            if (error?.response?.data?.isGoogleUser) {
+                toast.error(
+                error.response.data.message || 
+                'This account uses Google Sign-In. Please use the "Login with Google" button.',
+                { duration: 5000 }
+                );
+            }else {
+                toast.error(
+                error?.response?.data?.message || 
+                'Failed to send reset email'
+                );
+            }
         }
         dispatch(setLoading(false))
         toast.dismiss(toastId)
@@ -244,60 +257,6 @@ export function resetPassword ( password , confirmPassword,token ,navigate){
     }
 }
 
-
-//------------------------------------- getMe is incomplete
-// export function getMe(navigate) {
-//     return async (dispatch) => {
-//         const toastId = toast.loading("Loading...")
-//         dispatch(setLoading(true))
-//         try {
-//             // Debug: Check localStorage
-//             console.log("Raw token from localStorage:", localStorage.getItem("token"));
-            
-//             // Get token from localStorage
-//             let token = localStorage.getItem("token");
-            
-//             // If token is stored as JSON string, parse it
-//             if (token && token.startsWith('"')) {
-//                 token = JSON.parse(token);
-//             }
-            
-//             console.log("Processed token:", token);
-//             console.log("Authorization header:", `Bearer ${token}`);
-            
-//             if (!token) {
-//                 toast.error("No token found. Please login again.");
-//                 navigate("/login");
-//                 return;
-//             }
-            
-//             const response = await apiConnector(
-//                 "GET", 
-//                 GETME_API, 
-//                 null,
-//                 {
-//                     Authorization: `Bearer ${token}`
-//                 }
-//             )
-            
-//             console.log("Response of getMe: ", response)
-            
-//             if (!response.data.success) {
-//                 throw new Error(response.data.message)
-//             }
-            
-//             toast.success("User detail fetched successfully")
-//             navigate("/abcd")
-//         } catch (error) {
-//             console.log("getMe error in authAPI: ", error)
-//             console.log("Error response:", error.response?.data)
-//             toast.error("Unable to find user")
-//         }
-//         dispatch(setLoading(false))
-//         toast.dismiss(toastId)
-//     }
-// }
-
 export function getUserDetails() {
   return async (dispatch) => {
     try {
@@ -319,4 +278,39 @@ export function getUserDetails() {
       console.log("GETUSERDETAILS_API ERROR:", error);
     }
   };
+}
+
+
+export function googleAuth(googleUserData , navigate){
+    return async(dispatch)=>{
+        dispatch(setLoading(true))
+        try{
+            const response = await apiConnector("POST", GOOGLE_AUTH_API, {
+                email: googleUserData.email,
+                firstName: googleUserData.given_name,
+                lastName: googleUserData.family_name,
+                picture: googleUserData.picture,
+                googleId: googleUserData.sub,
+            })
+
+            console.log("GOOGLE AUTH API RESPONSE:", response)
+
+            if (!response.data.success) {
+                throw new Error(response.data.message)
+            }
+            toast.success("Logged in successfully")
+            dispatch(setToken(response.data.token))
+            dispatch(setUser(response.data.user))
+            
+            localStorage.setItem("token", JSON.stringify(response.data.token))
+            localStorage.setItem("user", JSON.stringify(response.data.user))
+            
+            navigate("/dashboard/my-profile")
+        }
+        catch (error) {
+        console.log("GOOGLE AUTH API ERROR:", error)
+        toast.error(error?.response?.data?.message || "Google authentication failed")
+        }
+        dispatch(setLoading(false))
+    } 
 }

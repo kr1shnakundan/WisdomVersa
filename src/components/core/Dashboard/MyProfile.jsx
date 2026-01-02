@@ -21,7 +21,7 @@ const MyProfile = () => {
             <div className='bg-richblack-800 rounded-md border border-richblack-700 px-10 py-7 flex flex-col gap-5 sm:flex-row  items-center justify-between'>
                 <div className='bg-richblack-800  flex flex-col lg:flex-row gap-4 items-center'>
                     <img src={userImage} alt={`${user?.firstName}`}
-                    className='w-[80px] aspect-square object-cover rounded-full' 
+                    className='w-[80px] aspect-square border border-richblack-700 object-cover rounded-full' 
                     />
                     <div className=''>
                         <p className='px-5 lg:px-0 text-lg font-semibold'>{user?.firstName} {" "} {user?.lastName}</p>

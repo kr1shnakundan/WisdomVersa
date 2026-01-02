@@ -9,8 +9,9 @@ const userSchema = new mongoose.Schema({
     },
     lastName:{
         type:String,
-        required:true,
-        trim:true
+        required:false,
+        trim:true,
+        default:"",
     },
     email:{
         type:String,
@@ -19,7 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:false,
     },
     accountType:{
         type:String,
@@ -53,7 +54,10 @@ const userSchema = new mongoose.Schema({
     },
     resetPasswordExpires:{
         type:Date,
-    }
+    },
+    googleId: {  // NEW FIELD ADDED DURING GOOGLE SIGN IN BUTTON
+        type: String,
+    },
 });
 
 

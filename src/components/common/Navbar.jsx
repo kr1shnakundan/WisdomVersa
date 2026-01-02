@@ -173,7 +173,7 @@ const Navbar = () => {
               <div className="mb-4 flex items-center gap-3">
                 <img
                   src={user?.image}
-                  alt="profile"
+                  alt=""
                   className="h-10 w-10 rounded-full object-cover"
                 />
                 <div>

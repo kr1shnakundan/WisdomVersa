@@ -20,6 +20,15 @@ exports.resetPasswordToken = async(req,res)=>{
                 message:`can't find the user for the given email`
             });
         }
+
+        // CHECK IF USER IS GOOGLE USER
+        if (user.googleId && !user.password) {
+        return res.status(400).json({
+            success: false,
+            message: "This account uses Google Sign-In. Please login using the 'Sign in with Google' button.",
+            isGoogleUser: true,  // Flag for frontend
+        });
+        }
         
         //generate token
         const token = crypto.randomUUID();

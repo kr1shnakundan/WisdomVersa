@@ -40,7 +40,7 @@ const ProfileDropdown = () => {
                 <img 
                 className='aspect-square w-[30px] rounded-full object-cover'
                 src={userImage} 
-                alt={`profile-${user?.firstName}`}
+                alt={`${user?.firstName}`}
                 />
                 <AiOutlineCaretDown className='text-sm text-richblack-100' />
             </div>

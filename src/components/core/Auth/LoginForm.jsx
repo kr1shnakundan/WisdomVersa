@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineEye , AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { login } from '../../../services/operations/authAPI';
+import toast from 'react-hot-toast';
 
 
 const LoginForm = () => {
@@ -24,9 +25,19 @@ const LoginForm = () => {
     }))
   }
 
-  const handleOnSubmit = (e) =>{
+  const handleOnSubmit = async(e) =>{
     e.preventDefault();
-    dispatch(login(email,password , navigate))
+    try {
+      dispatch(login(formData.email, formData.password, navigate));
+    } catch (error) {
+      // Handle Google user trying to login with form
+      if (error?.response?.data?.isGoogleUser) {
+        toast.error(
+          'This account uses Google Sign-In. Please use the "Login with Google" button below.',
+          { duration: 5000 }
+        );
+      }
+    }
   }
 
   return (

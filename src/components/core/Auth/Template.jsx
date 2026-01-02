@@ -4,6 +4,7 @@ import { FaGoogle } from 'react-icons/fa'
 import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
 import Frame from '../../../assets/Images/frame.png'
+import GoogleAuthButton from './GoogleAuthButton'
 
 const Template = ({heading ,desc1 , desc2 ,image , formType }) => {
   return (
@@ -23,14 +24,7 @@ const Template = ({heading ,desc1 , desc2 ,image , formType }) => {
                 <div className='h-[1px] w-full border border-richblack-700'></div>
             </div>
 
-            <button className=' w-[95%] flex flex-row items-center justify-center gap-x-2 mr-8 mt-10 py-[12px] 
-                             rounded-[8px] text-richblack-900 bg-yellow-50 border  border-richblack-700
-                             hover:bg-yellow-25 hover:scale-95 transition-all duration-200'>
-                <FaGoogle/>
-                <div>
-                    {formType === "signup" ? "Sign Up with Google" : "Sign In with Google"}
-                </div>
-            </button>
+            <GoogleAuthButton formType={formType} />
         </div>
         <div className='relative w-11/12 max-w-[450px] mx-auto lg:mt-0 mt-11'>
             <img className='relative' src={Frame} alt="" loading='lazy'/>

@@ -78,7 +78,12 @@ function ForgotPassword  ()  {
                             </p>
                         </Link>
                     </div>
-
+                    <div className="mt-6 p-4 bg-richblack-700 rounded-lg">
+                        <p className="text-richblack-300 text-sm">
+                            💡 <strong>Note:</strong> If you signed up using Google, you don't have a password. 
+                            Please use the "Login with Google" button on the login page.
+                        </p>
+                    </div>
                    
 
                 </div>

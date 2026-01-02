@@ -291,6 +291,15 @@ exports.login  = async(req,res) =>{
             });
         }
 
+        // CHECK IF USER IS GOOGLE USER
+        if (user.googleId && !user.password) {
+        return res.status(400).json({
+            success: false,
+            message: "This account uses Google Sign-In. Please use the 'Login with Google' button.",
+            isGoogleUser: true,
+        });
+        }
+
         //compare password
         if(await bcrypt.compare(password , user.password)){
             //create jwt token
@@ -490,3 +499,132 @@ exports.changePassword = async(req,res) =>{
     }
     
 }
+
+
+
+exports.googleAuth = async (req, res) => {
+  try {
+    const { email, firstName, lastName, picture, googleId } = req.body;
+
+    // Validation
+    if (!email || !firstName || !googleId) {
+      return res.status(400).json({
+        success: false,
+        message: "Email, name, and Google ID are required",
+      });
+    }
+
+    console.log("Google Auth Request:", { email, firstName, lastName });
+
+
+    // Handle missing lastName
+    // const userLastName = lastName || "";
+    // console.log("Using lastName:", userLastName || "(empty string)");
+
+    // Check if user already exists
+    let user = await User.findOne({ email }).populate("additionalDetails");
+
+    if (user) {
+      // User exists - this is a login
+      console.log("Existing user found:", user.email);
+
+      // Update Google ID if not present
+      if (!user.googleId) {
+        user.googleId = googleId;
+        await user.save();
+        console.log("Added Google ID to existing user");
+      }
+
+      // Update profile picture if user doesn't have one
+      if (picture && !user.image) {
+        user.image = picture;
+        await user.save();
+        console.log("Updated user profile picture");
+      }
+
+    } else {
+      // User doesn't exist - this is a signup
+      console.log("Creating new user for:", email);
+
+      // Create profile first
+      const profileDetails = await Profile.create({
+        gender: null,
+        dateOfBirth: null,
+        about: null,
+        contactNumber: null,
+        profession:null,
+      });
+
+      const fullName = `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim()
+
+      // Create new user
+      user = await User.create({
+        firstName,
+        lastName,
+        email,
+        accountType: "Student", // Default account type
+        approved: true,
+        image: picture || `https://api.dicebear.com/5.x/initials/svg?seed=${encodeURIComponent(fullName)}`,
+        googleId,
+        additionalDetails: profileDetails._id,
+        // Note: No password field for Google users
+      });
+
+      // Populate the profile details
+      user = await User.findById(user._id).populate("additionalDetails");
+
+      console.log("New user created successfully:", user.email);
+    }
+
+    // Generate JWT token
+    const payload = {
+      email: user.email,
+      id: user._id,
+      accountType: user.accountType,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // Remove sensitive information
+    user = user.toObject();
+    user.password = undefined;
+
+    // Set cookie options
+    const options = {
+      expires: new Date(Date.now() + 1 * 60 * 60 * 1000), // 1hr
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Only use secure in production
+      sameSite: "lax",
+    };
+
+    // Send response with cookie
+    res.cookie("token", token, options).status(200).json({
+      success: true,
+      token,
+      user,
+      message: user.googleId === googleId && !user.password 
+        ? "Logged in successfully" 
+        : "Account created and logged in successfully",
+    });
+
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    
+    // Handle duplicate email error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: "An account with this email already exists",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "Google authentication failed. Please try again.",
+      error: error.message,
+    });
+  }
+};
+
