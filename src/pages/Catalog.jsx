@@ -1,4 +1,7 @@
 
+
+//In this method we fetched the categories and it's course details which will take time to fetch. We can use
+//the method we use in search bar , fetch the relevant at the start and work on it.
 import { useParams } from "react-router-dom";
 import CourseCard from "../components/core/Catalog/CourseCard";
 import CourseSlider from "../components/core/Catalog/CourseSlider";
@@ -44,8 +47,6 @@ export default function Catalog() {
         }
 
         const decodedCatalogName = decodeURIComponent(catalogName);
-        // console.log("Decoded catalogName:", decodedCatalogName);
-
         const matchedCategory = categories.find(
           (ct) => slugify(ct.name) === slugify(decodedCatalogName)
         );

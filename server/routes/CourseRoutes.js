@@ -48,6 +48,8 @@ const {
     unenrollFromCourse
 } = require("../controllers/CourseProgressController")
 
+const {searchIndex ,findCourses} = require("../controllers/SearchController")
+
 
 //course can only be created by instructor
 router.post("/createCourse",auth , isInstructor,createCourse)
@@ -97,5 +99,10 @@ router.put("/editRating",auth , isStudent ,editRatingAndReview)
 router.get("/getAverageRating",getAverageRating)
 router.get("/getAllRatings",getAllRatings)
 
+
+// ********************************************************************************************************
+//                                      Search
+// ********************************************************************************************************
+router.get("/search-index",searchIndex)
 
 module.exports = router

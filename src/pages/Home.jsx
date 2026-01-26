@@ -21,6 +21,7 @@ const Home = () => {
     const {token} = useSelector((state)=>state.auth)
   return (
     <div >
+       {/* <div className='ring' aria-hidden="true"></div> */}
         {/* section-1 */}
         <div className="relative mx-auto flex flex-col w-11/12 max-w-maxContent
         items-center text-white  justify-between">

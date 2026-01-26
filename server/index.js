@@ -22,9 +22,6 @@ dotenv.config();
 
 const PORT = process.env.PORT || 4000;
 
-//database connect
-database.connect();
-
 //middlewares  
 app.use(express.json());
 app.use(cookieParser()); 
@@ -68,6 +65,19 @@ app.get("/",(req,res)=>{
     });
 })
 
-app.listen(PORT,()=>{
-    console.log(`Server is running at port : ${PORT}`)
-})
+
+
+// Connect to database FIRST, then start server
+const startServer = async () => {
+    try {
+        await database.connect();
+        app.listen(PORT, () => {
+            console.log(`Server is running at port: ${PORT}`);
+        });
+    } catch (error) {
+        console.error("Failed to start server:", error);
+        process.exit(1);
+    }
+};
+
+startServer();

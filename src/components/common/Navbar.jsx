@@ -1,8 +1,10 @@
+
 import React, { useEffect, useRef, useState } from "react"
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom"
 import { BsChevronDown } from "react-icons/bs"
-import { AiOutlineShoppingCart, AiOutlineMenu } from "react-icons/ai"
+import { AiOutlineShoppingCart, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai"
 import { useDispatch, useSelector } from "react-redux"
+import { IoClose } from "react-icons/io5"
 
 import wisdomverse from "../../assets/Images/WisdomVerse2.png"
 import wisdomversav2 from "../../assets/Images/wisdomversav2.png"
@@ -12,6 +14,7 @@ import { apiConnector } from "../../services/apiconnector"
 import { category } from "../../services/apis"
 import ProfileDropdown from "../core/Auth/ProfileDropdown"
 import { logout } from "../../services/operations/authAPI"
+import CourseCategorySearch from "../core/Search/CourseCategorySearch"
 
 const Navbar = () => {
   const location = useLocation()
@@ -22,6 +25,7 @@ const Navbar = () => {
   const [subLinks, setSubLinks] = useState([])
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCatalogOpen, setIsCatalogOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
@@ -44,11 +48,16 @@ const Navbar = () => {
   useEffect(() => {
     setIsMenuOpen(false)
     setIsCatalogOpen(false)
+    setIsSearchOpen(false)
   }, [location.pathname])
 
   const closeMenu = () => {
     setIsMenuOpen(false)
     setIsCatalogOpen(false)
+  }
+
+  const toggleSearch = () => {
+    setIsSearchOpen((prev) => !prev)
   }
 
   return (
@@ -58,7 +67,7 @@ const Navbar = () => {
         className={`fixed top-0 left-0 right-0 z-50 h-14 border-b border-b-richblack-700
         bg-richblack-900`}
       >
-        <div className="mx-auto flex h-full w-11/12 max-w-maxContent items-center justify-between">
+        <div className="mx-auto flex h-full px-2 max-w-maxContent items-center justify-between">
           {/* Logo */}
           <Link to="/">
             <img
@@ -69,8 +78,8 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <ul className="flex gap-x-6 text-richblack-25">
+          <div className={`hidden md:block`}>
+            <ul className="flex gap-x-3 md:gap-x-4 lg:gap-x-6 text-richblack-25 text-xs md:text-sm lg:text-base">
               {NavbarLinks.map((link, i) => (
                 <li key={i}>
                   {link.title === "Catalog" ? (
@@ -105,8 +114,9 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Desktop Right */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Search Bar - Desktop & Tablet (always visible on lg) */}
+          <div className={`hidden lg:flex items-center gap-3 ${isSearchOpen ? 'lg:hidden' : ''}`}>
+            <div className=""><CourseCategorySearch /></div>
             {user && user.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
               <Link to="/dashboard/cart" className="relative">
                 <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
@@ -136,13 +146,45 @@ const Navbar = () => {
             {token && <ProfileDropdown />}
           </div>
 
-          {/* Menu Icon */}
-          <button
-            className="lg:hidden"
-            onClick={() => setIsMenuOpen((p) => !p)}
-          >
-            <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
-          </button>
+          {/* Search Bar - Expanded on Mobile/Tablet */}
+          <div className={`flex-1 flex items-center lg:hidden px-2 transition-all duration-300 ease-out origin-right ${
+            isSearchOpen 
+              ? 'opacity-100 scale-x-100 max-w-full' 
+              : 'opacity-0 scale-x-0 max-w-0 overflow-hidden pointer-events-none'
+          }`}>
+            <div className="w-full">
+              <CourseCategorySearch />
+            </div>
+          </div>
+
+          {/* Right Icons - Mobile & Tablet */}
+          <div className="flex items-center gap-2 lg:hidden">
+           
+            <button
+              onClick={()=>{
+                toggleSearch()
+                setIsMenuOpen(false)
+              }}
+              className="pr-1 text-richblack-100 hover:text-richblack-25 transition-colors"
+              aria-label={isSearchOpen ? "Close search" : "Open search"}
+            >
+              {isSearchOpen ? (
+                <IoClose fontSize={24} />
+              ) : (
+                <AiOutlineSearch fontSize={24} />
+              )}
+            </button>
+
+            {/* Menu Icon - Hidden when search is open */}
+            {!isSearchOpen && (
+              <button
+                onClick={() => setIsMenuOpen((p) => !p)}
+                className="p-2"
+              >
+                <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -301,7 +343,7 @@ const Navbar = () => {
 
           {/* -------- LOGGED OUT -------- */}
           {!token && (
-            <div className="flex  flex-col gap-3">
+            <div className="flex flex-col gap-3">
               {/* Navigation Links for Logged Out Users */}
               <ul className="flex flex-col md:hidden gap-4 mb-4">
                 <Link to="/" onClick={closeMenu}>Home</Link>
