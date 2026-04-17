@@ -15,7 +15,8 @@ const jwt = require("jsonwebtoken")
 const otpGenerator = require("otp-generator")
 const mailSender = require("../utils/MailSender")
 const { passwordUpdated } = require("../mail/templates/passwordUpdate")
-const Profile = require("../models/Profile")
+const Profile = require("../models/Profile");
+const { OAuth2Client } = require('google-auth-library');
 require("dotenv").config()
 
 //function for signup 
@@ -628,3 +629,128 @@ exports.googleAuth = async (req, res) => {
   }
 };
 
+
+
+exports.googleReAuth = async(req,res) =>{
+    console.log("googleReAuth route hit");
+    try{
+        const {idToken} = req.body;
+
+        if(!idToken){
+            return res.status(400).json({
+                success:false,
+                message:`Google token is required for re-authentication`
+            });
+        }
+
+        const payload = await verifyGoogleToken(idToken);
+        if(!payload){
+            return res.status(401).json({
+                success:false,
+                message:`Invalid Google token`
+            });
+        }
+
+        const {
+            email,
+            sub: googleId,
+            iat,
+        } = payload;
+
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (currentTime - iat > parseInt(process.env.MAX_AUTH_AGE)) { // Token older than 5 minutes
+            return res.status(401).json({
+                success: false,
+                message: "Google token is too old. Please sign in again.",
+            });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found. Please login again.",
+      });
+    }
+
+    // 🔐 Ensure this is actually a Google account
+    if (!user.googleId || user.googleId !== googleId) {
+      return res.status(403).json({
+        success: false,
+        message: "Google account mismatch",
+      });
+    }
+
+    // ✅ Issue fresh JWT (this is the main goal)
+    const payloadJWT = {
+      email: user.email,
+      id: user._id,
+      accountType: user.accountType,
+    };
+
+    const newToken = jwt.sign(payloadJWT, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+
+    const options = {
+      expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    };
+
+    return res
+        .cookie("token", newToken, options)
+        .status(200)
+        .json({
+        success: true,
+        token: newToken,
+        message: "Re-authentication successful",
+    });
+
+
+
+
+    } catch(error){
+        console.error("Google Re-Auth Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Google re-authentication failed. Please try again.",
+            error: error.message,
+        });
+    }
+}
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+async function verifyGoogleToken(idToken) {
+    try{
+        const ticket = await client.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        
+
+        const payload = ticket.getPayload();
+        const validIssuers = [
+            "accounts.google.com",
+            "https://accounts.google.com",
+        ];
+
+        if (!validIssuers.includes(payload.iss)) {
+        throw new Error("Invalid token issuer");
+        }
+
+        // 2. Ensure email is verified
+        if (!payload.email_verified) {
+        throw new Error("Email not verified by Google");
+        }
+
+        return payload;
+    } catch(error){
+        console.error("Error verifying Google token:", error);
+        return null;
+    }
+}

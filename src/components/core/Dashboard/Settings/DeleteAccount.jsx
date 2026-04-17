@@ -2,7 +2,8 @@
 import { FiTrash2 } from "react-icons/fi"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
-import { deleteProfile } from "../../../../services/operations/SettingsAPI";
+import { deleteProfile, deleteGoogleAccount } from "../../../../services/operations/SettingsAPI";
+import { googleReAuth } from "../../../../services/operations/authAPI";
 import ConfirmationModal from "../../../common/ConfirmationModal";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -13,14 +14,51 @@ export default function DeleteAccount(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {token} = useSelector((state) => state.auth)
+    const {user} = useSelector((state) => state.profile)
+
+    // 🔐 logic to handle google re-authentication
+    const googleReAuthTrigger = () => {
+        return new Promise((resolve) => {
+            if (!window.google) {
+                toast.error("Google SDK not loaded. Please refresh.");
+                return resolve(false);
+            }
+
+            window.google.accounts.id.initialize({
+                client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+                callback: async (response) => {
+                    if (response.credential) {
+                        const success = await dispatch(googleReAuth(response.credential));
+                        resolve(success);
+                    } else {
+                        resolve(false);
+                    }
+                },
+            });
+
+            window.google.accounts.id.prompt((notification) => {
+                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                    console.log("Google prompt not displayed or skipped");
+                    // toast.error("Could not display Google login. Try again.");
+                    // resolve(false);
+                }
+            });
+        });
+    };
 
     // Handler that receives password from modal
     const deleteProfileHandler = (password) => {
-        if(!password || !password.trim()){
-            toast.error("Password is required to delete account")
-            return
+        if(user?.googleId) {
+            // Google user - bypass password, use re-auth trigger
+            dispatch(deleteGoogleAccount(token, navigate, googleReAuthTrigger));
+        } else {
+            // Standard user
+            if(!password || !password.trim()){
+                toast.error("Password is required to delete account")
+                return
+            }
+            dispatch(deleteProfile(password, token, navigate));
         }
-        dispatch(deleteProfile(password, token, navigate));
         setConfirmationModal(null);
     }
 
@@ -45,12 +83,14 @@ export default function DeleteAccount(){
                         onClick={() =>
                             setConfirmationModal({
                                 text1: "Are you Sure?",
-                                text2: "Your account will be deleted permanently. Please enter your password to confirm.",
+                                text2: user?.googleId 
+                                    ? "Your account will be deleted permanently. Since you're using Google, you may be asked to re-authenticate."
+                                    : "Your account will be deleted permanently. Please enter your password to confirm.",
                                 btn1Text: "Delete",
                                 btn2Text: "Cancel",
                                 btn1Handler: deleteProfileHandler,
                                 btn2Handler: () => setConfirmationModal(null),
-                                requirePassword: true
+                                requirePassword: !user?.googleId
                             })
                         }
                         className="w-fit cursor-pointer italic md:pl-20 text-pink-300"

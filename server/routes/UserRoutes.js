@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 const{auth} = require("../middlewares/authMiddleware")
-const { login, signup, changePassword, sendotp, googleAuth } = require("../controllers/Auth")
+const { login, signup, changePassword, sendotp, googleAuth, googleReAuth } = require("../controllers/Auth")
 const { resetPasswordToken, resetPassword } = require("../controllers/ResetPassword")
 
 //*************************************************************************************** */
@@ -19,5 +19,6 @@ router.post("/google",googleAuth)
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post("/reset-password-token",resetPasswordToken)
 router.post("/reset-password",resetPassword)
+router.post("/googleReAuth", googleReAuth)
 
 module.exports = router

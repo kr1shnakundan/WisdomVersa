@@ -11,7 +11,7 @@ exports.auth = async(req,res,next) =>{
         const token = 
                         req.cookies.token || 
                         req.body.token || 
-                        req.header("Authorization").replace("Bearer","");
+                        req.header("Authorization").replace("Bearer ", "");
 
         // If JWT is missing, return 401 Unauthorized response
 		if (!token) {
@@ -105,3 +105,49 @@ exports.isInstructor = async (req, res, next) => {
 			.json({ success: false, message: `User Role Can't be Verified` });
 	}
 };
+
+
+
+exports.requireRecentAuthFromToken = async(req,res,next) =>{
+    try{
+        const token = 
+                        req.cookies.token || 
+                        req.body.token || 
+                        req.header("Authorization").replace("Bearer ","");
+
+        // If JWT is missing, return 401 Unauthorized response
+        if (!token) {
+            return res.status(401).json({ success: false, message: `Token Missing` });
+        }
+        try{
+            //verify the jwt
+            const decode = jwt.verify(token , process.env.JWT_SECRET)
+            // console.log("decode:",decode);
+
+            // Check if the token is older than the allowed age
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            if (currentTime - decode.iat > parseInt(process.env.MAX_AUTH_AGE)) {
+                return res.status(401).json({
+                     success: false,
+                      message: "Token is too old. Please re-authenticate." ,
+                      reauth_required: true
+                    });
+            }
+
+            // Storing the decoded JWT payload in the request object for further use
+            req.user = decode;
+        } catch(error){
+            // If JWT verification fails, return 401 Unauthorized response
+            return res
+                .status(401)
+                .json({ success: false, message: "token is invalid" });
+        }
+
+        // If JWT is valid and recent, move on to the next middleware or request handler
+        next();
+    } catch(error){
+        return res
+            .status(500)
+            .json({ success: false, message: `Error in requireRecentAuthFromToken middleware` });
+    }
+}

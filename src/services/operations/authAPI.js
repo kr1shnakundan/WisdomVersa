@@ -14,7 +14,8 @@ const {
   RESETPASSTOKEN_API,
   RESETPASS_API,
   GETUSERDETAILS_API,
-  GOOGLE_AUTH_API
+  GOOGLE_AUTH_API,
+  GOOGLE_REAUTH_API
 } = endpoints
 
 
@@ -313,4 +314,28 @@ export function googleAuth(googleUserData , navigate){
         }
         dispatch(setLoading(false))
     } 
+}
+
+export function googleReAuth(idToken) {
+    return async (dispatch) => {
+        console.log("TOKEN to backend:", idToken);
+        try {
+            const response = await apiConnector("POST", GOOGLE_REAUTH_API, { idToken });
+
+            console.log("GOOGLE RE-AUTH API RESPONSE:", response);
+
+            if (!response.data.success) {
+                throw new Error(response.data.message);
+            }
+
+            dispatch(setToken(response.data.token));
+            localStorage.setItem("token", JSON.stringify(response.data.token));
+            
+            return true;
+        } catch (error) {
+            console.log("GOOGLE RE-AUTH API ERROR:", error);
+            toast.error(error?.response?.data?.message || "Re-authentication failed");
+            return false;
+        }
+    };
 }

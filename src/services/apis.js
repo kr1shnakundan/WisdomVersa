@@ -10,7 +10,8 @@ export const endpoints = {
     RESETPASS_API : BASE_URL + "/auth/reset-password",
     GOOGLE_AUTH_API: BASE_URL + '/auth/google',
 
-    GETUSERDETAILS_API : BASE_URL + "/profile/getUserDetails"
+    GETUSERDETAILS_API : BASE_URL + "/profile/getUserDetails",
+    GOOGLE_REAUTH_API: BASE_URL + "/auth/googleReAuth"
 }
 
 
@@ -62,6 +63,7 @@ export const settingsEndPoints = {
     UPDATE_DISPLAY_PICTURE_API : BASE_URL + "/profile/updateDisplayPicture",
     UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
     DELETE_PROFILE_API: BASE_URL + "/profile/deleteAccount",
+    DELETE_GOOGLE_ACCOUNT_API: BASE_URL + "/profile/deleteGoogleAccount",
 }
 
 // CATALOG PAGE DATA

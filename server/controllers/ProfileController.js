@@ -5,6 +5,7 @@ const CourseProgress = require("../models/CourseProgress");
 const { uploadImageToCloudinary } = require("../utils/ImageUploader");
 const { convertSecondsToDuration } = require("../utils/secToDuration")
 const bcrypt = require("bcrypt");
+const { default: mongoose } = require("mongoose");
 
 // exports.updateProfile = async(req,res) =>{
 //     try{
@@ -477,3 +478,77 @@ exports.instructorDashboard = async(req,res)=>{
     })
   }
 }
+
+
+
+
+exports.deleteGoogleAccount = async (req, res) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const userId = req.user.id;
+
+    const user = await User.findById(userId).session(session);
+
+    if (!user) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({
+        success: false,
+        message: "User not found for this userId",
+      });
+    }
+
+    if (!user.googleId) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({
+        success: false,
+        message: "Require password as not verified by google",
+      });
+    }
+
+    // Delete profile if exists
+    if (user.additionalDetails) {
+      await Profile.findByIdAndDelete(user.additionalDetails).session(session);
+    }
+
+    // Remove user from enrolled courses
+    for (const courseId of user.courses) {
+      await Course.findByIdAndUpdate(
+        courseId,
+        {
+          $pull: { studentEnrolled: userId },
+        },
+        { new: true, session }
+      );
+    }
+
+    // Delete course progress (MOVE inside transaction for consistency)
+    await CourseProgress.deleteMany({ userId: userId }).session(session);
+
+    // Delete user
+    await User.findByIdAndDelete(userId).session(session);
+
+    // Commit transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+
+    return res.status(500).json({
+      success: false,
+      message: "Error occurred while deleting account using google auth",
+      error: error.message,
+    });
+  }
+};
