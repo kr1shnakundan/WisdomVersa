@@ -145,11 +145,6 @@ export function deleteProfile (password,token , navigate){
 
 export function deleteGoogleAccount(token, navigate, reAuthTrigger) {
   return async (dispatch) => {
-    const toastId = toast.loading(
-      <div className="flex items-center justify-center gap-2">
-        <p>Deleting Account...</p>
-      </div>
-    );
     try {
       const response = await apiConnector("DELETE", DELETE_GOOGLE_ACCOUNT_API, null, {
         Authorization: `Bearer ${token}`,
@@ -158,7 +153,6 @@ export function deleteGoogleAccount(token, navigate, reAuthTrigger) {
       if (!response?.data?.success) {
         throw new Error(response?.data?.message);
       }
-
       toast.success("Account Deleted Successfully");
       dispatch(logout(navigate));
     } catch (error) {
@@ -167,14 +161,13 @@ export function deleteGoogleAccount(token, navigate, reAuthTrigger) {
       // Check for re-auth requirement
       if (error?.response?.data?.reauth_required) {
         toast.dismiss(toastId);
-        const reauthToastId = toast.loading("Session expired. Please re-authenticate with Google...");
+        const toastId = toast.loading("Session expired. Please re-authenticate with Google...");
         
         try {
           // Trigger Google re-authentication popup via the callback
           const success = await reAuthTrigger();
           
           if (success) {
-            toast.dismiss(reauthToastId);
             // After successful re-auth, the token in localStorage/Redux is updated
             // We need to get the fresh token
             const freshToken = JSON.parse(localStorage.getItem("token"));
@@ -182,18 +175,20 @@ export function deleteGoogleAccount(token, navigate, reAuthTrigger) {
             // Retry the deletion
             return dispatch(deleteGoogleAccount(freshToken, navigate, reAuthTrigger));
           } else {
-            toast.dismiss(reauthToastId);
+            toast.dismiss(toastId);
             toast.error("Re-authentication failed");
           }
         } catch (reAuthError) {
           console.error("Re-auth flow error:", reAuthError);
-          toast.dismiss(reauthToastId);
+          toast.dismiss(toastId);
           toast.error("Could not complete re-authentication");
         }
       } else {
-        toast.dismiss(toastId);
         toast.error(error?.response?.data?.message || "Unable to delete Google account");
+        toast.dismiss(toastId);
       }
+      toast.dismiss(toastId);
     }
+    toast.dismiss(toastId);
   };
 }

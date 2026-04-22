@@ -13,6 +13,8 @@ exports.auth = async(req,res,next) =>{
                         req.body.token || 
                         req.header("Authorization").replace("Bearer ", "");
 
+        console.log("token in auth_middleware...........................",token)
+
         // If JWT is missing, return 401 Unauthorized response
 		if (!token) {
 			return res.status(401).json({ success: false, message: `Token Missing` });
@@ -21,7 +23,7 @@ exports.auth = async(req,res,next) =>{
         try{
             //verify the jwt
             const decode = jwt.verify(token , process.env.JWT_SECRET)
-            // console.log("decode:",decode);
+            console.log("decode:",decode);
 
             // Storing the decoded JWT payload in the request object for further use
             req.user = decode;
@@ -114,6 +116,8 @@ exports.requireRecentAuthFromToken = async(req,res,next) =>{
                         req.cookies.token || 
                         req.body.token || 
                         req.header("Authorization").replace("Bearer ","");
+
+        console.log("Token in the bearer................................",token)
 
         // If JWT is missing, return 401 Unauthorized response
         if (!token) {

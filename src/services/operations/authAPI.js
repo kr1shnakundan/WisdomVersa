@@ -318,7 +318,6 @@ export function googleAuth(googleUserData , navigate){
 
 export function googleReAuth(idToken) {
     return async (dispatch) => {
-        console.log("TOKEN to backend:", idToken);
         try {
             const response = await apiConnector("POST", GOOGLE_REAUTH_API, { idToken });
 

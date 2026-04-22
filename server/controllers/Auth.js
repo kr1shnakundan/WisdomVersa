@@ -635,6 +635,7 @@ exports.googleReAuth = async(req,res) =>{
     console.log("googleReAuth route hit");
     try{
         const {idToken} = req.body;
+        console.log("idToken......is",idToken)
 
         if(!idToken){
             return res.status(400).json({
@@ -726,6 +727,7 @@ exports.googleReAuth = async(req,res) =>{
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 async function verifyGoogleToken(idToken) {
+    console.log("idToken issssss",idToken)
     try{
         const ticket = await client.verifyIdToken({
             idToken,

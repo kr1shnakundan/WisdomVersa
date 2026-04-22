@@ -19,6 +19,6 @@ router.post("/google",googleAuth)
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post("/reset-password-token",resetPasswordToken)
 router.post("/reset-password",resetPassword)
-router.post("/googleReAuth", googleReAuth)
+router.post("/googleReAuth",auth, googleReAuth)
 
 module.exports = router
