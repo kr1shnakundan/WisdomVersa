@@ -25,12 +25,19 @@ const PORT = process.env.PORT || 4000;
 //middlewares  
 app.use(express.json());
 app.use(cookieParser()); 
+// app.use(
+//     cors({
+//         origin:"http://localhost:3000",
+//         credentials:true
+//     })
+// )
+
 app.use(
     cors({
-        origin:"https://wisdomversa.onrender.com",
-        credentials:true
+        origin: process.env.FRONTEND_URL,
+        credentials: true
     })
-)
+);
 
 app.get("/test-cookie", (req, res) => {
     console.log("Setting test cookie...");

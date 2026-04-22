@@ -5,6 +5,7 @@ WisdomVersa is a full-stack educational technology (Ed-Tech) platform designed t
 ## Tech Stack
 
 ### Frontend
+
 - **Framework**: React.js (v19)
 - **State Management**: Redux Toolkit & Redux Persist
 - **Styling**: Tailwind CSS
@@ -14,6 +15,7 @@ WisdomVersa is a full-stack educational technology (Ed-Tech) platform designed t
 - **Animations**: React Type Animation
 
 ### Backend
+
 - **Runtime**: Node.js
 - **Framework**: Express.js
 - **Database**: MongoDB with Mongoose ODM
@@ -27,6 +29,7 @@ WisdomVersa is a full-stack educational technology (Ed-Tech) platform designed t
 ## Features
 
 ### For Students
+
 - **Course Discovery**: Browse courses by categories with a built-in search and filter system.
 - **Interactive Learning**: A dedicated video player for watching lessons, tracking progress, and managing course navigation.
 - **Dashboard**: Track enrolled courses, view progress bars, and manage purchase history.
@@ -34,6 +37,7 @@ WisdomVersa is a full-stack educational technology (Ed-Tech) platform designed t
 - **Reviews**: Rate and review courses to help other learners.
 
 ### For Instructors
+
 - **Course Builder**: Multi-step course creation flow (Course Information -> Course Builder -> Publishing).
 - **Content Management**: Organize courses into Sections and Sub-sections (lessons) with video uploads.
 - **Performance Metrics**: A dashboard to view total students, total income, and per-course statistics using Chart.js.
@@ -64,13 +68,16 @@ WisdomVersa is a full-stack educational technology (Ed-Tech) platform designed t
 ## Setup Instructions
 
 ### 1. Clone the repository
+
 ```bash
 git clone <repository-url>
 cd WisdomVersa
 ```
 
 ### 2. Backend Setup
+
 Create a `.env` file in the `server/` directory and add the following:
+
 ```env
 PORT=4000
 MONGODB_URL=your_mongodb_connection_string
@@ -85,7 +92,9 @@ FOLDER_NAME=WisdomVersa
 RAZORPAY_KEY=your_razorpay_key
 RAZORPAY_SECRET=your_razorpay_secret
 ```
+
 Install dependencies and start the server:
+
 ```bash
 cd server
 npm install
@@ -93,19 +102,23 @@ npm run dev
 ```
 
 ### 3. Frontend Setup
+
 Create a `.env` file in the root directory:
+
 ```env
-REACT_APP_BASE_URL=http://localhost:4000/api/v1
+REACT_APP_BASE_URL=https://wisdomversa.onrender.com/api/v1
 REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
 ```
+
 Install dependencies and start the client:
+
 ```bash
 # From the root directory
 npm install
 npm start
 ```
 
-*Tip: You can use `npm run dev` from the root to start both client and server concurrently.*
+_Tip: You can use `npm run dev` from the root to start both client and server concurrently._
 
 ---
 
@@ -127,5 +140,6 @@ npm start
 ---
 
 ## Notes
+
 - Ensure Cloudinary and Razorpay credentials are valid for media uploads and payments to work.
 - The project uses MongoDB. Make sure your local instance is running or use a MongoDB Atlas URI.
