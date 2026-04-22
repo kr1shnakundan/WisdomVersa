@@ -1,4 +1,9 @@
-const BASE_URL = process.env.REACT_APP_BASE_URL
+let BASE_URL = process.env.REACT_APP_BASE_URL;
+
+// Safety check: Ensure BASE_URL includes /api/v1 to match backend routes
+if (BASE_URL && !BASE_URL.includes("/api/v1")) {
+  BASE_URL = BASE_URL.replace(/\/$/, "") + "/api/v1";
+}
 
 //authorization api
 export const endpoints = {

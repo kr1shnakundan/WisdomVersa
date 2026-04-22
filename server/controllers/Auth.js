@@ -319,7 +319,8 @@ exports.login  = async(req,res) =>{
             const options ={
                 expires: new Date(Date.now() + 1*60*60*1000),
                 httpOnly:true,
-                sameSite: 'lax'
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax'
             }
 
             // console.log("===== LOGIN DEBUG =====");
@@ -597,7 +598,7 @@ exports.googleAuth = async (req, res) => {
       expires: new Date(Date.now() + 1 * 60 * 60 * 1000), // 1hr
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Only use secure in production
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     };
 
     // Send response with cookie
@@ -698,7 +699,7 @@ exports.googleReAuth = async(req,res) =>{
       expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     };
 
     return res

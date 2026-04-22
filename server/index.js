@@ -34,12 +34,20 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://wisdom-versa.vercel.app",
-      "https://wisdom-versa-h8x471m5p-kr1shnakundans-projects.vercel.app"
-    ],
-    credentials: true
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        "http://localhost:3000",
+        "https://wisdom-versa.vercel.app",
+      ];
+      // Allow requests with no origin (like mobile apps or curl) 
+      // or check if origin is in allowed list or is a vercel subdomain
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
 
@@ -47,7 +55,8 @@ app.get("/test-cookie", (req, res) => {
     console.log("Setting test cookie...");
     res.cookie("test", "hello", {
         httpOnly: true,
-        sameSite: 'lax'
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax'
     }).json({ message: "Cookie set" });
 });
 
