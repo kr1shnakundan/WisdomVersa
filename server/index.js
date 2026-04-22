@@ -33,10 +33,14 @@ app.use(cookieParser());
 // )
 
 app.use(
-    cors({
-        origin: process.env.FRONTEND_URL,
-        credentials: true
-    })
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://wisdom-versa.vercel.app",
+      "https://wisdom-versa-h8x471m5p-kr1shnakundans-projects.vercel.app"
+    ],
+    credentials: true
+  })
 );
 
 app.get("/test-cookie", (req, res) => {
