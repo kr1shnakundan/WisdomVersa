@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api/v1"
+const BASE_URL = "https://wisdomversa.onrender.com/api/v1"
 
 
 //authorization api

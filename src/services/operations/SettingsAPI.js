@@ -185,10 +185,7 @@ export function deleteGoogleAccount(token, navigate, reAuthTrigger) {
         }
       } else {
         toast.error(error?.response?.data?.message || "Unable to delete Google account");
-        toast.dismiss(toastId);
       }
-      toast.dismiss(toastId);
     }
-    toast.dismiss(toastId);
   };
 }
