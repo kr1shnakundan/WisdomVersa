@@ -1,5 +1,4 @@
-const BASE_URL = "https://wisdomversa.onrender.com/api/v1"
-
+const BASE_URL = process.env.REACT_APP_BASE_URL
 
 //authorization api
 export const endpoints = {
