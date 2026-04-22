@@ -2,6 +2,8 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt")
 const mailSender = require("../utils/MailSender");
 const resetPasswordEmail = require("../mail/templates/resetPasswordEmail");
+const dotenv = require("dotenv")
+dotenv.config();
 
 
 
@@ -40,7 +42,7 @@ exports.resetPasswordToken = async(req,res)=>{
 
         //create URL
         // const url = `https://localhost:3000/update-password/${token}`<-------- this gives ssl error
-        const url = `http://localhost:3000/update-password/${token}`
+        const url = `${process.env.BASE_URL}/update-password/${token}`
 
         //send mail containing the url
         await mailSender(email,`Password reset link`,resetPasswordEmail(user?.firstName ,url));
