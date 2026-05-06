@@ -137,7 +137,8 @@ exports.verifyPayment = async(req, res) => {
         session.endSession();
         
         // Send emails AFTER successful transaction (outside transaction)
-        await sendEnrollmentEmails(enrollmentResult.enrolledCourses, userId);
+        sendEnrollmentEmails(enrollmentResult.enrolledCourses, userId)
+        .catch(err => console.log("Email error:", err));
         
         return res.status(200).json({
             success: true,
