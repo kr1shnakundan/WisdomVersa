@@ -126,7 +126,7 @@ const Footer = () => {
                     })}
                 </div>
 
-                <p className='text-center'>Made with ❤️ By Krishna Kundan © 2025 </p>
+                <p className='text-center'>Made with ❤️ By Prashant Jha © 2026 </p>
             </div>
         </div>
         
